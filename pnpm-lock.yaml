@@ -11,6 +11,9 @@ importers:
       '@fontsource/michroma':
         specifier: ^5.2.5
         version: 5.2.5
+      '@fontsource/shippori-mincho':
+        specifier: ^5.2.5
+        version: 5.2.5
       astro:
         specifier: ^5.5.4
         version: 5.5.4(@types/node@22.13.13)(rollup@4.37.0)(typescript@5.8.2)
@@ -317,6 +320,9 @@ packages:
 
   '@fontsource/michroma@5.2.5':
     resolution: {integrity: sha512-jN3xcboj3SPWotJSw1DHHLjLksXpyPD2inQt+jGoLeMOzXHHuFiwnhYdbmOWlbOSX0ljMoNgOK40HHlo20b4CA==}
+
+  '@fontsource/shippori-mincho@5.2.5':
+    resolution: {integrity: sha512-7UXvLZ5Ed77UnEXywSGRnobeiQbdX3I3vrGJzrH7K3Ni2SN34sIjTzkszQkBw2Pcmg+MoTGczJIfG4MwBc3c5A==}
 
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
@@ -2094,6 +2100,8 @@ snapshots:
     optional: true
 
   '@fontsource/michroma@5.2.5': {}
+
+  '@fontsource/shippori-mincho@5.2.5': {}
 
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:

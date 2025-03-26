@@ -1,0 +1,56 @@
+---
+import type { HTMLTag, Polymorphic } from 'astro/types';
+
+interface Header {
+	level?: 1 | 2 | 3 | 4 | 5 | 6;
+	body: string;
+}
+
+interface ComponentProps {
+	header?: string | Header;
+	class?: string;
+}
+
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & ComponentProps;
+
+const { header, as: Tag = 'div', class: className, ...rest } = Astro.props;
+
+let HeaderTag = '';
+if (header) {
+	HeaderTag = `h${header.level ?? 2}`;
+}
+---
+
+<Tag
+	class:list={[className, 'section', { 'has-header': header !== undefined }]}
+	{...rest}
+>
+	{
+		// @ts-ignore Weird Astro funk
+		header && <HeaderTag class="header">{header.body ?? header}</HeaderTag>
+	}
+	<slot />
+</Tag>
+
+<style>
+	.section {
+		position: relative;
+
+		margin: 1rem;
+		padding: 0.5rem 1rem;
+		border: 2px outset var(--cl-accent);
+
+		background-color: var(--cl-bg);
+	}
+
+	.section.has-header {
+		margin-block-start: 3rem;
+	}
+
+	.section > :where(h1, h2, h3, h4, h5, h6):first-child {
+		position: absolute;
+		inset-block-start: 0;
+		translate: 0 -100%;
+		margin-block: 0;
+	}
+</style>

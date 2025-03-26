@@ -1,0 +1,61 @@
+---
+interface Props {
+	duration?: string;
+}
+
+const { duration = '15s' } = Astro.props;
+
+const children = Astro.slots.render('default');
+---
+
+<div class="container">
+	<ul class="content">
+		<Fragment set:html={children} />
+	</ul>
+	<ul class="content" aria-hidden="true">
+		<Fragment set:html={children} />
+	</ul>
+</div>
+
+<style define:vars={{ duration }}>
+	.container {
+		--gap: 1rem;
+		--padding: 1rem;
+
+		overflow: hidden;
+		display: flex;
+		flex-direction: row;
+		gap: var(--gap);
+
+		padding: var(--padding);
+
+	}
+
+	.content {
+		display: flex;
+		flex: none;
+		gap: var(--gap);
+		justify-content: space-around;
+
+		min-width: 100%;
+		margin: 0;
+
+		list-style-type: none;
+
+		animation: var(--duration) linear infinite forwards marquee;
+	}
+
+	:where(.container:hover) .content {
+		animation-play-state: paused;
+	}
+
+	@keyframes marquee {
+		from {
+			translate: 0 0;
+		}
+
+		to {
+			translate: calc(-100% - var(--gap) + var(--padding)) 0;
+		}
+	}
+</style>

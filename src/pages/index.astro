@@ -1,7 +1,49 @@
 ---
+import Marquee from '$/components/Marquee.astro';
+import Section from '$/components/Section.astro';
 import Layout from '$/layouts/Layout.astro';
 ---
 
 <Layout>
-	<h1>Stinky cheese</h1>
+	<Section
+		class="marquee"
+		as="header"
+		header={{ level: 1, body: 'The Bar at the End of the World' }}
+	>
+		<Marquee>
+			<li>it's about time you got here, don't you think?</li>
+			<li>hihihihihi!!!! :3</li>
+		</Marquee>
+	</Section>
+
+	<main>
+		<Section class="welcome" header="Welcome">hello, world!</Section>
+		<Section class="directory" header="Directory" as="nav">
+			<ul>
+				<li><a href="/">Home</a></li>
+				<li><a href="/">One</a></li>
+				<li><a href="/">Two</a></li>
+				<li><a href="/">Three</a></li>
+			</ul>
+		</Section>
+	</main>
 </Layout>
+
+<style>
+	.marquee {
+		padding: 0;
+	}
+
+	main {
+		display: grid;
+		grid-template: 'welcome directory' min-content / 1fr minmax(20rem, min-content);
+	}
+
+	.welcome {
+		grid-area: welcome;
+	}
+
+	.directory {
+		grid-area: directory;
+	}
+</style>
