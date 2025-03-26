@@ -10,7 +10,8 @@
 		"lint": "biome format --fix src && biome lint --fix src"
 	},
 	"dependencies": {
-		"astro": "^5.5.4"
+		"astro": "^5.5.4",
+		"normalize.css": "^8.0.1"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
