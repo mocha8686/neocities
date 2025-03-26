@@ -1,5 +1,6 @@
 ---
 import 'normalize.css/normalize.css';
+import '@fontsource/michroma';
 ---
 
 <!doctype html>
@@ -9,11 +10,46 @@ import 'normalize.css/normalize.css';
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>hihihihi!!!</title>
 	</head>
 	<body>
-		<main>
-			<slot />
-		</main>
+		<slot />
 	</body>
 </html>
+
+<style is:global>
+	/* stylelint-disable custom-property-empty-line-before */
+	:root {
+		--cl-fg: hsl(209deg 70% 86% / 100%);
+		--cl-bg: hsl(208deg 52% 4% / 100%);
+
+		--ff-accent: 'Michroma', sans-serif;
+
+		--z-bg: -1000;
+	}
+
+	body {
+		padding-block-end: 500rem;
+		color: var(--cl-fg);
+	}
+
+	body::before {
+		content: '';
+
+		position: fixed;
+		z-index: var(--z-bg);
+		inset: 0;
+
+		background: url('$/assets/pixel_rain.gif') center/contain repeat-x;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: var(--ff-accent);
+		text-transform: uppercase;
+	}
+</style>
