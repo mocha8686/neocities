@@ -1,0 +1,40 @@
+---
+import Section from '$/components/Section.astro';
+import TimeSince from '$/components/TimeSince.svelte';
+
+const { class: className, ...rest } = Astro.props;
+
+// NOTE: make sure to update!
+const timestamp = '2025-03-27T01:48:57Z';
+---
+
+<Section class={className} {...rest} header="Status">
+	<p>
+		<span class="username">mocha8686</span>
+		<span class="icon">🌧️</span>
+	</p>
+	<p class="status">i'm crashing out!!! allergies are kicking my ASS</p>
+	<TimeSince client:visible class="time-since-update" {timestamp} />
+</Section>
+
+<style>
+	p {
+		margin: 0;
+	}
+
+	.username {
+		font-family: var(--ff-accent-word);
+		font-size: 1.25rem;
+		color: var(--cl-accent);
+	}
+
+	.icon {
+		font-family: var(--ff-accent-symbol);
+		font-size: 0.75rem;
+	}
+
+	.time-since-update {
+		color: var(--cl-secondary);
+		font-size: 0.85rem;
+	}
+</style>

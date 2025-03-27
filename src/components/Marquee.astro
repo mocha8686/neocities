@@ -28,7 +28,6 @@ const children = Astro.slots.render('default');
 		gap: var(--gap);
 
 		padding: var(--padding);
-
 	}
 
 	.content {
@@ -43,6 +42,11 @@ const children = Astro.slots.render('default');
 		list-style-type: none;
 
 		animation: var(--duration) linear infinite forwards marquee;
+	}
+
+	.content > :global(*) {
+		display: grid;
+		place-items: center;
 	}
 
 	:where(.container:hover) .content {

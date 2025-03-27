@@ -1,6 +1,7 @@
 ---
 import Marquee from '$/components/Marquee.astro';
 import Section from '$/components/Section.astro';
+import Status from '$/components/Status.astro';
 import Layout from '$/layouts/Layout.astro';
 ---
 
@@ -8,24 +9,32 @@ import Layout from '$/layouts/Layout.astro';
 	<Section
 		class="marquee"
 		as="header"
-		header={{ level: 1, body: 'The Bar at the End of the World' }}
+		header={{ level: 1, body: 'The Bar at the End of Time' }}
 	>
 		<Marquee>
 			<li>it's about time you got here, don't you think?</li>
 			<li>hihihihihi!!!! :3</li>
+			<li class="special">meow meow</li>
 		</Marquee>
 	</Section>
 
 	<main>
-		<Section class="welcome" header="Welcome">hello, world!</Section>
-		<Section class="directory" header="Directory" as="nav">
-			<ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="/">One</a></li>
-				<li><a href="/">Two</a></li>
-				<li><a href="/">Three</a></li>
-			</ul>
-		</Section>
+		<section class="main">
+			<Section class="welcome" header="Welcome">effervescence is ephemeral, bounded by the limits of time. enjoy the now.</Section>
+		</section>
+
+		<section class="side">
+			<Section class="directory" header="Directory" as="nav">
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="/">One</a></li>
+					<li><a href="/">Two</a></li>
+					<li><a href="/">Three</a></li>
+				</ul>
+			</Section>
+
+			<Status class="status" />
+		</section>
 	</main>
 </Layout>
 
@@ -35,15 +44,28 @@ import Layout from '$/layouts/Layout.astro';
 	}
 
 	main {
-		display: grid;
-		grid-template: 'welcome directory' min-content / 1fr minmax(20rem, min-content);
+		display: flex;
+		flex-direction: row;
+	}
+
+	.main {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
 	}
 
 	.welcome {
-		grid-area: welcome;
+		text-align: center;
 	}
 
-	.directory {
-		grid-area: directory;
+	.side {
+		display: flex;
+		flex-direction: column;
+		min-width: 20rem;
+	}
+
+	.special {
+		font-family: Nabla, var(--ff-main);
+		font-size: 1.5rem;
 	}
 </style>
