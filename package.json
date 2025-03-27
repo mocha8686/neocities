@@ -17,6 +17,7 @@
 		"@fontsource/unifontex": "^5.2.5",
 		"astro": "^5.5.4",
 		"dayjs": "^1.11.13",
+		"katex": "^0.16.21",
 		"normalize.css": "^8.0.1",
 		"svelte": "^5.25.3",
 		"typescript": "^5.8.2"

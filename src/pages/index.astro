@@ -3,6 +3,10 @@ import Marquee from '$/components/Marquee.astro';
 import Section from '$/components/Section.astro';
 import Status from '$/components/Status.astro';
 import Layout from '$/layouts/Layout.astro';
+import katex from 'katex';
+
+const math = String.raw`\frac{d}{dt}\left(\frac{\partial L}{\partial \dot{q}}\right)=\frac{\partial L}{\partial q}`;
+const rendered = katex.renderToString(math);
 ---
 
 <Layout>
@@ -19,11 +23,16 @@ import Layout from '$/layouts/Layout.astro';
 	</Section>
 
 	<main>
-		<section class="main">
-			<Section class="welcome" header="Welcome">effervescence is ephemeral, bounded by the limits of time. enjoy the now.</Section>
-		</section>
+		<div class="main">
+			<Section class="welcome" header="Welcome">
+				<p>
+					effervescence is ephemeral, bounded by the limits of time.
+					enjoy the now.
+				</p>
+			</Section>
+		</div>
 
-		<section class="side">
+		<div class="side">
 			<Section class="directory" header="Directory" as="nav">
 				<ul>
 					<li><a href="/">Home</a></li>
@@ -34,7 +43,12 @@ import Layout from '$/layouts/Layout.astro';
 			</Section>
 
 			<Status class="status" />
-		</section>
+
+			<Section header="Cool Thing">
+				Math
+				<Fragment set:html={rendered} />
+			</Section>
+		</div>
 	</main>
 </Layout>
 
@@ -46,6 +60,10 @@ import Layout from '$/layouts/Layout.astro';
 	main {
 		display: flex;
 		flex-direction: row;
+	}
+
+	p {
+		margin: 0;
 	}
 
 	.main {
