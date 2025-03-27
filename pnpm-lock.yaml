@@ -11,6 +11,9 @@ importers:
       '@astrojs/svelte':
         specifier: ^7.0.8
         version: 7.0.8(@types/node@22.13.13)(astro@5.5.4(@types/node@22.13.13)(rollup@4.37.0)(typescript@5.8.2))(svelte@5.25.3)(typescript@5.8.2)
+      '@fontsource/fusion-pixel-12px-proportional-jp':
+        specifier: ^5.2.5
+        version: 5.2.5
       '@fontsource/michroma':
         specifier: ^5.2.5
         version: 5.2.5
@@ -18,9 +21,6 @@ importers:
         specifier: ^5.2.6
         version: 5.2.6
       '@fontsource/shippori-mincho':
-        specifier: ^5.2.5
-        version: 5.2.5
-      '@fontsource/unifontex':
         specifier: ^5.2.5
         version: 5.2.5
       astro:
@@ -354,6 +354,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@fontsource/fusion-pixel-12px-proportional-jp@5.2.5':
+    resolution: {integrity: sha512-Bt7vj6U7KiWOYXhUbqXM+GnLr2Va8RwtkuQwN9XRz1MwO6eZUXwQ2KvOeASV4zW6PCfGSqyh64+KbTSHGWklcw==}
+
   '@fontsource/michroma@5.2.5':
     resolution: {integrity: sha512-jN3xcboj3SPWotJSw1DHHLjLksXpyPD2inQt+jGoLeMOzXHHuFiwnhYdbmOWlbOSX0ljMoNgOK40HHlo20b4CA==}
 
@@ -362,9 +365,6 @@ packages:
 
   '@fontsource/shippori-mincho@5.2.5':
     resolution: {integrity: sha512-7UXvLZ5Ed77UnEXywSGRnobeiQbdX3I3vrGJzrH7K3Ni2SN34sIjTzkszQkBw2Pcmg+MoTGczJIfG4MwBc3c5A==}
-
-  '@fontsource/unifontex@5.2.5':
-    resolution: {integrity: sha512-hsL2My3RqF+9j969qEueTDcs+LhRCn9X4rt6tVstC84LnlytyaqzwCxKAu5zveSalz8d42KhBRASAyDcelWOAA==}
 
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
@@ -2261,13 +2261,13 @@ snapshots:
   '@esbuild/win32-x64@0.25.1':
     optional: true
 
+  '@fontsource/fusion-pixel-12px-proportional-jp@5.2.5': {}
+
   '@fontsource/michroma@5.2.5': {}
 
   '@fontsource/nabla@5.2.6': {}
 
   '@fontsource/shippori-mincho@5.2.5': {}
-
-  '@fontsource/unifontex@5.2.5': {}
 
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:

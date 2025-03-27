@@ -11,10 +11,10 @@
 	},
 	"dependencies": {
 		"@astrojs/svelte": "^7.0.8",
+		"@fontsource/fusion-pixel-12px-proportional-jp": "^5.2.5",
 		"@fontsource/michroma": "^5.2.5",
 		"@fontsource/nabla": "^5.2.6",
 		"@fontsource/shippori-mincho": "^5.2.5",
-		"@fontsource/unifontex": "^5.2.5",
 		"astro": "^5.5.4",
 		"dayjs": "^1.11.13",
 		"katex": "^0.16.21",
