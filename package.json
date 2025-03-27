@@ -19,6 +19,8 @@
 		"dayjs": "^1.11.13",
 		"katex": "^0.16.21",
 		"normalize.css": "^8.0.1",
+		"rehype-katex": "^7.0.1",
+		"remark-math": "^6.0.0",
 		"svelte": "^5.25.3",
 		"typescript": "^5.8.2"
 	},

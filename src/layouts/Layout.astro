@@ -5,11 +5,12 @@ import '@fontsource/shippori-mincho';
 import '@fontsource/fusion-pixel-12px-proportional-jp';
 import '@fontsource/nabla';
 import 'katex/dist/katex.min.css';
+import type { HTMLAttributes } from 'astro/types';
 
-interface Props {
+interface Props extends HTMLAttributes<'body'> {
 	title?: string;
 }
-const { title = 'hihihihi!!!' } = Astro.props;
+const { title = 'hihihihi!!!', class: className, ...rest } = Astro.props;
 ---
 
 <!doctype html>
@@ -21,7 +22,7 @@ const { title = 'hihihihi!!!' } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body class={className} {...rest}>
 		<slot />
 	</body>
 </html>
@@ -39,6 +40,10 @@ const { title = 'hihihihi!!!' } = Astro.props;
 		--ff-pixel: 'Fusion Pixel 12px Proportional JP', monospace;
 		--ff-accent-word: var(--ff-pixel);
 		--ff-accent-symbol: var(--ff-pixel);
+
+		--fs-accent: 1.2rem;
+		--fs-secondary: 0.85rem;
+		--fs-timestamp: var(--fs-secondary);
 
 		--z-bg: -1000;
 	}

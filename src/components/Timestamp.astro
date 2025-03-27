@@ -1,0 +1,15 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import dayjs from 'dayjs';
+
+interface Props extends HTMLAttributes<'time'> {
+	date: Date;
+}
+
+const { date: dateObj, ...rest } = Astro.props;
+const date = dayjs(dateObj);
+---
+
+<time datetime={date.toISOString()} {...rest}>
+	{date.format('YYYY MMM D')}
+</time>

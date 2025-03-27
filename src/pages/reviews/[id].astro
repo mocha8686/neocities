@@ -1,0 +1,91 @@
+---
+import Bounded from '$/components/Bounded.astro';
+import MathExpression from '$/components/MathExpression.astro';
+import Reviews from '$/components/Reviews.astro';
+import Section from '$/components/Section.astro';
+import Timestamp from '$/components/Timestamp.astro';
+import Layout from '$/layouts/Layout.astro';
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+	const reviews = await getCollection('reviews');
+	return reviews.map(review => ({
+		params: { id: review.id },
+		props: { review },
+	}));
+}
+
+const { review } = Astro.props;
+const { Content } = await render(review);
+
+let DisplayElement: AstroComponentFactory | null = null;
+let displayProps: Record<string, unknown> = {};
+
+switch (review.data.thing.type) {
+	case 'math': {
+		const { expression } = review.data.thing;
+		DisplayElement = MathExpression;
+		displayProps = { expression };
+		break;
+	}
+}
+---
+
+<Layout>
+	<Bounded class="container">
+		<Section class="content" header={review.data.title} level={1}>
+			<header>
+				<DisplayElement class="display" {...displayProps} />
+				<p class="timestamp">
+					<Timestamp date={review.data.pubDate} />
+					{
+						review.data.updatedDate && (
+							<span class="last-updated">
+								Last updated at
+								<Timestamp date={review.data.updatedDate} />
+							</span>
+						)
+					}
+				</p>
+			</header>
+
+			<Content />
+		</Section>
+		<Reviews />
+	</Bounded>
+</Layout>
+
+<style>
+	.container {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.content {
+		flex: 1;
+	}
+
+	header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.display {
+		margin: 0;
+	}
+
+	.timestamp {
+		font-size: var(--fs-timestamp);
+		color: var(--cl-secondary);
+	}
+
+	.last-updated::before {
+		content: '(';
+	}
+
+	.last-updated::after {
+		content: ')';
+	}
+</style>

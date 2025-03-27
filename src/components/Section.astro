@@ -1,24 +1,23 @@
 ---
 import type { HTMLTag, Polymorphic } from 'astro/types';
 
-interface Header {
-	level?: 1 | 2 | 3 | 4 | 5 | 6;
-	body: string;
-}
-
 interface ComponentProps {
-	header?: string | Header;
+	header?: string;
+	level?: 1 | 2 | 3 | 4 | 5 | 6;
 	class?: string;
 }
 
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & ComponentProps;
 
-const { header, as: Tag = 'section', class: className, ...rest } = Astro.props;
+const {
+	header,
+	level,
+	as: Tag = 'section',
+	class: className,
+	...rest
+} = Astro.props;
 
-let HeaderTag = '';
-if (header) {
-	HeaderTag = `h${header.level ?? 2}`;
-}
+let HeaderTag = `h${level ?? 2}`;
 ---
 
 <Tag
@@ -27,7 +26,7 @@ if (header) {
 >
 	{
 		// @ts-ignore Weird Astro funk
-		header && <HeaderTag class="header">{header.body ?? header}</HeaderTag>
+		header && <HeaderTag class="header">{header}</HeaderTag>
 	}
 	<slot />
 </Tag>
@@ -50,7 +49,9 @@ if (header) {
 	.section > :where(h1, h2, h3, h4, h5, h6):first-child {
 		position: absolute;
 		inset-block-start: 0;
+		inset-inline-end: 0;
 		translate: 0 -100%;
+
 		margin-block: 0;
 	}
 </style>

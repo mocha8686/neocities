@@ -1,0 +1,44 @@
+---
+import Section from '$/components/Section.astro';
+import { getCollection } from 'astro:content';
+import Nav from '$/components/Nav.astro';
+import dayjs from 'dayjs';
+
+const reviews = await getCollection('reviews');
+
+interface Props {
+	isMainElement?: boolean;
+}
+
+const { isMainElement = false } = Astro.props;
+
+const links = reviews
+	.toSorted((a, b) => dayjs(b.data.pubDate).diff(dayjs(a.data.pubDate), 'days'))
+	.map(review => ({
+		body: review.data.title,
+		href: `/reviews/${review.id}`,
+	}));
+---
+
+<Section class="container" header="Reviews" level={isMainElement ? 1 : 2}>
+	<Nav {links} />
+
+	<a class="back" href="/">Back to home</a>
+</Section>
+
+<style>
+	.container {
+		flex: 1;
+		align-self: start;
+		max-width: 14rem;
+	}
+
+	.back {
+		display: block;
+		text-align: end;
+	}
+
+	.back::after {
+		content: ' >>';
+	}
+</style>

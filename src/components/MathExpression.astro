@@ -1,0 +1,31 @@
+---
+import type { HTMLTag, Polymorphic } from 'astro/types';
+import katex from 'katex';
+
+interface ComponentProps {
+	expression: string;
+	display?: boolean;
+}
+
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & ComponentProps;
+
+const {
+	expression,
+	display: displayMode = true,
+	as: Tag = 'p',
+	class: className,
+	...rest
+} = Astro.props;
+
+const rendered = katex.renderToString(expression, { displayMode });
+---
+
+<Tag class:list={['container', className]} {...rest}>
+	<Fragment set:html={rendered} />
+</Tag>
+
+<style>
+	.container {
+		font-size: 1.5rem;
+	}
+</style>

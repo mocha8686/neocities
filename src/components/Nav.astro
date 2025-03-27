@@ -1,0 +1,23 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+export interface Link extends HTMLAttributes<'a'> {
+	body: string;
+}
+
+export interface Props {
+	links: Link[];
+}
+
+const { links } = Astro.props;
+---
+
+<ul>
+	{
+		links.map(({ body, ...rest }) => (
+			<li>
+				<a {...rest}>{body}</a>
+			</li>
+		))
+	}
+</ul>
