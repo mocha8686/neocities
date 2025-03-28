@@ -32,3 +32,9 @@
 	onmouseout={unhover}
 	onblur={unhover}>{date}</time
 >
+
+<style>
+	time {
+		display: block;
+	}
+</style>
