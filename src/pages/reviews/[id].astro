@@ -37,17 +37,22 @@ switch (review.data.thing.type) {
 		<Section class="content" header={review.data.title} level={1}>
 			<header>
 				<DisplayElement class="display" {...displayProps} />
-				<p class="timestamp">
-					<Timestamp date={review.data.pubDate} />
-					{
-						review.data.updatedDate && (
-							<span class="last-updated">
-								Last updated at
-								<Timestamp date={review.data.updatedDate} />
-							</span>
-						)
-					}
-				</p>
+
+				<div class="info-container">
+					<p class="timestamp">
+						<Timestamp date={review.data.pubDate} />
+						{
+							review.data.updatedDate && (
+								<span class="last-updated">
+									(Updated
+									<Timestamp date={review.data.updatedDate} />)
+								</span>
+							)
+						}
+					</p>
+
+					<a class="close" href="/reviews">X</a>
+				</div>
 			</header>
 
 			<Content />
@@ -60,6 +65,19 @@ switch (review.data.thing.type) {
 	.container {
 		display: flex;
 		flex-direction: row;
+	}
+
+	.info-container {
+		align-self: start;
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
+		align-items: center;
+	}
+
+	.close {
+		margin-block: 0.5rem;
+		padding: 0.5rem;
 	}
 
 	.content {
@@ -77,15 +95,12 @@ switch (review.data.thing.type) {
 	}
 
 	.timestamp {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		align-items: end;
+
 		font-size: var(--fs-timestamp);
 		color: var(--cl-secondary);
-	}
-
-	.last-updated::before {
-		content: '(';
-	}
-
-	.last-updated::after {
-		content: ')';
 	}
 </style>

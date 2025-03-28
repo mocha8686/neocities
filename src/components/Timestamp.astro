@@ -10,6 +10,4 @@ const { date: dateObj, ...rest } = Astro.props;
 const date = dayjs(dateObj);
 ---
 
-<time datetime={date.toISOString()} {...rest}>
-	{date.format('YYYY MMM D')}
-</time>
+<time datetime={date.toISOString()} {...rest}>{date.format('YYYY MMM D')}</time>
