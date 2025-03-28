@@ -2,18 +2,10 @@
 import Bounded from '$/components/Bounded.astro';
 import Favorite from '$/components/Favorite.astro';
 import Marquee from '$/components/Marquee.astro';
-import type { Link } from '$/components/Nav.astro';
-import Nav from '$/components/Nav.astro';
+import Directory from '$/components/Directory.astro';
 import Section from '$/components/Section.astro';
 import Status from '$/components/Status.astro';
 import Layout from '$/layouts/Layout.astro';
-
-const links: Link[] = [
-	{ body: 'Home', href: '/' },
-	{ body: 'Reviews', href: '/reviews' },
-	{ body: 'Two', href: '/' },
-	{ body: 'Three', href: '/' },
-];
 ---
 
 <Layout class="container">
@@ -42,12 +34,8 @@ const links: Link[] = [
 			</div>
 
 			<div class="side">
-				<Section class="directory" header="Directory" as="nav">
-					<Nav {links} />
-				</Section>
-
+				<Directory />
 				<Status class="status" />
-
 				<Favorite />
 			</div>
 		</main>

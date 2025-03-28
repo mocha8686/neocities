@@ -1,0 +1,20 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import Section from '$/components/Section.astro';
+import Nav, { type Link } from '$/components/Nav.astro';
+
+const links: Link[] = [
+	{ body: 'Home', href: '/' },
+	{ body: 'Reviews', href: '/reviews' },
+	// { body: 'Two', href: '/' },
+	// { body: 'Three', href: '/' },
+];
+
+type Props = HTMLAttributes<'nav'>;
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<Section header="Directory" as="nav" class={className ?? undefined} {...rest}>
+	<Nav {links} />
+</Section>
