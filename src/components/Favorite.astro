@@ -36,9 +36,13 @@ if (latestReview) {
 }
 ---
 
-<Section header="Cool Thing" class:list={[className, "favorite"]} {...rest}>
+<Section header="Cool Thing" class:list={[className, 'favorite']} {...rest}>
 	<Element {...props} />
-	{latestReview && <a href=`/reviews/${latestReview.id}`>Read the review</a> }
+	{
+		latestReview && (
+			<a href={`/reviews/${latestReview.id}`}>Read the review</a>
+		)
+	}
 </Section>
 
 <style>

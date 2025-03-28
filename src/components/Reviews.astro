@@ -13,8 +13,10 @@ interface Props {
 const { isMainElement = false } = Astro.props;
 
 const links = reviews
-	.toSorted((a, b) => dayjs(b.data.pubDate).diff(dayjs(a.data.pubDate), 'days'))
-	.map(review => ({
+	.toSorted((a, b) =>
+		dayjs(b.data.pubDate).diff(dayjs(a.data.pubDate), 'days'),
+	)
+	.map((review) => ({
 		body: review.data.title,
 		href: `/reviews/${review.id}`,
 	}));
