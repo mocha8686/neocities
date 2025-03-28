@@ -2,6 +2,7 @@
 import 'normalize.css/normalize.css';
 import '@fontsource/michroma';
 import '@fontsource/shippori-mincho';
+import '@fontsource/kosugi-maru';
 import '@fontsource/fusion-pixel-12px-proportional-jp';
 import '@fontsource/nabla';
 import 'katex/dist/katex.min.css';
@@ -36,9 +37,10 @@ const { title = 'hihihihi!!!', class: className, ...rest } = Astro.props;
 		--cl-secondary: hsl(208deg 19% 55%);
 
 		--ff-main: 'Shippori Mincho', 'Times New Roman', serif;
-		--ff-accent: 'Michroma', sans-serif;
+		--ff-header: 'Michroma', sans-serif;
+		--ff-accent: 'Kosugi Maru', sans-serif;
 		--ff-pixel: 'Fusion Pixel 12px Proportional JP', monospace;
-		--ff-accent-word: var(--ff-pixel);
+		--ff-accent-word: var(--ff-accent);
 		--ff-accent-symbol: var(--ff-pixel);
 
 		--fs-accent: 1.2rem;
@@ -75,7 +77,7 @@ const { title = 'hihihihi!!!', class: className, ...rest } = Astro.props;
 	h4,
 	h5,
 	h6 {
-		font-family: var(--ff-accent);
+		font-family: var(--ff-header);
 		text-transform: uppercase;
 	}
 </style>

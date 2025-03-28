@@ -13,6 +13,7 @@
 	"dependencies": {
 		"@astrojs/svelte": "^7.0.8",
 		"@fontsource/fusion-pixel-12px-proportional-jp": "^5.2.5",
+		"@fontsource/kosugi-maru": "^5.2.5",
 		"@fontsource/michroma": "^5.2.5",
 		"@fontsource/nabla": "^5.2.6",
 		"@fontsource/shippori-mincho": "^5.2.5",

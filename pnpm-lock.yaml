@@ -14,6 +14,9 @@ importers:
       '@fontsource/fusion-pixel-12px-proportional-jp':
         specifier: ^5.2.5
         version: 5.2.5
+      '@fontsource/kosugi-maru':
+        specifier: ^5.2.5
+        version: 5.2.5
       '@fontsource/michroma':
         specifier: ^5.2.5
         version: 5.2.5
@@ -410,6 +413,9 @@ packages:
 
   '@fontsource/fusion-pixel-12px-proportional-jp@5.2.5':
     resolution: {integrity: sha512-Bt7vj6U7KiWOYXhUbqXM+GnLr2Va8RwtkuQwN9XRz1MwO6eZUXwQ2KvOeASV4zW6PCfGSqyh64+KbTSHGWklcw==}
+
+  '@fontsource/kosugi-maru@5.2.5':
+    resolution: {integrity: sha512-IqhPxANtDCz7Jphhff38h/ZDqjiFHBGpwoqySOA6A8y/ZKMUgt0mMZOvNolle2ifFTiiP9UEzuXrKXtu2jSx4g==}
 
   '@fontsource/michroma@5.2.5':
     resolution: {integrity: sha512-jN3xcboj3SPWotJSw1DHHLjLksXpyPD2inQt+jGoLeMOzXHHuFiwnhYdbmOWlbOSX0ljMoNgOK40HHlo20b4CA==}
@@ -2625,6 +2631,8 @@ snapshots:
     optional: true
 
   '@fontsource/fusion-pixel-12px-proportional-jp@5.2.5': {}
+
+  '@fontsource/kosugi-maru@5.2.5': {}
 
   '@fontsource/michroma@5.2.5': {}
 
