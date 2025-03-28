@@ -31,6 +31,41 @@ import Layout from '$/layouts/Layout.astro';
 						time. enjoy the now.
 					</p>
 				</Section>
+
+				<Section class="info" header="Information">
+					<p>welcome in, take a seat~</p>
+
+					<p>
+						this is a little site i made as an escape from the
+						soulless world of modern websites. as a pursuer of a
+						computer science degree, i've been dealing with myriad
+						flat and boring designs, endless advocates of the newest
+						ai model, and overall, a loss of culture and
+						individuality that defined the birth of the internet.
+					</p>
+
+					<p>
+						i wasn't into the "y2k" stuff when it was still around
+						(so sad, i know—i only hopped on the gay train way later
+						too), but i admire it so much for not being afraid to be
+						itself. it shines brightly in a world of nihilism and
+						dull conformity, and that is what i aspire to do one
+						day, whether i am that light for a whole community or
+						even just one person. so, let this be my part to keep
+						this culture alive~
+					</p>
+
+					<p>
+						i'll be sharing my thoughts here about how i'm feeling,
+						whatever i'm hyperfixed on at the moment, and maybe
+						other small posts, which you can find on the sidebar.
+					</p>
+
+					<p>
+						if you're not sure where to go, check out the sitemap in
+						the directory. take a look and find a cool page!
+					</p>
+				</Section>
 			</div>
 
 			<div class="side">
@@ -58,10 +93,6 @@ import Layout from '$/layouts/Layout.astro';
 		flex-direction: row;
 	}
 
-	p {
-		margin: 0;
-	}
-
 	.main {
 		display: flex;
 		flex: 1;
@@ -70,6 +101,15 @@ import Layout from '$/layouts/Layout.astro';
 
 	.welcome {
 		text-align: center;
+	}
+
+	.welcome p {
+		margin: 0;
+	}
+
+	.info p {
+		line-height: 1.25;
+		text-align: justify;
 	}
 
 	.side {
@@ -82,4 +122,5 @@ import Layout from '$/layouts/Layout.astro';
 		font-family: Nabla, var(--ff-main);
 		font-size: 1.5rem;
 	}
+</style>
 </style>
