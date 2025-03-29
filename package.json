@@ -8,7 +8,8 @@
 		"build": "pnpm check && astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"lint": "prettier --write src/**/*.astro; biome format --fix; biome lint --fix; stylelint src/**/*.{astro,css} --fix"
+		"lint": "prettier --write src/**/*.astro; biome format --fix; biome lint --fix; stylelint src/**/*.{astro,css} --fix",
+		"push": "pnpm build && neocities push dist"
 	},
 	"dependencies": {
 		"@astrojs/svelte": "^7.0.8",
