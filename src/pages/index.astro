@@ -6,6 +6,31 @@ import Directory from '$/components/Directory.astro';
 import Section from '$/components/Section.astro';
 import Status from '$/components/Status.astro';
 import Layout from '$/layouts/Layout.astro';
+import HierarchyList, { type Item } from '$/components/HierarchyList.astro';
+
+const items: Item[] = [
+	'one',
+	'two',
+	{ name: 'dir', children: ['child1', 'child2'] },
+	'three',
+	'four',
+	{
+		name: 'middle',
+		children: ['first', { name: 'second', children: ['nest'] }, 'third'],
+	},
+	'five',
+	{ name: 'end', children: ['1', '2', { name: '3', children: ['hi'] }] },
+	'six',
+	'seven',
+	{
+		name: 'nest',
+		children: [
+			'nest1',
+			{ name: 'nestedagain', children: ['ararar', 'twice over'] },
+			{ name: 'nestedagain', children: ['ararar', 'twice over'] },
+		],
+	},
+];
 ---
 
 <Layout class="container">
@@ -66,6 +91,10 @@ import Layout from '$/layouts/Layout.astro';
 						the directory. take a look and find a cool page!
 					</p>
 				</Section>
+
+				<Section>
+					<HierarchyList class="temp" {items} />
+				</Section>
 			</div>
 
 			<div class="side">
@@ -122,5 +151,8 @@ import Layout from '$/layouts/Layout.astro';
 		font-family: Nabla, var(--ff-main);
 		font-size: 1.5rem;
 	}
-</style>
+
+	.temp {
+		margin-inline-start: 1rem;
+	}
 </style>
