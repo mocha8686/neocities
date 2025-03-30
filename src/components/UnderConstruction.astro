@@ -1,0 +1,37 @@
+---
+import Layout from '$/layouts/Layout.astro';
+import getLatestReview from '$/lib/getLatestReview';
+
+const latestReview = await getLatestReview();
+
+const href = latestReview ? `/reviews/${latestReview.id}` : '/reviews';
+const body = latestReview
+	? `my latest review on ${latestReview.data.title}?`
+	: 'my reviews?';
+---
+
+<Layout title="still in progress">
+	<main>
+		<div class="container">
+			<h1>Under Construction</h1>
+			<p>
+				In the meantime, why not check out
+				<a {href}>{body}</a>
+			</p>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	main {
+		display: grid;
+		height: 100svh;
+	}
+
+	.container {
+		place-self: center;
+		padding: 1rem 1.5rem;
+		border: 0.25rem outset var(--cl-accent);
+		text-align: center;
+	}
+</style>

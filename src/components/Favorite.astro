@@ -1,26 +1,16 @@
 ---
 import Section from '$/components/Section.astro';
-import { getCollection } from 'astro:content';
 import FavoriteMath from '$/components/FavoriteMath.astro';
-import dayjs from 'dayjs';
 import type { HTMLTag } from 'astro/types';
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import getLatestReview from '$/lib/getLatestReview';
 
 const { class: className, ...rest } = Astro.props;
 
 let Element: HTMLTag | AstroComponentFactory = 'p';
 let props: Record<string, unknown> = { 'set:text': "Didn't find anything..." };
 
-type Unpacked<T> = T extends (infer U)[] ? U : T;
-
-const reviews = await getCollection('reviews');
-const latestReview = reviews.reduce<Unpacked<typeof reviews> | null>(
-	(prev, current) =>
-		prev && dayjs(prev.data.pubDate).isAfter(dayjs(current.data.pubDate))
-			? prev
-			: (current ?? current),
-	null,
-);
+const latestReview = await getLatestReview();
 
 if (latestReview) {
 	const { title, pubDate, updatedDate } = latestReview.data;
