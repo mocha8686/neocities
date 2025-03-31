@@ -3,6 +3,7 @@ import Section from '$/components/Section.astro';
 import { getCollection } from 'astro:content';
 import Nav from '$/components/Nav.astro';
 import dayjs from 'dayjs';
+import BackToHome from '$/components/BackToHome.astro';
 
 const reviews = await getCollection('reviews');
 
@@ -24,8 +25,7 @@ const links = reviews
 
 <Section class="container" header="Reviews" level={isMainElement ? 1 : 2}>
 	<Nav {links} />
-
-	<a class="back" href="/">Back to home</a>
+	<BackToHome />
 </Section>
 
 <style>
@@ -33,14 +33,5 @@ const links = reviews
 		flex: 1;
 		align-self: start;
 		max-width: 14rem;
-	}
-
-	.back {
-		display: block;
-		text-align: end;
-	}
-
-	.back::after {
-		content: ' >>';
 	}
 </style>

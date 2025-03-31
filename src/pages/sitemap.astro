@@ -1,4 +1,5 @@
 ---
+import BackToHome from '$/components/BackToHome.astro';
 import Bounded from '$/components/Bounded.astro';
 import type { Item } from '$/components/DirectoryList.astro';
 import DirectoryList from '$/components/DirectoryList.astro';
@@ -23,18 +24,7 @@ const items: Item[] = [
 	<Bounded>
 		<Section header="Sitemap" level={1}>
 			<DirectoryList header={{ level: 2, body: 'Root' }} {items} />
-			<a class="back" href="/">Back to home</a>
+			<BackToHome />
 		</Section>
 	</Bounded>
 </Layout>
-
-<style>
-	.back {
-		display: block;
-		text-align: end;
-	}
-
-	.back::after {
-		content: ' >>';
-	}
-</style>
