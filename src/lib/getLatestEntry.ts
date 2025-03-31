@@ -20,7 +20,7 @@ export default function getLatestEntry<
 		null,
 	);
 
-	if (!latest) throw new Error("Collection should be populated");
+	if (!latest) throw new Error('Collection should be populated');
 
 	return latest;
 }
