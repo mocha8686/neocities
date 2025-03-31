@@ -8,7 +8,7 @@ import Status from '$/components/Status.astro';
 import Layout from '$/layouts/Layout.astro';
 ---
 
-<Layout class="container">
+<Layout>
 	<Bounded>
 		<Section
 			class="marquee"
@@ -78,12 +78,6 @@ import Layout from '$/layouts/Layout.astro';
 </Layout>
 
 <style>
-	.container {
-		display: flex;
-		flex-direction: column;
-		align-items: end;
-	}
-
 	.marquee {
 		padding: 0;
 	}
