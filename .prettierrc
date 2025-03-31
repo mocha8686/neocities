@@ -3,6 +3,7 @@
 	"useTabs": true,
 	"tabWidth": 4,
 	"singleQuote": true,
+	"arrowParens": "avoid",
 	"overrides": [
 		{
 			"files": "*.astro",
