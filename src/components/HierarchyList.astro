@@ -17,7 +17,7 @@ export type Item = Node<ItemBody>;
 
 type Levels = boolean[];
 
-interface Props extends HTMLAttributes<'ul'> {
+interface Props extends HTMLAttributes<'div'> {
 	header?: Header;
 	items: Item[];
 	levels?: Levels;
@@ -25,12 +25,16 @@ interface Props extends HTMLAttributes<'ul'> {
 
 const { header, items, levels = [], class: className, ...rest } = Astro.props;
 
-const bars = levels.map((isActive) => (isActive ? '│ ' : '  ')).join('');
+const isRoot = levels.length === 0;
+
+const bars = levels.map(isActive => (isActive ? '│ ' : '  ')).join('');
 
 const HeaderTag =
 	typeof header === 'string' || !header?.level ? 'h3' : `h${header.level}`;
 const headerBody =
 	(header && (typeof header === 'string' ? header : header.body)) || '';
+
+const ContainerTag = isRoot ? 'div' : Fragment;
 
 const prefix = `"${bars}├─/"`;
 const endPrefix = `"${bars}└─/"`;
@@ -45,10 +49,10 @@ export function itemIsLeaf<Body extends {}>(item: Node<Body>): item is Body {
 }
 ---
 
-<>
+<ContainerTag class={className} {...rest}>
 	{/* @ts-ignore Werid Astro funk */}
-	{levels.length === 0 && <HeaderTag class="header">/{headerBody}</HeaderTag>}
-	<ul class:list={[className, { root: levels.length === 0 }]} {...rest}>
+	{isRoot && <HeaderTag class="header">/{headerBody}</HeaderTag>}
+	<ul class:list={[{ root: isRoot }]}>
 		{
 			items.map((item, i) => {
 				let body: ItemBody;
@@ -83,19 +87,24 @@ export function itemIsLeaf<Body extends {}>(item: Node<Body>): item is Body {
 			})
 		}
 	</ul>
-</>
+</ContainerTag>
 
 <style define:vars={{ prefix, 'end-prefix': endPrefix }}>
 	.header {
 		margin-block-end: 0.25rem;
-		padding-inline-start: 0.5ch;
 	}
 
 	ul {
+		--line-gap: 1rem;
+
 		padding-inline-start: 2ch;
 		font-family: var(--ff-mono);
 		line-height: 1.3;
 		list-style-type: var(--prefix);
+	}
+
+	ul.root {
+		margin-inline-start: 0.5ch;
 	}
 
 	ul:not(:only-child) {
@@ -106,12 +115,32 @@ export function itemIsLeaf<Body extends {}>(item: Node<Body>): item is Body {
 		position: relative;
 	}
 
+	li::after {
+		content: '';
+		position: absolute;
+		inset: 50% 0;
+		border: 1px dashed var(--cl-secondary);
+	}
+
+	.name {
+		position: relative;
+		z-index: var(--z-above-bg-el);
+		padding-inline-end: var(--line-gap);
+		background-color: var(--cl-bg);
+	}
+
 	.description {
 		position: absolute;
+		z-index: var(--z-above-bg-el);
 		inset-block: 0;
 		inset-inline-end: 0;
+
 		margin: 0;
+		padding-inline-start: var(--line-gap);
+
 		color: var(--cl-secondary);
+
+		background-color: var(--cl-bg);
 	}
 
 	.description::before {

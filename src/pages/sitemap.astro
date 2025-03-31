@@ -1,0 +1,40 @@
+---
+import Bounded from '$/components/Bounded.astro';
+import type { Item } from '$/components/DirectoryList.astro';
+import DirectoryList from '$/components/DirectoryList.astro';
+import Section from '$/components/Section.astro';
+import Layout from '$/layouts/Layout.astro';
+
+const items: Item[] = [
+	{
+		name: 'reviews',
+		description: 'my reviews about random things that I like',
+	},
+	{
+		name: 'blog',
+		description:
+			"micro-posts on what i'm feeling or other things that happen",
+	},
+	{ name: 'sitemap', description: 'this page!' },
+];
+---
+
+<Layout>
+	<Bounded>
+		<Section header="Sitemap" level={1}>
+			<DirectoryList header={{ level: 2, body: 'Root' }} {items} />
+			<a class="back" href="/">Back to home</a>
+		</Section>
+	</Bounded>
+</Layout>
+
+<style>
+	.back {
+		display: block;
+		text-align: end;
+	}
+
+	.back::after {
+		content: ' >>';
+	}
+</style>

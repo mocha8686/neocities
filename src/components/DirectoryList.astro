@@ -15,7 +15,7 @@ export type ItemBody = string | ({ name: string; description?: string; href?: st
 
 export type Item = Node<ItemBody>;
 
-interface Props extends HTMLAttributes<'ul'> {
+interface Props extends HTMLAttributes<'div'> {
 	header?: Header;
 	items: Item[];
 }

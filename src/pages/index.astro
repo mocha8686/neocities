@@ -6,72 +6,6 @@ import Directory from '$/components/Directory.astro';
 import Section from '$/components/Section.astro';
 import Status from '$/components/Status.astro';
 import Layout from '$/layouts/Layout.astro';
-import DirectoryList, { type Item } from '$/components/DirectoryList.astro';
-
-const items: Item[] = [
-	{ name: 'one', description: 'This is a description 1' },
-	{ name: 'two', description: 'This is a description 2' },
-	{
-		body: { name: 'dir', description: 'This is a description 3' },
-		children: [
-			{ name: 'child1', description: 'This is a description 4' },
-			{ name: 'child2', description: 'This is a description 5' },
-		],
-	},
-	{ name: 'three', description: 'This is a description 6' },
-	{ name: 'four', description: 'This is a description 7' },
-	{
-		body: { name: 'middle', description: 'This is a description 8' },
-		children: [
-			{ name: 'first', description: 'This is a description 9' },
-			{
-				body: { name: 'second', description: 'This is a description 10' },
-				children: [{ name: 'nest', description: 'This is a description 11' }],
-			},
-			{ name: 'third', description: 'This is a description 12' },
-		],
-	},
-	{ name: 'five', description: 'This is a description 13' },
-	{
-		body: { name: 'end', description: 'This is a description 14' },
-		children: [
-			{ name: '1', description: 'This is a description 15' },
-			{ name: '2', description: 'This is a description 16' },
-			{
-				body: { name: '3', description: 'This is a description 17' },
-				children: [{ name: 'hi', description: 'This is a description 18' }],
-			},
-		],
-	},
-	{ name: 'six', description: 'This is a description 19' },
-	{ name: 'seven', description: 'This is a description 20' },
-	{
-		body: { name: 'nest', description: 'This is a description 21' },
-		children: [
-			{ name: 'nest1', description: 'This is a description 22' },
-			{
-				body: { name: 'nestedagain', description: 'This is a description 23' },
-				children: [
-					'ararar',
-					{ name: 'twice over', description: 'This is a description 25' },
-				],
-			},
-		],
-	},
-	{
-		body: { name: 'nest', description: 'This is a description 26' },
-		children: [
-			{ name: 'nest1', description: 'This is a description 27' },
-			{
-				body: { name: 'nestedagain', description: 'This is a description 28' },
-				children: [
-					{ name: 'ararar', description: 'This is a description 29' },
-					{ name: 'twice over', description: 'This is a description 30' },
-				],
-			},
-		],
-	},
-];
 ---
 
 <Layout class="container">
@@ -132,10 +66,6 @@ const items: Item[] = [
 						the directory. take a look and find a cool page!
 					</p>
 				</Section>
-
-				<Section>
-					<DirectoryList class="temp" header="root" {items} />
-				</Section>
 			</div>
 
 			<div class="side">
@@ -191,9 +121,5 @@ const items: Item[] = [
 	.special {
 		font-family: Nabla, var(--ff-main);
 		font-size: 1.5rem;
-	}
-
-	.temp {
-		margin-inline-start: 1rem;
 	}
 </style>
