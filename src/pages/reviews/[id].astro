@@ -34,7 +34,7 @@ switch (review.data.thing.type) {
 
 <Layout>
 	<Bounded class="container">
-		<Section class="content" header={review.data.title} level={1}>
+		<Section class="review" header={review.data.title} level={1}>
 			<header>
 				<DisplayElement class="display" {...displayProps} />
 
@@ -45,7 +45,8 @@ switch (review.data.thing.type) {
 							review.data.updatedDate && (
 								<span class="last-updated">
 									(Updated
-									<Timestamp date={review.data.updatedDate} />)
+									<Timestamp date={review.data.updatedDate} />
+									)
 								</span>
 							)
 						}
@@ -55,7 +56,9 @@ switch (review.data.thing.type) {
 				</div>
 			</header>
 
-			<Content />
+			<div class="content">
+				<Content />
+			</div>
 		</Section>
 		<Reviews />
 	</Bounded>
@@ -68,11 +71,11 @@ switch (review.data.thing.type) {
 	}
 
 	.info-container {
-		align-self: start;
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;
 		align-items: center;
+		align-self: start;
 	}
 
 	.close {
@@ -80,8 +83,22 @@ switch (review.data.thing.type) {
 		padding: 0.5rem;
 	}
 
-	.content {
+	.review {
 		flex: 1;
+		max-width: 80ch;
+	}
+
+	.content {
+		display: contents;
+	}
+
+	.content :global(h1, h2, h3, h4, h5, h6) {
+		margin-block: 3rem 1rem;
+	}
+
+	.content :global(p) {
+		line-height: 1.8;
+		max-width: 80ch;
 	}
 
 	header {
