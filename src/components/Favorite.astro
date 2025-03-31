@@ -3,14 +3,16 @@ import Section from '$/components/Section.astro';
 import FavoriteMath from '$/components/FavoriteMath.astro';
 import type { HTMLTag } from 'astro/types';
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
-import getLatestReview from '$/lib/getLatestReview';
+import getLatestEntry from '$/lib/getLatestEntry';
+import { getCollection } from 'astro:content';
 
 const { class: className, ...rest } = Astro.props;
 
 let Element: HTMLTag | AstroComponentFactory = 'p';
 let props: Record<string, unknown> = { 'set:text': "Didn't find anything..." };
 
-const latestReview = await getLatestReview();
+const reviews = await getCollection('reviews');
+const latestReview = getLatestEntry(reviews, 'pubDate');
 
 if (latestReview) {
 	const { title, pubDate, updatedDate } = latestReview.data;

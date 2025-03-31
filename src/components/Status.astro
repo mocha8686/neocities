@@ -1,20 +1,26 @@
 ---
 import Section from '$/components/Section.astro';
 import TimeSince from '$/components/TimeSince.svelte';
+import getLatestEntry from '$/lib/getLatestEntry';
+import { getCollection } from 'astro:content';
 
 const { class: className, ...rest } = Astro.props;
 
-// NOTE: make sure to update!
-const timestamp = '2025-03-27T01:48:57Z';
+const statuses = await getCollection('statuses');
+const latestStatus = getLatestEntry(statuses, 'timestamp');
 ---
 
 <Section class={className} {...rest} header="Status">
 	<p>
 		<span class="username">mocha8686</span>
-		<span class="icon">🌧️</span>
+		<span class="icon">{latestStatus.data.icon}</span>
 	</p>
-	<p class="status">i'm crashing out!!! allergies are kicking my ASS</p>
-	<TimeSince client:visible class="time-since-update" {timestamp} />
+	<p class="status">{latestStatus.data.status}</p>
+	<TimeSince
+		client:visible
+		class="time-since-update"
+		timestamp={latestStatus.data.timestamp}
+	/>
 </Section>
 
 <style>

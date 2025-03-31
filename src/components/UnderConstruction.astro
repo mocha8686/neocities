@@ -1,9 +1,11 @@
 ---
 import Layout from '$/layouts/Layout.astro';
-import getLatestReview from '$/lib/getLatestReview';
+import getLatestEntry from '$/lib/getLatestEntry';
 import BackToHome from '$/components/BackToHome.astro';
+import { getCollection } from 'astro:content';
 
-const latestReview = await getLatestReview();
+const reviews = await getCollection('reviews');
+const latestReview = getLatestEntry(reviews, 'pubDate');
 
 const href = latestReview ? `/reviews/${latestReview.id}` : '/reviews';
 const body = latestReview
