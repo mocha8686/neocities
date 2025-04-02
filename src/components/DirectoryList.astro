@@ -8,7 +8,11 @@ import HierarchyList, {
 } from '$/components/HierarchyList.astro';
 import path from 'node:path';
 
-type ItemBodyObject = { name: string; description?: string; href?: string; } & HTMLAttributes<'a'>;
+type ItemBodyObject = {
+	name: string;
+	description?: string;
+	href?: string;
+} & HTMLAttributes<'a'>;
 export type ItemBody = string | ItemBodyObject;
 
 // prettier-ignore
@@ -26,7 +30,7 @@ const items: VerboseItem[] = links.map(link => formatLink(link));
 
 function formatLink(link: Item, base = '/'): VerboseItem {
 	if (typeof link === 'object' && link.children) {
-		const {children, ...rest} = link;
+		const { children, ...rest } = link;
 		const body = formatLinkBody(rest, base);
 
 		// @ts-ignore props and href must exist after formatLinkBody

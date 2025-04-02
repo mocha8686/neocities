@@ -228,13 +228,13 @@
 }
 
 @media (prefers-reduced-motion) {
-
 	.crt,
 	.crt::before {
 		animation: none;
 	}
 
 	.crt {
-		text-shadow: 1.6125px 0 1px rgb(0 30 255 / 50%), -1.6125px 0 1px rgb(255 0 80 / 30%), 0 0 3px;
+		text-shadow: 1.6125px 0 1px rgb(0 30 255 / 50%), -1.6125px 0 1px
+			rgb(255 0 80 / 30%), 0 0 3px;
 	}
 }

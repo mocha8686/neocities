@@ -22,7 +22,12 @@ let HeaderTag = `h${level ?? 2}`;
 ---
 
 <Tag
-class:list={[className, 'section', 'crt', { 'has-header': header !== undefined }]}
+	class:list={[
+		className,
+		'section',
+		'crt',
+		{ 'has-header': header !== undefined },
+	]}
 	{...rest}
 >
 	{
