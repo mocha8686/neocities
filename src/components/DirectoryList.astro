@@ -1,19 +1,19 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 import HierarchyList, {
-	itemIsLeaf,
 	type Header,
 	type Item as VerboseItem,
 	type ItemBody as VerboseItemBody,
-	type Node,
+	type ExtraNode,
 } from '$/components/HierarchyList.astro';
 import path from 'node:path';
 
+type ItemBodyObject = { name: string; description?: string; href?: string; } & HTMLAttributes<'a'>;
+export type ItemBody = string | ItemBodyObject;
+
 // prettier-ignore
 // biome-ignore format: Astro doesn't like it when a type starts with |
-export type ItemBody = string | ({ name: string; description?: string; href?: string; } & HTMLAttributes<'a'>);
-
-export type Item = Node<ItemBody>;
+export type Item = ExtraNode<ItemBodyObject, string>;
 
 interface Props extends HTMLAttributes<'div'> {
 	header?: Header;
@@ -25,18 +25,19 @@ const { items: links, ...rest } = Astro.props;
 const items: VerboseItem[] = links.map(link => formatLink(link));
 
 function formatLink(link: Item, base = '/'): VerboseItem {
-	if (itemIsLeaf(link)) {
-		return formatLinkBody(link, base);
-	} else {
-		const body = formatLinkBody(link.body, base);
+	if (typeof link === 'object' && link.children) {
+		const {children, ...rest} = link;
+		const body = formatLinkBody(rest, base);
 
 		// @ts-ignore props and href must exist after formatLinkBody
-		const newBase: string = body.props.href;
+		const newBase: string = rest.href;
 
 		return {
-			body,
-			children: link.children.map(link => formatLink(link, newBase)),
+			...body,
+			children: children.map(link => formatLink(link, newBase)),
 		};
+	} else {
+		return formatLinkBody(link, base);
 	}
 }
 
