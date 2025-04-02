@@ -1,4 +1,5 @@
 ---
+import '$/styles/crt.css';
 import type { HTMLTag, Polymorphic } from 'astro/types';
 
 interface ComponentProps {
@@ -21,7 +22,7 @@ let HeaderTag = `h${level ?? 2}`;
 ---
 
 <Tag
-	class:list={[className, 'section', { 'has-header': header !== undefined }]}
+class:list={[className, 'section', 'crt', { 'has-header': header !== undefined }]}
 	{...rest}
 >
 	{
@@ -32,14 +33,18 @@ let HeaderTag = `h${level ?? 2}`;
 </Tag>
 
 <style>
-	.section {
+	:where(.section) {
 		position: relative;
 
 		margin: 1rem;
 		padding: 0.5rem 1rem;
 		border: 2px outset var(--cl-accent);
 
-		background: var(--cl-bg);
+		background: color-mix(
+			in srgb-linear,
+			transparent,
+			var(--cl-accent) 15%
+		);
 	}
 
 	.section.has-header {
