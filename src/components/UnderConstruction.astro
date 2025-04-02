@@ -3,6 +3,7 @@ import Layout from '$/layouts/Layout.astro';
 import getLatestEntry from '$/lib/getLatestEntry';
 import BackToHome from '$/components/BackToHome.astro';
 import { getCollection } from 'astro:content';
+import Section from '$/components/Section.astro';
 
 const reviews = await getCollection('reviews');
 const latestReview = getLatestEntry(reviews, 'pubDate');
@@ -15,14 +16,14 @@ const body = latestReview
 
 <Layout title="still in progress">
 	<main>
-		<div class="container">
+		<Section class="container">
 			<h1>Under Construction</h1>
 			<p>
 				In the meantime, why not check out
 				<a {href}>{body}</a>
 			</p>
 			<BackToHome />
-		</div>
+		</Section>
 	</main>
 </Layout>
 
