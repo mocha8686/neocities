@@ -47,13 +47,15 @@ const code =
 	}
 
 	.code-container {
+		overflow-y: auto;
+		place-self: center;
+
 		max-width: 12rem;
 		max-height: 3rem;
-		overflow-y: auto;
-		background-color:var(--cl-bg);
-		border: var(--bd-section);
 		padding-inline: 0.25rem;
-		place-self: center;
+		border: var(--bd-section);
+
+		background-color: var(--cl-bg);
 	}
 
 	code {
