@@ -19,7 +19,7 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
@@ -47,6 +47,8 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 		--fs-accent: 1.2rem;
 		--fs-secondary: 0.85rem;
 		--fs-timestamp: var(--fs-secondary);
+
+		--bd-section: 2px outset var(--cl-accent);
 
 		--z-bg: -1000;
 		--z-fx: 1000;
@@ -91,5 +93,19 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 
 	hr {
 		border-color: var(--cl-accent);
+	}
+
+	code,
+	pre {
+		font-family: var(--ff-mono);
+	}
+
+	button {
+		color: inherit;
+		background-color: var(--cl-bg);
+	}
+
+	:focus-visible {
+		outline: 2px solid color-mix(in srgb-linear, white, var(--cl-accent));
 	}
 </style>

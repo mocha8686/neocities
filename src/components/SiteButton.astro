@@ -1,0 +1,66 @@
+---
+import Section from '$/components/Section.astro';
+import button from '$/assets/button.gif';
+import CopyCode from '$/components/CopyCode.svelte';
+
+const code =
+	'<a href="https://mocha8686.neocities.org"><img src="https://mocha8686.neocities.org/button.gif" /></a>';
+---
+
+<Section class="container" header="Button">
+	<div class="button-container">
+		<img
+			{...button}
+			alt="A martini glass next to the text, 'the end of time'"
+		/>
+	</div>
+
+	<div class="code-container">
+		<code>
+			{code}
+		</code>
+	</div>
+
+	<CopyCode class="copy-code" client:load {code} />
+</Section>
+
+<style>
+	.container {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		padding-block: 2rem;
+	}
+
+	.button-container {
+		display: grid;
+		place-self: center;
+
+		padding: 1rem 2rem;
+		border: var(--bd-section);
+
+		background-color: var(--cl-bg);
+	}
+
+	img {
+		place-self: center;
+	}
+
+	.code-container {
+		max-width: 12rem;
+		max-height: 3rem;
+		overflow-y: auto;
+		background-color:var(--cl-bg);
+		border: var(--bd-section);
+		padding-inline: 0.25rem;
+		place-self: center;
+	}
+
+	code {
+		word-break: break-all;
+	}
+
+	.copy-code {
+		place-self: center;
+	}
+</style>
