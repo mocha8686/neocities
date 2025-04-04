@@ -1,13 +1,15 @@
 import { map } from 'nanostores';
 
-export const effects = ['rain', 'CRT', 'marquee'] as const;
+export const effects = ['rain', 'CRT chromatic abberation', 'CRT flicker', 'marquee'] as const;
+export const effectsHash = JSON.stringify(effects);
 export type Effects = (typeof effects)[number];
 
 export type EffectsMap = Record<Effects, boolean>;
 
 export const effectsSettings = map<EffectsMap>({
 	rain: true,
-	CRT: false,
+	'CRT chromatic abberation': false,
+	'CRT flicker': true,
 	marquee: true,
 });
 

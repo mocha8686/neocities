@@ -29,10 +29,39 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 </html>
 
 <script>
-	import { effectsSettings, toggleClass } from '$/lib/effectsSettings';
+	import {
+		effectsHash,
+		effectsSettings,
+		toggleClass,
+	} from '$/lib/effectsSettings';
+
+	const hashKey = 'settingsHash';
+	const settingsKey = 'settings';
 
 	document.addEventListener('DOMContentLoaded', () => {
-		const settingsString = window.localStorage.getItem('settings');
+		const hash = window.localStorage.getItem(hashKey);
+		if (!hash || hash !== effectsHash) {
+			window.localStorage.setItem(hashKey, effectsHash);
+
+			const settingsString = window.localStorage.getItem(settingsKey);
+			if (!settingsString) return;
+			const oldSettings: Record<string, boolean> =
+				JSON.parse(settingsString);
+			const keys = Object.keys(effectsSettings.get());
+
+			const migratedSettings = Object.entries(oldSettings).filter(
+				([key]) => key in keys,
+			);
+
+			for (const [key, value] of migratedSettings) {
+				// @ts-ignore
+				effectsSettings.setKey(key, value);
+			}
+
+			return;
+		}
+
+		const settingsString = window.localStorage.getItem(settingsKey);
 		if (!settingsString) return;
 
 		const settings = JSON.parse(settingsString);

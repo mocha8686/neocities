@@ -25,9 +25,14 @@ let HeaderTag = `h${level ?? 2}`;
 	import { effectsSettings, toggleClass } from '$/lib/effectsSettings';
 
 	const sections = document.querySelectorAll('.section');
-	effectsSettings.subscribe(settings =>
-		toggleClass(settings.CRT, sections, 'disable-crt'),
-	);
+	effectsSettings.subscribe(settings => {
+		toggleClass(
+			settings['CRT chromatic abberation'],
+			sections,
+			'disable-crt-color-shear',
+		);
+		toggleClass(settings['CRT flicker'], sections, 'disable-crt-flicker');
+	});
 </script>
 
 <Tag
