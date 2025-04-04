@@ -14,6 +14,14 @@ interface Props extends HTMLAttributes<'body'> {
 const { title = 'the end of time', class: className, ...rest } = Astro.props;
 ---
 
+<script>
+	import { effectsSettings, toggleClass } from '$/lib/effectsSettings';
+
+	effectsSettings.subscribe(settings =>
+		toggleClass(settings.rain, [document.body], 'disable-rain'),
+	);
+</script>
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -71,6 +79,10 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 		background:
 			url('$/assets/pixel_rain.gif') center/contain repeat-x,
 			var(--cl-bg);
+	}
+
+	body.disable-rain::before {
+		background: var(--cl-bg);
 	}
 
 	* {

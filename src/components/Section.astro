@@ -21,6 +21,15 @@ const {
 let HeaderTag = `h${level ?? 2}`;
 ---
 
+<script>
+	import { effectsSettings, toggleClass } from '$/lib/effectsSettings';
+
+	const sections = document.querySelectorAll('.section');
+	effectsSettings.subscribe(settings =>
+		toggleClass(settings.CRT, sections, 'disable-crt'),
+	);
+</script>
+
 <Tag
 	class:list={[
 		className,

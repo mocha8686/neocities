@@ -8,7 +8,17 @@ const { duration = '15s' } = Astro.props;
 const children = Astro.slots.render('default');
 ---
 
-<div class="container">
+<script>
+	import { effectsSettings, toggleClass } from '$/lib/effectsSettings';
+
+	const marquees = document.querySelectorAll('.marquee-container');
+
+	effectsSettings.subscribe(settings =>
+		toggleClass(settings.marquee, marquees, 'disable'),
+	);
+</script>
+
+<div class="marquee-container">
 	<ul class="content">
 		<Fragment set:html={children} />
 	</ul>
@@ -18,7 +28,7 @@ const children = Astro.slots.render('default');
 </div>
 
 <style define:vars={{ duration }}>
-	.container {
+	.marquee-container {
 		--gap: 1rem;
 		--padding: 1rem;
 
@@ -44,12 +54,16 @@ const children = Astro.slots.render('default');
 		animation: var(--duration) linear infinite forwards marquee;
 	}
 
+	.marquee-container.disable .content {
+		animation: none;
+	}
+
 	.content > :global(*) {
 		display: grid;
 		place-items: center;
 	}
 
-	:where(.container:hover) .content {
+	:where(.marquee-container:hover) .content {
 		animation-play-state: paused;
 	}
 
@@ -60,6 +74,12 @@ const children = Astro.slots.render('default');
 
 		to {
 			translate: calc(-100% - var(--gap) + var(--padding)) 0;
+		}
+	}
+
+	@media (prefers-reduced-motion) {
+		.content {
+			animation: none;
 		}
 	}
 </style>
