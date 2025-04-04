@@ -54,6 +54,10 @@ const children = Astro.slots.render('default');
 		animation: var(--duration) linear infinite forwards marquee;
 	}
 
+	:where(.marquee-container:hover) .content {
+		animation-play-state: paused;
+	}
+
 	.marquee-container.disable .content {
 		animation: none;
 	}
@@ -61,10 +65,6 @@ const children = Astro.slots.render('default');
 	.content > :global(*) {
 		display: grid;
 		place-items: center;
-	}
-
-	:where(.marquee-container:hover) .content {
-		animation-play-state: paused;
 	}
 
 	@keyframes marquee {

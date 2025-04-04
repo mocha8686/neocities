@@ -1,23 +1,20 @@
 <script lang="ts">
-	import { effectsSettings, setSetting } from '$/lib/effectsSettings';
+import { effectsSettings, setSetting } from '$/lib/effectsSettings';
 
-	$effect(() => {
-		const settingsString = window.localStorage.getItem('settings');
-		if (!settingsString) return;
+$effect(() => {
+	const settingsString = window.localStorage.getItem('settings');
+	if (!settingsString) return;
 
-		const settings = JSON.parse(settingsString);
-		effectsSettings.set(settings);
-	});
+	const settings = JSON.parse(settingsString);
+	effectsSettings.set(settings);
+});
 
-	$effect(() => {
-		window.localStorage.setItem(
-			'settings',
-			JSON.stringify($effectsSettings),
-		);
-	});
+$effect(() => {
+	window.localStorage.setItem('settings', JSON.stringify($effectsSettings));
+});
 
-	// @ts-ignore
-	const set = (name: string, v: boolean) => setSetting(name, v);
+// @ts-ignore
+const set = (name: string, v: boolean) => setSetting(name, v);
 </script>
 
 {#each Object.entries($effectsSettings) as [name, checked]}

@@ -14,14 +14,6 @@ interface Props extends HTMLAttributes<'body'> {
 const { title = 'the end of time', class: className, ...rest } = Astro.props;
 ---
 
-<script>
-	import { effectsSettings, toggleClass } from '$/lib/effectsSettings';
-
-	effectsSettings.subscribe(settings =>
-		toggleClass(settings.rain, [document.body], 'disable-rain'),
-	);
-</script>
-
 <!doctype html>
 <html lang="en">
 	<head>
@@ -35,6 +27,14 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 		<slot />
 	</body>
 </html>
+
+<script>
+	import { effectsSettings, toggleClass } from '$/lib/effectsSettings';
+
+	effectsSettings.subscribe(settings =>
+		toggleClass(settings.rain, [document.body], 'disable-rain'),
+	);
+</script>
 
 <style is:global>
 	/* stylelint-disable custom-property-empty-line-before */
