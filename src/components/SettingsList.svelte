@@ -2,14 +2,6 @@
 import { effectsSettings, setSetting } from '$/lib/effectsSettings';
 
 $effect(() => {
-	const settingsString = window.localStorage.getItem('settings');
-	if (!settingsString) return;
-
-	const settings = JSON.parse(settingsString);
-	effectsSettings.set(settings);
-});
-
-$effect(() => {
 	window.localStorage.setItem('settings', JSON.stringify($effectsSettings));
 });
 

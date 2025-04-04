@@ -31,6 +31,14 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 <script>
 	import { effectsSettings, toggleClass } from '$/lib/effectsSettings';
 
+	document.addEventListener('DOMContentLoaded', () => {
+		const settingsString = window.localStorage.getItem('settings');
+		if (!settingsString) return;
+
+		const settings = JSON.parse(settingsString);
+		effectsSettings.set(settings);
+	});
+
 	effectsSettings.subscribe(settings =>
 		toggleClass(settings.rain, [document.body], 'disable-rain'),
 	);
