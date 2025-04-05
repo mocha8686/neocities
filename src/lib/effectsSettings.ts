@@ -1,6 +1,11 @@
 import { map } from 'nanostores';
 
-export const effects = ['rain', 'CRT chromatic abberation', 'CRT flicker', 'marquee'] as const;
+export const effects = [
+	'rain',
+	'CRT chromatic abberation',
+	'CRT flicker',
+	'marquee',
+] as const;
 export const effectsHash = JSON.stringify(effects);
 export type Effects = (typeof effects)[number];
 
