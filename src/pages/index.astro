@@ -9,6 +9,8 @@ import Layout from '$/layouts/Layout.astro';
 import { Content as Information } from '$/data/information.md';
 import SiteButton from '$/components/SiteButton.astro';
 import Settings from '$/components/Settings.astro';
+
+import sites from '$/data/sites.json';
 ---
 
 <Layout>
@@ -38,6 +40,25 @@ import Settings from '$/components/Settings.astro';
 				<Section class="info" header="Information">
 					<Information />
 				</Section>
+
+				<Section class="marquee" as="nav" header="Inspiration">
+					<Marquee>
+						{
+							sites.map(({ name, image, href }) => (
+								<li>
+									<a {href} target="_blank" rel="noreferrer">
+										<img
+											src={image}
+											alt={name}
+											width="88"
+											height="31"
+										/>
+									</a>
+								</li>
+							))
+						}
+					</Marquee>
+				</Section>
 			</div>
 
 			<div class="side">
@@ -65,6 +86,7 @@ import Settings from '$/components/Settings.astro';
 		display: flex;
 		flex: auto;
 		flex-direction: column;
+		min-width: 0;
 	}
 
 	.welcome {
