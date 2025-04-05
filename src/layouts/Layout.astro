@@ -23,13 +23,14 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class={className} {...rest}>
+	<body class:list={[className, 'disable-rain']} {...rest}>
 		<slot />
 	</body>
 </html>
 
 <script>
 	import {
+		defaults,
 		effectsHash,
 		effectsSettings,
 		toggleClass,
