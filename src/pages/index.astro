@@ -42,18 +42,33 @@ import sites from '$/data/sites.json';
 				</Section>
 
 				<Section class="marquee" as="nav" header="Inspiration">
-					<Marquee>
+					<Marquee duration={`${sites.length * 2.5}s`}>
 						{
-							sites.map(({ name, image, href }) => (
-								<li>
-									<a {href} target="_blank" rel="noreferrer">
-										<img
-											src={image}
-											alt={name}
-											width="88"
-											height="31"
-										/>
-									</a>
+							sites.map(site => (
+							<li>
+									{site.image ? (
+										<a
+											href={site.href}
+											target="_blank"
+											rel="noreferrer"
+										>
+											<img
+												src={site.image}
+												alt={site.name}
+												width="88"
+												height="31"
+											/>
+										</a>
+									) : (
+										<a
+											href={site.href}
+											target="_blank"
+											rel="noreferrer"
+											style={{ color: site.color }}
+										>
+											{site.name}
+										</a>
+									)}
 								</li>
 							))
 						}
