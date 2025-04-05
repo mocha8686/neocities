@@ -13,6 +13,7 @@ const set = (name: string, v: boolean) => setSetting(name, v);
 	<label>
 		Enable {name}
 		<input
+			{name}
 			type="checkbox"
 			bind:checked={() => checked, v => set(name, v)}
 		/>
