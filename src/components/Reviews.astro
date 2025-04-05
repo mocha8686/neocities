@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import Nav from '$/components/Nav.astro';
 import dayjs from 'dayjs';
 import BackToHome from '$/components/BackToHome.astro';
+import Settings from '$/components/Settings.astro';
 
 const reviews = await getCollection('reviews');
 
@@ -21,15 +22,22 @@ const links = reviews
 	}));
 ---
 
-<Section class="container" header="Reviews" level={isMainElement ? 1 : 2}>
-	<Nav {links} />
-	<BackToHome />
-</Section>
+<div class="container">
+	<Section header="Reviews" level={isMainElement ? 1 : 2}>
+		<Nav {links} />
+		<BackToHome />
+	</Section>
+
+	<Settings />
+</div>
 
 <style>
 	.container {
+		display: flex;
 		flex: 1;
-		align-self: start;
-		max-width: 14rem;
+		flex-direction: column;
+		place-self: start;
+
+		max-width: fit-content;
 	}
 </style>
