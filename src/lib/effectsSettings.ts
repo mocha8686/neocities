@@ -6,16 +6,24 @@ export const effects = [
 	'CRT flicker',
 	'marquee',
 ] as const;
+
+export const defaults = {
+	rain: true,
+	'CRT chromatic abberation': false,
+	'CRT flicker': true,
+	marquee: true,
+};
+
 export const effectsHash = JSON.stringify(effects);
 export type Effects = (typeof effects)[number];
 
 export type EffectsMap = Record<Effects, boolean>;
 
 export const effectsSettings = map<EffectsMap>({
-	rain: true,
+	rain: false,
 	'CRT chromatic abberation': false,
-	'CRT flicker': true,
-	marquee: true,
+	'CRT flicker': false,
+	marquee: false,
 });
 
 export function getSetting(effect: Effects): boolean {

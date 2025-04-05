@@ -40,12 +40,18 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 	const settingsKey = 'settings';
 
 	document.addEventListener('DOMContentLoaded', () => {
+		const settingsString = window.localStorage.getItem(settingsKey);
+		if (!settingsString) {
+			effectsSettings.set(defaults);
+			window.localStorage.setItem(settingsKey, JSON.stringify(defaults));
+			window.localStorage.setItem(hashKey, effectsHash);
+			return;
+		}
+
 		const hash = window.localStorage.getItem(hashKey);
 		if (!hash || hash !== effectsHash) {
 			window.localStorage.setItem(hashKey, effectsHash);
 
-			const settingsString = window.localStorage.getItem(settingsKey);
-			if (!settingsString) return;
 			const oldSettings: Record<string, boolean> =
 				JSON.parse(settingsString);
 			const keys = Object.keys(effectsSettings.get());
@@ -61,9 +67,6 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 
 			return;
 		}
-
-		const settingsString = window.localStorage.getItem(settingsKey);
-		if (!settingsString) return;
 
 		const settings = JSON.parse(settingsString);
 		effectsSettings.set(settings);
