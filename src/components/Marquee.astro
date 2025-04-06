@@ -22,7 +22,7 @@ const children = Astro.slots.render('default');
 	<ul class="content">
 		<Fragment set:html={children} />
 	</ul>
-	<ul class="content" aria-hidden="true">
+	<ul class="content second" aria-hidden="true">
 		<Fragment set:html={children} />
 	</ul>
 </div>
@@ -57,8 +57,17 @@ const children = Astro.slots.render('default');
 		animation-play-state: paused;
 	}
 
+	.marquee-container.disable {
+		overflow: scroll;
+	}
+
 	.marquee-container.disable .content {
+		padding-inline: 1rem;
 		animation: none;
+	}
+
+	.marquee-container.disable .second {
+		display: none;
 	}
 
 	.content > :global(*) {
