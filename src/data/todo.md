@@ -1,0 +1,16 @@
+- [ ] todo list
+- [ ] webrings
+- [ ] dream journal (thank you [eatsteas](https://eatsteas.neocities.org/dreamjournal/) for the idea!!)
+- [ ] about
+    - [ ] likes
+    - [ ] dislikes
+    - [ ] favorites
+        - [ ] music
+        - [ ] characters
+        - [ ] animanga
+    - [ ] quiz results
+- [ ] (micro)blog
+- [ ] guestbook
+- [ ] shrines
+    - [ ] *The Mimosa Confessions*
+- [ ] computer
