@@ -1,5 +1,5 @@
 - [ ] todo list
-- [ ] webrings
+- [x] webrings
 - [ ] dream journal (thank you [eatsteas](https://eatsteas.neocities.org/dreamjournal/) for the idea!!)
 - [ ] about
     - [ ] likes
