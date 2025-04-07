@@ -5,9 +5,10 @@ import Nav, { type Link } from '$/components/Nav.astro';
 
 const links: Link[] = [
 	{ body: 'Home', href: '/' },
+	{ body: 'About', href: '/about' },
 	{ body: 'Reviews', href: '/reviews' },
 	{ body: 'Blog', href: '/blog' },
-	{ body: 'Sitemap', href: '/sitemap' },
+	{ body: 'Sitemap', href: '/sitemap' }, // NOTE: make sure to update the sitemap too!
 ];
 
 type Props = HTMLAttributes<'nav'>;
