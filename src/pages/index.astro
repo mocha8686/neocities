@@ -12,6 +12,7 @@ import Settings from '$/components/Settings.astro';
 
 import sites from '$/data/sites.json';
 import { Content as TodoContent } from '$/data/todo.md';
+import Webrings from '$/components/Webrings.astro';
 ---
 
 <Layout>
@@ -82,11 +83,12 @@ import { Content as TodoContent } from '$/data/todo.md';
 				<Status />
 				<Favorite />
 				<Settings />
+				<Webrings />
 				<SiteButton />
 
-<Section class="todo" header="Todo">
-	<TodoContent />
-</Section>
+				<Section class="todo" header="Todo">
+					<TodoContent />
+				</Section>
 			</div>
 		</main>
 	</Bounded>
