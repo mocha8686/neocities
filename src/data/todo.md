@@ -13,4 +13,5 @@
 - [ ] guestbook
 - [ ] shrines
     - [ ] *The Mimosa Confessions*
+- [ ] learning in public
 - [ ] computer
