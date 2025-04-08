@@ -8,14 +8,13 @@ type Site = Unpacked<typeof sites>;
 
 const [first, second] = sites.reduce<[Site[], Site[]]>(
 	([first, second], current, i) =>
-		i % 2 === 0
-			? [[...first, current], second]
-			: [first, [...second, current]],
+		i % 2 === 0 ? [[...first, current], second] : [first, [...second, current]],
 	[[], []],
 );
 ---
 
-<Section class="container" as="nav" header="Inspiration">
+<Section class="container" as="nav">
+	<h2>Inspiration</h2>
 	<Marquee class="marquee" duration={`${first.length * 2.5}s`}>
 		{
 			first.map(site => (

@@ -23,7 +23,8 @@ const links = reviews
 ---
 
 <div class="container">
-	<Section header="Reviews" level={isMainElement ? 1 : 2}>
+	<Section>
+		{isMainElement ? <h1>Reviews</h1> : <h2>Reviews</h2>}
 		<Nav {links} />
 		<BackToHome />
 	</Section>

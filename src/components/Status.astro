@@ -10,7 +10,8 @@ const statuses = await getCollection('statuses');
 const latestStatus = getLatestEntry(statuses, 'timestamp');
 ---
 
-<Section class={className} {...rest} header="Status">
+<Section class={className} {...rest}>
+	<h2>Status</h2>
 	<p>
 		<span class="username">mocha8686</span>
 		<span class="icon">{latestStatus.data.icon}</span>

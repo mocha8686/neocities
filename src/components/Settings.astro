@@ -8,7 +8,8 @@ type Props = HTMLAttributes<'div'>;
 const { class: className, ...rest } = Astro.props;
 ---
 
-<Section header="Settings" class:list={['container', className]} {...rest}>
+<Section class:list={['container', className]} {...rest}>
+	<h2>Settings</h2>
 	<SettingsList client:load />
 </Section>
 

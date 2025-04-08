@@ -18,12 +18,8 @@ import Webrings from '$/components/Webrings.astro';
 
 <Layout>
 	<Bounded>
-		<Section
-			class="marquee"
-			as="header"
-			header="The Bar at the End of Time"
-			level={1}
-		>
+		<Section class="marquee" as="header">
+			<h1>The Bar at the End of Time</h1>
 			<Marquee>
 				<li>it's about time you got here, don't you think?</li>
 				<li>hihihihihi!!!! :3</li>
@@ -33,14 +29,16 @@ import Webrings from '$/components/Webrings.astro';
 
 		<main>
 			<div class="main">
-				<Section class="welcome" header="Welcome">
+				<Section class="welcome">
+					<h2>Welcome</h2>
 					<p>
 						effervescence is ephemeral, bounded by the limits of
 						time. enjoy the now.
 					</p>
 				</Section>
 
-				<Section class="info" header="Information">
+				<Section class="info">
+					<h2>Information</h2>
 					<Information />
 				</Section>
 
@@ -55,7 +53,8 @@ import Webrings from '$/components/Webrings.astro';
 				<Webrings />
 				<SiteButton />
 
-				<Section class="todo" header="Todo">
+				<Section class="todo">
+					<h2>Todo</h2>
 					<TodoContent />
 				</Section>
 			</div>

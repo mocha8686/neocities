@@ -34,7 +34,9 @@ switch (review.data.thing.type) {
 
 <Layout>
 	<Bounded class="container">
-		<Section class="review" header={review.data.title} level={1}>
+		<Section class="review">
+			<h1>{review.data.title}</h1>
+
 			<header>
 				<DisplayElement class="display" {...displayProps} />
 

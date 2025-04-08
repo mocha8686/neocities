@@ -16,6 +16,7 @@ type Props = HTMLAttributes<'nav'>;
 const { class: className, ...rest } = Astro.props;
 ---
 
-<Section header="Directory" as="nav" class={className ?? undefined} {...rest}>
+<Section as="nav" class={className ?? undefined} {...rest}>
+	<h2>Directory</h2>
 	<Nav {links} />
 </Section>

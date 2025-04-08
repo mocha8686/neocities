@@ -3,22 +3,17 @@ import '$/styles/crt.css';
 import type { HTMLTag, Polymorphic } from 'astro/types';
 
 interface ComponentProps {
-	header?: string;
-	level?: 1 | 2 | 3 | 4 | 5 | 6;
-	class?: string;
+	disableHeader?: boolean;
 }
 
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & ComponentProps;
 
 const {
-	header,
-	level,
+	disableHeader = false,
 	as: Tag = 'section',
 	class: className,
 	...rest
 } = Astro.props;
-
-let HeaderTag = `h${level ?? 2}`;
 ---
 
 <script>
@@ -42,14 +37,10 @@ let HeaderTag = `h${level ?? 2}`;
 		'crt',
 		'disable-crt-flicker',
 		'disable-crt-color-shear',
-		{ 'has-header': header !== undefined },
+		{ 'disable-header': disableHeader },
 	]}
 	{...rest}
 >
-	{
-		// @ts-ignore Weird Astro funk
-		header && <HeaderTag class="header">{header}</HeaderTag>
-	}
 	<slot />
 </Tag>
 
@@ -68,11 +59,11 @@ let HeaderTag = `h${level ?? 2}`;
 		);
 	}
 
-	.section.has-header {
+	.section:not(.disable-header):global(:has(> :where(h1, h2, h3, h4, h5, h6):first-child)) {
 		margin-block-start: 3rem;
 	}
 
-	.section > :where(h1, h2, h3, h4, h5, h6):first-child {
+	.section:not(.disable-header) > :global(:where(h1, h2, h3, h4, h5, h6):first-child) {
 		position: absolute;
 		inset-block-start: 0;
 		inset-inline-end: 0;
