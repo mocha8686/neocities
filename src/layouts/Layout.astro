@@ -99,6 +99,9 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 
 		--bd-section: 2px outset var(--cl-accent);
 
+		--cu-default: url('$/assets/default.png') 7 1, auto;
+		--cu-pointer: url('$/assets/pointer.png') 13 1, pointer;
+
 		--z-bg: -1000;
 		--z-fx: 1000;
 
@@ -126,6 +129,14 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 		background: var(--cl-bg);
 	}
 
+	body,
+	label,
+	button,
+	input[type='checkbox'],
+	input[type='radio'] {
+		cursor: var(--cu-default);
+	}
+
 	* {
 		scrollbar-color: var(--cl-accent) black;
 		box-sizing: border-box;
@@ -139,8 +150,9 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 		background: black;
 	}
 
-
-	a {
+	a,
+	area {
+		cursor: var(--cu-pointer);
 		color: var(--cl-accent);
 	}
 
