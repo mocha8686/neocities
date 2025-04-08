@@ -1,9 +1,12 @@
 ---
-interface Props {
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
 	duration?: string;
+	reverse?: boolean;
 }
 
-const { duration = '15s' } = Astro.props;
+const { duration = '15s', reverse = false, class: className, ...rest } = Astro.props;
 
 const children = Astro.slots.render('default');
 ---
@@ -18,7 +21,7 @@ const children = Astro.slots.render('default');
 	);
 </script>
 
-<div class="marquee-container">
+	<div class:list={['marquee-container', { 'is-reversed': reverse }, className]} {...rest}>
 	<ul class="content">
 		<Fragment set:html={children} />
 	</ul>
@@ -57,6 +60,10 @@ const children = Astro.slots.render('default');
 		animation-play-state: paused;
 	}
 
+	.marquee-container.is-reversed .content {
+		animation-name: marquee-reversed;
+	}
+
 	.marquee-container.disable {
 		overflow: scroll;
 	}
@@ -82,6 +89,16 @@ const children = Astro.slots.render('default');
 
 		to {
 			translate: calc(-100% - var(--gap)) 0;
+		}
+	}
+
+	@keyframes marquee-reversed {
+		from {
+			translate: calc(-100% - var(--gap)) 0;
+		}
+
+		to {
+			translate: 0 0;
 		}
 	}
 

@@ -1,6 +1,7 @@
 ---
 import Bounded from '$/components/Bounded.astro';
 import Favorite from '$/components/Favorite.astro';
+import Inspiration from '$/components/Inspiration.astro';
 import Marquee from '$/components/Marquee.astro';
 import Directory from '$/components/Directory.astro';
 import Section from '$/components/Section.astro';
@@ -43,39 +44,7 @@ import Webrings from '$/components/Webrings.astro';
 					<Information />
 				</Section>
 
-				<Section class="marquee" as="nav" header="Inspiration">
-					<Marquee duration={`${sites.length * 2.5}s`}>
-						{
-							sites.map(site => (
-								<li>
-									{site.image ? (
-										<a
-											href={site.href}
-											target="_blank"
-											rel="noreferrer"
-										>
-											<img
-												src={site.image}
-												alt={site.name}
-												width="88"
-												height="31"
-											/>
-										</a>
-									) : (
-										<a
-											href={site.href}
-											target="_blank"
-											rel="noreferrer"
-											style={{ color: site.color }}
-										>
-											{site.name}
-										</a>
-									)}
-								</li>
-							))
-						}
-					</Marquee>
-				</Section>
+				<Inspiration />
 			</div>
 
 			<div class="side">
