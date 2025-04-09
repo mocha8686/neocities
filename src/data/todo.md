@@ -2,7 +2,7 @@
 - [x] webrings
 - [ ] dream journal (thank you [eatsteas](https://eatsteas.neocities.org/dreamjournal/) for the idea!!)
 - [ ] about
-    - [ ] facts
+    - [x] facts
     - [x] favorites
         - [x] music
         - [x] games
