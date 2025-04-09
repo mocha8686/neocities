@@ -32,7 +32,15 @@ const children = Astro.slots.render('default');
 	});
 </script>
 
-	<div class:list={['marquee-container', { 'is-reversed': reverse }, { 'disable-select': noSelect }, className]} {...rest}>
+<div
+	class:list={[
+		'marquee-container',
+		{ 'is-reversed': reverse },
+		{ 'disable-select': noSelect },
+		className,
+	]}
+	{...rest}
+>
 	<ul class="content">
 		<Fragment set:html={children} />
 	</ul>

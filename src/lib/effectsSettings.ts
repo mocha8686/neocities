@@ -67,8 +67,7 @@ export function loadSettings() {
 	if (!hash || hash !== effectsHash) {
 		window.localStorage.setItem(hashKey, effectsHash);
 
-		const oldSettings: Record<string, boolean> =
-			JSON.parse(settingsString);
+		const oldSettings: Record<string, boolean> = JSON.parse(settingsString);
 		const keys = Object.keys(effectsSettings.get());
 
 		const migratedSettings = Object.entries(oldSettings).filter(

@@ -1,5 +1,6 @@
 export function randomizeRainbows() {
-	const rainbows: NodeListOf<HTMLSpanElement> = document.querySelectorAll('.rainbow');
+	const rainbows: NodeListOf<HTMLSpanElement> =
+		document.querySelectorAll('.rainbow');
 
 	for (const rainbow of rainbows) {
 		const randDelay = Math.floor(Math.random() * 2000);
