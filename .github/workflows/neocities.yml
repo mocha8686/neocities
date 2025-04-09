@@ -1,0 +1,77 @@
+name: Neocities
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  PNPM_VERSION: 10
+  NODE_VERSION: 23
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: pnpm install and build
+        run: |
+          pnpm install
+          pnpm build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: neocities
+      cancel-in-progress: true
+    needs: build
+    environment:
+      name: 'production'
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: dist
+
+      - name: List files
+        run: ls -la
+
+      - name: Deploy to Neocities
+        uses: bcomnes/deploy-to-neocities@v3
+        with:
+          api_key: ${{ secrets.NEOCITIES_API_KEY }}
+          cleanup: true
+          neocities_supporter: false
+          preview_before_deploy: true
+          dist_dir: dist
