@@ -64,9 +64,6 @@ jobs:
           name: site
           path: dist
 
-      - name: List files
-        run: ls -la
-
       - name: Deploy to Neocities
         uses: bcomnes/deploy-to-neocities@v3
         with:
