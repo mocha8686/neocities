@@ -30,47 +30,12 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 
 <script>
 	import {
-		defaults,
-		effectsHash,
 		effectsSettings,
+		loadSettings,
 		toggleClass,
 	} from '$/lib/effectsSettings';
 
-	const hashKey = 'settingsHash';
-	const settingsKey = 'settings';
-
-	document.addEventListener('DOMContentLoaded', () => {
-		const settingsString = window.localStorage.getItem(settingsKey);
-		if (!settingsString) {
-			effectsSettings.set(defaults);
-			window.localStorage.setItem(settingsKey, JSON.stringify(defaults));
-			window.localStorage.setItem(hashKey, effectsHash);
-			return;
-		}
-
-		const hash = window.localStorage.getItem(hashKey);
-		if (!hash || hash !== effectsHash) {
-			window.localStorage.setItem(hashKey, effectsHash);
-
-			const oldSettings: Record<string, boolean> =
-				JSON.parse(settingsString);
-			const keys = Object.keys(effectsSettings.get());
-
-			const migratedSettings = Object.entries(oldSettings).filter(
-				([key]) => key in keys,
-			);
-
-			for (const [key, value] of migratedSettings) {
-				// @ts-ignore
-				effectsSettings.setKey(key, value);
-			}
-
-			return;
-		}
-
-		const settings = JSON.parse(settingsString);
-		effectsSettings.set(settings);
-	});
+	document.addEventListener('DOMContentLoaded', loadSettings);
 
 	effectsSettings.subscribe(settings =>
 		toggleClass(settings.rain, [document.body], 'disable-rain'),
@@ -90,6 +55,7 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 		--ff-accent: 'Kosugi Maru', sans-serif;
 		--ff-pixel: 'Fusion Pixel 12px Proportional JP', monospace;
 		--ff-mono: monospace;
+		--ff-special: 'Nabla', var(--ff-main);
 		--ff-accent-word: var(--ff-accent);
 		--ff-accent-symbol: var(--ff-pixel);
 
@@ -97,7 +63,7 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 		--fs-secondary: 0.85rem;
 		--fs-timestamp: var(--fs-secondary);
 
-		--bd-section: 2px outset var(--cl-accent);
+		--bd-section: 2px outset;
 
 		--cu-default: url('$/assets/default.png') 7 1, auto;
 		--cu-pointer: url('$/assets/pointer.png') 13 1, pointer;
