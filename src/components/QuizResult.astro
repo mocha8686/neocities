@@ -11,7 +11,7 @@ const { name, image, link, class: className, ...rest } = Astro.props;
 ---
 
 <div class={className} {...rest}>
-	<a href={link}>
+	<a href={link} target="_blank" rel="noreferrer">
 		<img src={image} alt={name} />
 	</a>
 </div>
