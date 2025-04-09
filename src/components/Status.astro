@@ -1,27 +1,41 @@
 ---
 import Section from '$/components/Section.astro';
 import TimeSince from '$/components/TimeSince.svelte';
-import getLatestEntry from '$/lib/getLatestEntry';
-import { getCollection } from 'astro:content';
+import dayjs from 'dayjs';
 
 const { class: className, ...rest } = Astro.props;
 
-const statuses = await getCollection('statuses');
-const latestStatus = getLatestEntry(statuses, 'timestamp');
+interface Status {
+	author: string;
+	content: string;
+	face: string;
+	timeAgo: string;
+}
+
+const res = await fetch('https://status.cafe/users/mocha8686/status.json');
+const { author, content, face, timeAgo }: Status = await res.json();
+
+function parseTimeAgo(timeAgo: string): Date {
+	const [n, unit] = timeAgo.split(' ');
+	const now = dayjs();
+	const newDate = now.subtract(
+		Number.parseInt(n),
+		unit as dayjs.ManipulateType,
+	);
+	return newDate.toDate();
+}
+
+const timestamp = parseTimeAgo(timeAgo);
 ---
 
 <Section class={className} {...rest}>
 	<h2>Status</h2>
 	<p>
-		<span class="username">mocha8686</span>
-		<span class="icon">{latestStatus.data.icon}</span>
+		<a class="username">{author}</a>
+		<span class="icon">{face}</span>
 	</p>
-	<p class="status">{latestStatus.data.status}</p>
-	<TimeSince
-		client:visible
-		class="time-since-update"
-		timestamp={latestStatus.data.timestamp}
-	/>
+	<p class="status">{content}</p>
+	<TimeSince client:visible class="time-since-update" {timestamp} />
 </Section>
 
 <style>
@@ -32,7 +46,7 @@ const latestStatus = getLatestEntry(statuses, 'timestamp');
 	.username {
 		font-family: var(--ff-accent-word);
 		font-size: var(--fs-accent);
-		color: var(--cl-accent);
+		text-decoration: underline;
 	}
 
 	.icon {
