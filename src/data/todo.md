@@ -1,14 +1,14 @@
 - [ ] todo list
 - [x] webrings
 - [ ] dream journal (thank you [eatsteas](https://eatsteas.neocities.org/dreamjournal/) for the idea!!)
-- [ ] about
+- [x] about
     - [x] facts
     - [x] favorites
         - [x] music
         - [x] games
         - [x] animanga
         - [x] characters
-    - [ ] quiz results
+    - [x] quiz results
 - [ ] (micro)blog
 - [ ] guestbook
 - [ ] comments
