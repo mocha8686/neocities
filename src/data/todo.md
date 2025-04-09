@@ -10,8 +10,7 @@
         - [x] characters
     - [x] quiz results
 - [ ] (micro)blog
-- [ ] guestbook
-- [ ] comments
+- [x] guestbook
 - [ ] shrines
     - [ ] *The Mimosa Confessions*
 - [ ] learning in public
