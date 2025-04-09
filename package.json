@@ -9,7 +9,8 @@
 		"preview": "astro preview",
 		"astro": "astro",
 		"lint": "prettier --write src/**/*.astro; biome format --fix; biome lint --fix; stylelint src/**/*.{astro,css} --fix",
-		"push": "pnpm build && neocities push dist"
+		"push:preview": "pnpm push -P",
+		"push": "async-neocities -c --src dist"
 	},
 	"dependencies": {
 		"@astrojs/svelte": "^7.0.8",
@@ -19,6 +20,7 @@
 		"@fontsource/nabla": "^5.2.6",
 		"@fontsource/shippori-mincho": "^5.2.5",
 		"astro": "^5.5.4",
+		"async-neocities": "^4.1.0",
 		"dayjs": "^1.11.13",
 		"katex": "^0.16.21",
 		"nanostores": "^0.11.4",
