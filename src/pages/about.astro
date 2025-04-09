@@ -5,11 +5,16 @@ import { Content } from '$/data/about.mdx';
 import BackToHome from '$/components/BackToHome.astro';
 import Bounded from '$/components/Bounded.astro';
 import Section from '$/components/Section.astro';
-import Layout from '$/layouts/Layout.astro';
+import Layout, { type Theme } from '$/layouts/Layout.astro';
 import Marquee from '$/components/Marquee.astro';
 import { getCollection } from 'astro:content';
 
 const cats = await getCollection('cats');
+
+const theme: Theme = {
+	accent: 'hsl(305deg 80% 70%)',
+	fg: 'hsl(305deg 80% 82%)',
+};
 ---
 
 <script>
@@ -29,11 +34,11 @@ const cats = await getCollection('cats');
 	});
 </script>
 
-<Layout>
+<Layout {...theme}>
 	<Bounded class="grid">
 		<Content />
 
-		<Section class="filler etc pink">
+		<Section class="filler etc">
 			<h2>Meow :3</h2>
 			<Marquee noSelect duration={`${cats.length * 6}s`} gap="16rem">
 				{
@@ -95,13 +100,6 @@ const cats = await getCollection('cats');
 		margin-block: 0 0.5rem;
 		margin-inline-start: 1rem;
 		font-style: italic;
-	}
-
-	.grid :global(.pink) {
-		--cl-accent: hsl(305deg 80% 70%);
-		--cl-fg: hsl(305deg 80% 82%);
-
-		color: var(--cl-fg);
 	}
 
 	.grid :global(.flags) {

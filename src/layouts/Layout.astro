@@ -8,10 +8,25 @@ import '@fontsource/nabla';
 import 'katex/dist/katex.min.css';
 import type { HTMLAttributes } from 'astro/types';
 
-interface Props extends HTMLAttributes<'body'> {
+export interface Theme {
+	accent?: string;
+	fg?: string;
+	bg?: string;
+	secondary?: string;
+}
+
+interface Props extends HTMLAttributes<'body'>, Theme {
 	title?: string;
 }
-const { title = 'the end of time', class: className, ...rest } = Astro.props;
+const {
+	title = 'the end of time',
+	class: className,
+	accent,
+	fg,
+	bg,
+	secondary,
+	...rest
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -42,7 +57,15 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 	);
 </script>
 
-<style is:global>
+<style
+	define:vars={{
+		'cl-fg': fg,
+		'cl-bg': bg,
+		'cl-accent': accent,
+		'cl-secondary': secondary,
+	}}
+	is:global
+>
 	/* stylelint-disable custom-property-empty-line-before */
 	:root {
 		--cl-fg: hsl(209deg 70% 86% / 100%);
@@ -63,7 +86,7 @@ const { title = 'the end of time', class: className, ...rest } = Astro.props;
 		--fs-secondary: 0.85rem;
 		--fs-timestamp: var(--fs-secondary);
 
-		--bd-section: 2px outset;
+		--bd-section: 2px outset var(--cl-accent);
 
 		--cu-default: url('$/assets/default.png') 7 1, auto;
 		--cu-pointer: url('$/assets/pointer.png') 13 1, pointer;
