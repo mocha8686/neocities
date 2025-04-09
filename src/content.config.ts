@@ -25,4 +25,8 @@ const statuses = defineCollection({
 	}),
 });
 
-export const collections = { reviews, statuses };
+const cats = defineCollection({
+	loader: glob({ pattern: '**/[^_]*.md', base: './src/data/cats' }),
+});
+
+export const collections = { reviews, statuses, cats };

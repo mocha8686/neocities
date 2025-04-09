@@ -4,9 +4,18 @@ import type { HTMLAttributes } from 'astro/types';
 interface Props extends HTMLAttributes<'div'> {
 	duration?: string;
 	reverse?: boolean;
+	gap?: string;
+	noSelect?: boolean;
 }
 
-const { duration = '15s', reverse = false, class: className, ...rest } = Astro.props;
+const {
+	duration = '15s',
+	gap,
+	reverse = false,
+	noSelect = false,
+	class: className,
+	...rest
+} = Astro.props;
 
 const children = Astro.slots.render('default');
 ---
@@ -14,14 +23,16 @@ const children = Astro.slots.render('default');
 <script>
 	import { effectsSettings, toggleClass } from '$/lib/effectsSettings';
 
-	const marquees = document.querySelectorAll('.marquee-container');
+	document.addEventListener('DOMContentLoaded', () => {
+		const marquees = document.querySelectorAll('.marquee-container');
 
-	effectsSettings.subscribe(settings =>
-		toggleClass(settings.marquee, marquees, 'disable'),
-	);
+		effectsSettings.subscribe(settings =>
+			toggleClass(settings.marquee, marquees, 'disable'),
+		);
+	});
 </script>
 
-	<div class:list={['marquee-container', { 'is-reversed': reverse }, className]} {...rest}>
+	<div class:list={['marquee-container', { 'is-reversed': reverse }, { 'disable-select': noSelect }, className]} {...rest}>
 	<ul class="content">
 		<Fragment set:html={children} />
 	</ul>
@@ -30,7 +41,7 @@ const children = Astro.slots.render('default');
 	</ul>
 </div>
 
-<style define:vars={{ duration }}>
+<style define:vars={{ duration, gap }}>
 	.marquee-container {
 		--gap: 1rem;
 
@@ -56,12 +67,16 @@ const children = Astro.slots.render('default');
 		animation: var(--duration) linear infinite forwards marquee;
 	}
 
-	:where(.marquee-container:hover) .content {
+	:where(.marquee-container:hover:not(.disable-select)) .content {
 		animation-play-state: paused;
 	}
 
 	.marquee-container.is-reversed .content {
 		animation-name: marquee-reversed;
+	}
+
+	.marquee-container.disable-select {
+		user-select: none;
 	}
 
 	.marquee-container.disable {

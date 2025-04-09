@@ -4,7 +4,12 @@ import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import svelte from '@astrojs/svelte';
+import mdx from '@astrojs/mdx';
+
 import remarkMath from 'remark-math';
+import remarkDirective from 'remark-directive';
+import remarkRubyDirective from 'remark-ruby-directive';
+
 import rehypeKatex from 'rehype-katex';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -29,9 +34,9 @@ export default defineConfig({
 	},
 
 	markdown: {
-		remarkPlugins: [remarkMath],
+		remarkPlugins: [remarkMath, remarkDirective, remarkRubyDirective],
 		rehypePlugins: [rehypeKatex],
 	},
 
-	integrations: [svelte()],
+	integrations: [svelte(), mdx()],
 });

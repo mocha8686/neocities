@@ -1,0 +1,61 @@
+<script>
+	import { effectsSettings, toggleClass } from "$/lib/effectsSettings";
+
+	document.addEventListener('DOMContentLoaded', () => {
+		const rainbows: NodeListOf<HTMLSpanElement> = document.querySelectorAll('.rainbow');
+
+		effectsSettings.subscribe(settings => toggleClass(settings['text animations'], rainbows, 'disable'));
+
+		for (const rainbow of rainbows) {
+			const randDelay = Math.floor(Math.random() * 2000);
+			const randDelayMs = `${randDelay}ms`;
+
+			const randDuration = Math.floor(Math.random() * 1000) + 1500;
+			const randDurationMs = `${randDuration}ms`;
+
+			rainbow.style.setProperty('--delay', randDelayMs);
+			rainbow.style.setProperty('--duration', randDurationMs);
+		}
+	});
+</script>
+
+<span class="rainbow disable"><slot /></span>
+
+<style>
+.rainbow {
+	--duration: 1.5s;
+	--delay: 0ms;
+	--background-size: 200%;
+
+	color: transparent;
+
+	background: linear-gradient(to right, #66f, #09f, #0f0, #f39, #66f);
+	background-clip: text;
+	background-size: var(--background-size) 100%;
+	filter: brightness(150%);
+
+	animation: var(--duration) linear var(--delay) infinite forwards rainbow;
+}
+
+.rainbow.disable {
+	background-size: 100%;
+	animation: none;
+}
+
+@keyframes rainbow {
+	from {
+		background-position: 0 0;
+	}
+
+	to {
+		background-position: var(--background-size) 0;
+	}
+}
+
+@media (prefers-reduced-motion) {
+	.rainbow {
+		background-size: 100%;
+		animation: none;
+	}
+}
+</style>

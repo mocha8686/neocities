@@ -50,7 +50,7 @@ const {
 
 		margin: 1rem;
 		padding: 0.5rem 1rem;
-		border: var(--bd-section);
+		border: var(--bd-section) var(--cl-accent);
 
 		background: color-mix(
 			in srgb-linear,
@@ -59,11 +59,14 @@ const {
 		);
 	}
 
-	.section:not(.disable-header):global(:has(> :where(h1, h2, h3, h4, h5, h6):first-child)) {
+	.section:not(.disable-header):global(
+			:has(> :where(h1, h2, h3, h4, h5, h6):first-child)
+		) {
 		margin-block-start: 3rem;
 	}
 
-	.section:not(.disable-header) > :global(:where(h1, h2, h3, h4, h5, h6):first-child) {
+	.section:not(.disable-header)
+		> :global(:where(h1, h2, h3, h4, h5, h6):first-child) {
 		position: absolute;
 		inset-block-start: 0;
 		inset-inline-end: 0;

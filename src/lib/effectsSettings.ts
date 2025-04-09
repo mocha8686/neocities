@@ -5,13 +5,15 @@ export const effects = [
 	'CRT chromatic abberation',
 	'CRT flicker',
 	'marquee',
+	'text animations',
 ] as const;
 
-export const defaults = {
+export const defaults: Record<Effects, boolean> = {
 	rain: true,
 	'CRT chromatic abberation': false,
 	'CRT flicker': true,
 	marquee: true,
+	'text animations': true,
 };
 
 export const effectsHash = hashEffectKeys(effects);

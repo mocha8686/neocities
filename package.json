@@ -13,6 +13,7 @@
 		"push": "async-neocities -c --src dist"
 	},
 	"dependencies": {
+		"@astrojs/mdx": "^4.2.3",
 		"@astrojs/svelte": "^7.0.8",
 		"@fontsource/fusion-pixel-12px-proportional-jp": "^5.2.5",
 		"@fontsource/kosugi-maru": "^5.2.5",
@@ -24,9 +25,12 @@
 		"dayjs": "^1.11.13",
 		"katex": "^0.16.21",
 		"nanostores": "^0.11.4",
+		"node-html-parser": "^7.0.1",
 		"normalize.css": "^8.0.1",
 		"rehype-katex": "^7.0.1",
+		"remark-directive": "^4.0.0",
 		"remark-math": "^6.0.0",
+		"remark-ruby-directive": "^0.3.0",
 		"svelte": "^5.25.3"
 	},
 	"devDependencies": {

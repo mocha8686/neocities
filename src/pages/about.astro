@@ -1,5 +1,136 @@
 ---
-import UnderConstruction from '$/components/UnderConstruction.astro';
+import '$/styles/rainbow.css';
+
+import { Content } from '$/data/about.mdx';
+import BackToHome from '$/components/BackToHome.astro';
+import Bounded from '$/components/Bounded.astro';
+import Section from '$/components/Section.astro';
+import Layout from '$/layouts/Layout.astro';
+import Marquee from '$/components/Marquee.astro';
+import { getCollection } from 'astro:content';
+
+const cats = await getCollection('cats');
 ---
 
-<UnderConstruction />
+<script>
+	import { randomizeRainbows } from '$/lib/rainbow';
+
+	document.addEventListener('DOMContentLoaded', randomizeRainbows);
+
+	document.addEventListener('DOMContentLoaded', () => {
+		const mhWeapon = document.querySelector('#mh-weapon');
+		if (!mhWeapon) return;
+
+		const weapons = ['cb', 'gs', 'lance', 'sns', 'gunlance'];
+		const i = Math.floor(Math.random() * weapons.length);
+		const weapon = weapons[i];
+
+		mhWeapon.textContent = weapon;
+	});
+</script>
+
+<Layout>
+	<Bounded class="grid">
+		<Content />
+
+		<Section class="filler etc pink">
+			<h2>Meow :3</h2>
+			<Marquee noSelect duration={`${cats.length * 6}s`} gap="16rem">
+				{
+					cats.map(({ body }) => {
+						if (!body) return;
+						const content = ' ' + body.substring(1);
+						return <pre>{content}</pre>;
+					})
+				}
+			</Marquee>
+			<BackToHome />
+		</Section>
+	</Bounded>
+</Layout>
+
+<style>
+	.grid {
+		--about-span: 3;
+
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+	}
+
+	.grid :global(.about) {
+		grid-area: 1 / 3 / span var(--about-span) / -1;
+		line-height: 1.8;
+	}
+
+	.grid :global(.etc) {
+		line-height: 1.6;
+	}
+
+	/* -n + var(--about-span) */
+	.grid :global(:nth-child(-n + 3 of .etc)) {
+		grid-column: span 2;
+	}
+
+	/* offset starts at var(--about-span) + 1 */
+	.grid
+		:global(
+			:where(:nth-child(4n + 4 of .etc), :nth-child(4n + 7 of .etc))
+		) {
+		grid-column: span 3;
+	}
+
+	.grid
+		:global(
+			:where(:nth-child(4n + 5 of .etc), :nth-child(4n + 6 of .etc))
+		) {
+		grid-column: span 2;
+	}
+
+	.grid :global(:where(h2, h3, h4, h5, h6)) {
+		font-family: var(--ff-special);
+		letter-spacing: 5pt;
+	}
+
+	.grid :global(.comment) {
+		margin-block: 0 0.5rem;
+		margin-inline-start: 1rem;
+		font-style: italic;
+	}
+
+	.grid :global(.pink) {
+		--cl-accent: hsl(305deg 80% 70%);
+		--cl-fg: hsl(305deg 80% 82%);
+
+		color: var(--cl-fg);
+	}
+
+	.grid :global(.flags) {
+		display: flex;
+		gap: 0.5rem;
+		align-items: center;
+	}
+
+	.grid :global(.flag) {
+		aspect-ratio: 99 / 56;
+		max-width: 4rem;
+		height: auto;
+		object-fit: cover;
+	}
+
+	.filler {
+		min-width: 0;
+		padding: 0;
+	}
+
+	.filler:nth-child(even of .etc) {
+		grid-column: 1 / -1;
+	}
+
+	.filler:nth-child(odd of .etc) {
+		grid-column: span 3;
+	}
+
+	.filler :global(a) {
+		margin: 1rem;
+	}
+</style>

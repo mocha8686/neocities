@@ -2,15 +2,16 @@
 - [x] webrings
 - [ ] dream journal (thank you [eatsteas](https://eatsteas.neocities.org/dreamjournal/) for the idea!!)
 - [ ] about
-    - [ ] likes
-    - [ ] dislikes
-    - [ ] favorites
-        - [ ] music
-        - [ ] characters
-        - [ ] animanga
+    - [ ] facts
+    - [x] favorites
+        - [x] music
+        - [x] games
+        - [x] animanga
+        - [x] characters
     - [ ] quiz results
 - [ ] (micro)blog
 - [ ] guestbook
+- [ ] comments
 - [ ] shrines
     - [ ] *The Mimosa Confessions*
 - [ ] learning in public
