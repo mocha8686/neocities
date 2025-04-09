@@ -1,0 +1,17 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
+	name: string;
+	image: string;
+	link: string;
+}
+
+const { name, image, link, class: className, ...rest } = Astro.props;
+---
+
+<div class={className} {...rest}>
+	<a href={link}>
+		<img src={image} alt={name} />
+	</a>
+</div>
