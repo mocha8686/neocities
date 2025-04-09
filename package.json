@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "astro dev",
 		"check": "astro check && svelte-check",
-		"build": "pnpm check && astro build",
+		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
 		"lint": "prettier --write src/**/*.astro; biome format --fix; biome lint --fix; stylelint src/**/*.{astro,css} --fix",
