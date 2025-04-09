@@ -22,6 +22,10 @@ jobs:
           path: status.json
           key: status-${{ env.STATUS_CAFE_USERNAME }}
 
+      - name: Checkout
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/checkout@v4
+
       - name: Trigger new deployment
         if: steps.cache.outputs.cache-hit != 'true'
         uses: ./.github/workflows/neocities.yml
