@@ -3,7 +3,6 @@ name: Check status.cafe
 on:
   schedule:
     - cron: '12/15 * * * *'
-  workflow_dispatch:
 
 env:
   STATUS_CAFE_USERNAME: mocha8686
