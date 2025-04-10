@@ -1,4 +1,4 @@
-import { file, glob } from 'astro/loaders';
+import { glob } from 'astro/loaders';
 import { defineCollection, z } from 'astro:content';
 
 const mathReview = z.object({
@@ -16,17 +16,8 @@ const reviews = defineCollection({
 	}),
 });
 
-const statuses = defineCollection({
-	loader: file('./src/data/statuses.json'),
-	schema: z.object({
-		status: z.string(),
-		icon: z.string(),
-		timestamp: z.coerce.date(),
-	}),
-});
-
 const cats = defineCollection({
 	loader: glob({ pattern: '**/[^_]*.md', base: './src/data/cats' }),
 });
 
-export const collections = { reviews, statuses, cats };
+export const collections = { reviews, cats };
