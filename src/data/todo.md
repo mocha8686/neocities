@@ -9,7 +9,7 @@
         - [x] animanga
         - [x] characters
     - [x] quiz results
-- [ ] (micro)blog
+- [x] (micro)blog
 - [x] guestbook
 - [ ] shrines
     - [ ] *The Mimosa Confessions*
