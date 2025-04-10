@@ -23,7 +23,8 @@ jobs:
         id: last-status-restore
         with:
           path: status.json
-          key: status-${{ env.STATUS_CAFE_USERNAME }}
+          key: status-${{ env.STATUS_CAFE_USERNAME }}-${{ hashFiles('status.json') }}
+          lookup-only: true
 
       - name: Save latest status
         if: steps.cache.outputs.cache-hit != 'true'
