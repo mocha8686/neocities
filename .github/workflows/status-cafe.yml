@@ -3,6 +3,7 @@ name: Check status.cafe
 on:
   schedule:
     - cron: '12/15 * * * *'
+  workflow_dispatch:
 
 env:
   STATUS_CAFE_USERNAME: mocha8686
@@ -25,6 +26,9 @@ jobs:
       - name: Checkout
         if: steps.cache.outputs.cache-hit != 'true'
         uses: actions/checkout@v4
+
+      - name: ls
+        run: ls -la
 
       - name: Trigger new deployment
         if: steps.cache.outputs.cache-hit != 'true'
