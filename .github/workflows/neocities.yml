@@ -6,6 +6,9 @@ on:
       - main
   workflow_dispatch:
   workflow_call:
+    secrets:
+      NEOCITIES_API_KEY:
+        required: true
 
 env:
   PNPM_VERSION: 10

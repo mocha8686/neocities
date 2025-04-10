@@ -11,6 +11,8 @@ env:
 jobs:
   check:
     runs-on: ubuntu-latest
+    outputs:
+      cache-hit: ${{ steps.last-status-restore.outputs.cache-hit }}
     steps:
       - name: Retrieve latest status
         run: |
@@ -23,20 +25,15 @@ jobs:
           path: status.json
           key: status-${{ env.STATUS_CAFE_USERNAME }}
 
-      - name: Checkout
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: actions/checkout@v4
-
-      - name: ls
-        run: ls -la
-
-      - name: Trigger new deployment
-        if: steps.cache.outputs.cache-hit != 'true'
-        uses: ./.github/workflows/neocities.yml
-
       - name: Save latest status
         if: steps.cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: status.json
           key: ${{ steps.last-status-restore.outputs.cache-primary-key }}
+
+  deploy:
+    uses: ./.github/workflows/neocities.yml
+    needs: check
+    if: ${{ needs.check.outputs.cache-hit != 'true' }}
+    secrets: inherit
