@@ -1,13 +1,15 @@
 import { glob } from 'astro/loaders';
 import { defineCollection, z } from 'astro:content';
 
+const mdPattern = '**/[^_]*.md';
+
 const mathReview = z.object({
 	type: z.literal('math'),
 	expression: z.string(),
 });
 
 const reviews = defineCollection({
-	loader: glob({ pattern: '**/[^_]*.md', base: './src/data/reviews' }),
+	loader: glob({ pattern: mdPattern, base: './src/data/reviews' }),
 	schema: z.object({
 		title: z.string(),
 		pubDate: z.coerce.date(),
@@ -17,7 +19,14 @@ const reviews = defineCollection({
 });
 
 const cats = defineCollection({
-	loader: glob({ pattern: '**/[^_]*.md', base: './src/data/cats' }),
+	loader: glob({ pattern: mdPattern, base: './src/data/cats' }),
 });
 
-export const collections = { reviews, cats };
+const blog = defineCollection({
+	loader: glob({ pattern: mdPattern, base: './src/data/blog' }),
+	schema: z.object({
+		date: z.coerce.date(),
+	}),
+});
+
+export const collections = { reviews, cats, blog };

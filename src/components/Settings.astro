@@ -8,14 +8,15 @@ type Props = HTMLAttributes<'div'>;
 const { class: className, ...rest } = Astro.props;
 ---
 
-<Section class:list={['container', className]} {...rest}>
+<Section class:list={['settings-container', className]} {...rest}>
 	<h2>Settings</h2>
 	<SettingsList client:load />
 </Section>
 
 <style>
-	.container {
+	.settings-container {
 		display: flex;
 		flex-direction: column;
+		line-height: 1.6;
 	}
 </style>
