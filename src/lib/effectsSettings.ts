@@ -16,7 +16,6 @@ export const defaults: Record<Effects, boolean> = {
 	'text animations': true,
 };
 
-export const effectsHash = hashEffectKeys(effects);
 export type Effects = (typeof effects)[number];
 
 export type EffectsMap = Record<Effects, boolean>;
@@ -52,43 +51,27 @@ export function toggleClass(
 }
 
 export function loadSettings() {
-	const hashKey = 'settingsHash';
 	const settingsKey = 'settings';
 
 	const settingsString = window.localStorage.getItem(settingsKey);
 	if (!settingsString) {
-		effectsSettings.set(defaults);
 		window.localStorage.setItem(settingsKey, JSON.stringify(defaults));
-		window.localStorage.setItem(hashKey, effectsHash);
+		effectsSettings.set(defaults);
 		return;
 	}
 
-	const hash = window.localStorage.getItem(hashKey);
-	if (!hash || hash !== effectsHash) {
-		window.localStorage.setItem(hashKey, effectsHash);
+	try {
+		const settings: Record<string, boolean> = JSON.parse(settingsString);
 
-		const oldSettings: Record<string, boolean> = JSON.parse(settingsString);
-		const keys = Object.keys(effectsSettings.get());
-
-		const migratedSettings = Object.entries(oldSettings).filter(
-			([key]) => key in keys,
-		);
-
-		for (const [key, value] of migratedSettings) {
-			// @ts-ignore
-			effectsSettings.setKey(key, value);
+		for (const effect of effects) {
+			if (effect in settings) {
+				effectsSettings.setKey(effect, settings[effect]);
+			} else {
+				effectsSettings.setKey(effect, defaults[effect]);
+			}
 		}
-
-		return;
+	} catch {
+		window.localStorage.setItem(settingsKey, JSON.stringify(defaults));
+		effectsSettings.set(defaults);
 	}
-
-	const settings = JSON.parse(settingsString);
-	for (const [key, value] of Object.entries(settings)) {
-		// @ts-ignore
-		effectsSettings.setKey(key, value);
-	}
-}
-
-function hashEffectKeys(keys: Readonly<string[]>): string {
-	return JSON.stringify(keys);
 }
