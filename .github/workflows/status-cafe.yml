@@ -37,4 +37,6 @@ jobs:
     uses: ./.github/workflows/neocities.yml
     needs: check
     if: ${{ needs.check.outputs.cache-hit != 'true' }}
-    secrets: inherit
+    secrets:
+      NEOCITIES_API_KEY: ${{ secrets.NEOCITIES_API_KEY }}
+
