@@ -1,0 +1,50 @@
+{
+	"name": "",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"check": "astro check && svelte-check",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro",
+		"lint": "prettier --write src/**/*.astro; biome format --fix; biome lint --fix; stylelint src/**/*.{astro,css} --fix",
+		"push:preview": "pnpm push -P",
+		"push": "async-neocities -c --src dist"
+	},
+	"dependencies": {
+		"@astrojs/mdx": "^4.2.3",
+		"@astrojs/svelte": "^7.0.8",
+		"@fontsource/fusion-pixel-12px-proportional-jp": "^5.2.5",
+		"@fontsource/kosugi-maru": "^5.2.5",
+		"@fontsource/michroma": "^5.2.5",
+		"@fontsource/nabla": "^5.2.6",
+		"@fontsource/shippori-mincho": "^5.2.5",
+		"astro": "^5.5.4",
+		"async-neocities": "^4.1.0",
+		"dayjs": "^1.11.13",
+		"katex": "^0.16.21",
+		"nanostores": "^0.11.4",
+		"node-html-parser": "^7.0.1",
+		"normalize.css": "^8.0.1",
+		"rehype-katex": "^7.0.1",
+		"remark-directive": "^4.0.0",
+		"remark-math": "^6.0.0",
+		"remark-ruby-directive": "^0.3.0",
+		"svelte": "^5.25.3"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.4",
+		"@biomejs/biome": "^1.9.4",
+		"@types/node": "^22.13.13",
+		"prettier": "^3.5.3",
+		"prettier-plugin-astro": "^0.14.1",
+		"prettier-plugin-svelte": "^3.3.3",
+		"stylelint": "^16.16.0",
+		"stylelint-config-clean-order": "^7.0.0",
+		"stylelint-config-html": "^1.1.0",
+		"stylelint-config-standard": "^37.0.0",
+		"svelte-check": "^4.1.5",
+		"typescript": "^5.8.2"
+	}
+}
