@@ -26,7 +26,7 @@ jobs:
           lookup-only: true
 
       - name: Save latest status
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.last-status-restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: status.json
