@@ -1,0 +1,15 @@
+---
+layout: layouts/base.webc
+---
+
+<template @raw="content" webc:nokeep></template>
+
+<script type="module" webc:keep>
+	import 'normalize.css/normalize.css';
+	import 'katex/dist/katex.min.css';
+	import '@fontsource/michroma';
+	import '@fontsource/shippori-mincho';
+	import '@fontsource/kosugi-maru';
+	import '@fontsource/fusion-pixel-12px-proportional-jp';
+	import '@fontsource/nabla';
+</script>
