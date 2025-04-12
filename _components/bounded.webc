@@ -1,0 +1,15 @@
+<div class="container">
+	<slot></slot>
+</div>
+
+<style webc:scoped="Bounded">
+	:host {
+		display: flex;
+		justify-content: end;
+	}
+
+	:host>.container {
+		flex: auto;
+		max-width: 67vw;
+	}
+</style>
