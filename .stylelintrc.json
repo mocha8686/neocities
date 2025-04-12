@@ -2,7 +2,7 @@
 	"extends": [
 		"stylelint-config-standard",
 		"stylelint-config-clean-order",
-		"stylelint-config-html/astro"
+		"stylelint-config-html/html"
 	],
 	"rules": {
 		"selector-class-pattern": null,
@@ -12,5 +12,11 @@
 				"ignorePseudoClasses": "global"
 			}
 		]
-	}
+	},
+	"overrides": [
+		{
+			"files": ["*.webc", "**/*.webc"],
+			"customSyntax": "postcss-html"
+		}
+	]
 }
