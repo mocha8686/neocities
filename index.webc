@@ -3,4 +3,38 @@ layout: layouts/cyber.webc
 ---
 
 <bounded>
+	<hologram>
+		<h1>The Bar at the End of Time</h1>
+	</hologram>
+
+	<main>
+		<hologram class="welcome">
+			<h2>Welcome</h2>
+			<p>effervescence is ephemeral, bounded by the limits of time. enjoy the now.</p>
+		</hologram>
+
+		<hologram class="info">
+			<h2>Information</h2>
+			<template webc:type="11ty" 11ty:type="md">
+				welcome in, take a seat~
+
+				the bar's under construction right now (crazy, i know), but while you're waiting, feel free to learn
+				more [about this site](/about) or find another cool page [on the sitemap~](/sitemap)
+			</template>
+		</hologram>
+	</main>
+
+	<div class="side">
+	</div>
 </bounded>
+
+<style>
+	.welcome p {
+		margin: 0;
+		text-align: center;
+	}
+
+	.info {
+		line-height: 1.6;
+	}
+</style>
