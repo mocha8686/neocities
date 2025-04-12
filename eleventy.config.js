@@ -3,7 +3,7 @@ import EleventyVitePlugin from '@11ty/eleventy-plugin-vite';
 
 /** @param {import('@11ty/eleventy').UserConfig} eleventyConfig */
 export default function config(eleventyConfig) {
-	eleventyConfig.setServerPassthroughCopyBehavior('passthrough');
+	eleventyConfig.addPassthroughCopy('assets')
 
 	eleventyConfig.addPlugin(EleventyVitePlugin);
 
