@@ -1,10 +1,6 @@
 <hologram>
 	<h2>Directory</h2>
-	<ul>
-		<li webc:for="link of links">
-			<a :href="link.href" @text="link.name"></a>
-		</li>
-	</ul>
+	<nav @html="eleventyNavigationToHtml(eleventyNavigation(collections.all))"></nav>
 </hologram>
 
 <style webc:scoped="Directory">

@@ -16,6 +16,7 @@
 	"dependencies": {
 		"@11ty/eleventy": "^3.0.0",
 		"@11ty/eleventy-img": "^6.0.2",
+		"@11ty/eleventy-navigation": "^1.0.4",
 		"@11ty/eleventy-plugin-vite": "^6.0.0",
 		"@11ty/eleventy-plugin-webc": "^0.11.2",
 		"@fontsource/fusion-pixel-12px-proportional-jp": "^5.2.5",
