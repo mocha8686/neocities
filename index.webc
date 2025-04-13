@@ -34,6 +34,7 @@ layout: layouts/cyber.webc
 		</main>
 
 		<div class="side">
+			<directory></directory>
 			<settings></settings>
 		</div>
 	</div>

@@ -1,0 +1,14 @@
+<hologram>
+	<h2>Directory</h2>
+	<ul>
+		<li webc:for="link of links">
+			<a :href="link.href" @text="link.name"></a>
+		</li>
+	</ul>
+</hologram>
+
+<style webc:scoped="Directory">
+	ul {
+		line-height: 1.6;
+	}
+</style>
