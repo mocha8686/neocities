@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title @text="title">the end of time</title>
+	<link rel="shortcut icon" href="/favicon.png" type="image/png">
 
 	<link rel="stylesheet" href="../../node_modules/normalize.css/normalize.css">
 
@@ -15,9 +16,9 @@
 
 	<script type="module" webc:keep>
 		import Alpine from 'alpinejs'
- 
+
 		window.Alpine = Alpine
-		 
+
 		Alpine.start()
 	</script>
 </head>
