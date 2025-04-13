@@ -27,6 +27,8 @@ layout: layouts/cyber.webc
 				more [about this site](/about) or find another cool page [on the sitemap~](/sitemap)
 			</template>
 		</hologram>
+
+		<inspiration></inspiration>
 	</main>
 
 	<div class="side">
