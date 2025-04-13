@@ -3,6 +3,7 @@ layout: layouts/cyber.webc
 eleventyNavigation:
   key: Home
   exclude: true
+  order: 0
 ---
 
 <bounded>

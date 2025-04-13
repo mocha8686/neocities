@@ -4,12 +4,16 @@ import eleventyNavigationPlugin from '@11ty/eleventy-navigation';
 import { eleventyImagePlugin } from '@11ty/eleventy-img';
 
 import markdownItTaskCheckbox from 'markdown-it-task-checkbox';
+import markdownItRuby from 'markdown-it-ruby';
 
 import path from 'node:path';
 
 /** @param {import('@11ty/eleventy').UserConfig} eleventyConfig */
 export default function (eleventyConfig) {
-	eleventyConfig.amendLibrary('md', mdLib => mdLib.use(markdownItTaskCheckbox));
+	eleventyConfig.amendLibrary('md', mdLib => {
+		mdLib.use(markdownItTaskCheckbox);
+		mdLib.use(markdownItRuby);
+	});
 
 	eleventyConfig.addPlugin(eleventyNavigationPlugin);
 

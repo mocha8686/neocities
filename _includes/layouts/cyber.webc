@@ -1,5 +1,9 @@
 ---
 layout: layouts/base.webc
+fg: hsl(209deg 70% 86% / 100%);
+bg: hsl(208deg 52% 4% / 100%);
+accent: hsl(208deg 100% 80%);
+secondary: hsl(208deg 19% 55%);
 ---
 
 <div :x-data="JSON.stringify({ settings: defaultSettings })" x-init="loadSettings(settings)" x-bind:class="{ 'enable-rain': settings['rain'] }" @raw="content"></div>
@@ -39,13 +43,20 @@ layout: layouts/base.webc
 	import '@fontsource/nabla';
 </script>
 
+<style webc:is="style" webc:type="js">
+`
+:root {
+	--cl-fg: ${fg};
+	--cl-bg: ${bg};
+	--cl-accent: ${accent};
+	--cl-secondary: ${secondary};
+}
+`
+</style>
+
 <style>
 	/* stylelint-disable custom-property-empty-line-before */
 	:root {
-		--cl-fg: hsl(209deg 70% 86% / 100%);
-		--cl-bg: hsl(208deg 52% 4% / 100%);
-		--cl-accent: hsl(208deg 100% 80%);
-		--cl-secondary: hsl(208deg 19% 55%);
 
 		--ff-main: 'Shippori Mincho', 'Times New Roman', serif;
 		--ff-header: 'Michroma', sans-serif;
