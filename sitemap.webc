@@ -1,0 +1,129 @@
+---
+layout: layouts/cyber.webc
+eleventyNavigation:
+  key: Sitemap
+  excerpt: this page!
+---
+
+<script webc:setup>
+	const navPages = eleventyNavigation(collections.all);
+
+	function renderEntries(entries, root = true, levels = []) {
+		const bars = levels.map(isActive => (isActive ? '│ ' : '  ')).join('');
+		const prefix = `'${bars}├─/'`;
+		const endPrefix = `'${bars}└─/'`;
+		const prefixStyle = `style="--prefix: ${prefix}; --end-prefix: ${endPrefix};"`;
+
+		const rootClass = root ? 'class="root"' : '';
+
+		let output = '';
+		for (const [i, entry] of entries.entries()) {
+			if (entry.exclude) continue;
+			output += renderEntry(entry, i + 1 === entries.length, levels);
+		}
+
+		return `
+<ul ${rootClass} ${prefixStyle}>
+	${output}
+</ul>
+		`;
+	}
+
+	function renderEntry(entry, isLast, levels) {
+		const description =
+			entry.excerpt ?
+				`
+<div class="line" aria-hidden="true"></div>
+<p>${entry.excerpt}</p>
+	`
+			:	'';
+
+		const children =
+			entry.children.length > 0 ?
+				`
+<ul>
+	${renderEntries(entry.children, false, processLevels(levels, isLast))}
+</ul>
+	`
+			:	'';
+
+		return `
+<li>
+	<div class="entry">
+		<a href="${entry.url}">${entry.title.toLowerCase()}</a>
+		${description}
+	</div>
+	${children}
+</li>
+`;
+	}
+
+	function processLevels(levels, isLast) {
+		const newLevels = [...levels, !isLast];
+		return newLevels;
+	}
+</script>
+
+<bounded>
+	<hologram>
+		<h1>Sitemap</h1>
+		<h2>Root</h2>
+		<nav @html="renderEntries(navPages)"></nav>
+		<back-to-home></back-to-home>
+	</hologram>
+</bounded>
+
+<style>
+	h2 {
+		margin-block-end: 0.25rem;
+	}
+
+	h2::before {
+		content: '/';
+	}
+
+	.header {
+		margin-block-end: 0.25rem;
+	}
+
+	ul {
+		padding-inline-start: 1ch;
+		font-family: var(--ff-mono);
+		line-height: 1.3;
+		list-style-type: var(--prefix);
+	}
+
+	ul.root {
+		margin-block-start: 0;
+		margin-inline-start: 1.5ch;
+	}
+
+	.entry {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.line {
+		flex: auto;
+		align-self: center;
+		margin-inline: 1rem;
+		border: 1px dashed var(--cl-secondary);
+	}
+
+	a {
+		margin-block: 0;
+	}
+
+	p {
+		margin: 0;
+		color: var(--cl-secondary);
+	}
+
+	p::before {
+		content: '# ';
+	}
+
+	li:last-child {
+		list-style-type: var(--end-prefix);
+	}
+</style>

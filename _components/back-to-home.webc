@@ -1,0 +1,12 @@
+<a webc:root="override" class="BackToHome" href="/">Back to home</a>
+
+<style>
+	.BackToHome {
+		display: block;
+		text-align: end;
+	}
+
+	.BackToHome::after {
+		content: ' >>';
+	}
+</style>
