@@ -1,10 +1,6 @@
 <hologram>
 	<h2>Directory</h2>
-	<nav @html="eleventyNavigationToHtml(eleventyNavigation(collections.all))"></nav>
+	<navigation>
+		<template @html="eleventyNavigationToHtml(eleventyNavigation(collections.all))" webc:nokeep></template>
+	</navigation>
 </hologram>
-
-<style webc:scoped="Directory">
-	ul {
-		line-height: 1.6;
-	}
-</style>
