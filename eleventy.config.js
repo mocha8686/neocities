@@ -8,7 +8,7 @@ import path from 'node:path';
 
 /** @param {import('@11ty/eleventy').UserConfig} eleventyConfig */
 export default function (eleventyConfig) {
-	eleventyConfig.amendLibrary("md", (mdLib) => mdLib.use(markdownItTaskCheckbox));
+	eleventyConfig.amendLibrary('md', mdLib => mdLib.use(markdownItTaskCheckbox));
 
 	eleventyConfig.addPlugin(eleventyWebcPlugin, {
 		components: ['_components/**/*.webc', 'npm:@11ty/eleventy-img/*.webc'],

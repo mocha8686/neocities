@@ -68,7 +68,6 @@
 	}
 
 	@media (prefers-reduced-motion) {
-
 		:host,
 		:host::before {
 			animation: none;

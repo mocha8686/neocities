@@ -16,11 +16,15 @@ layout: layouts/cyber.webc
 		<main>
 			<hologram class="welcome">
 				<h2>Welcome</h2>
-				<p>effervescence is ephemeral, bounded by the limits of time. enjoy the now.</p>
+				<p>
+					effervescence is ephemeral, bounded by the limits of time. enjoy the
+					now.
+				</p>
 			</hologram>
 
 			<hologram class="info">
 				<h2>Information</h2>
+				<!-- prettier-ignore -->
 				<template webc:type="11ty" 11ty:type="md">
 					welcome in, take a seat~
 
