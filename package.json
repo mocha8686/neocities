@@ -22,6 +22,7 @@
 		"@fontsource/michroma": "^5.2.5",
 		"@fontsource/nabla": "^5.2.6",
 		"@fontsource/shippori-mincho": "^5.2.5",
+		"alpinejs": "^3.14.9",
 		"katex": "^0.16.22",
 		"normalize.css": "^8.0.1",
 		"vite": "^6.2.6"

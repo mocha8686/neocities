@@ -1,4 +1,7 @@
-<slot></slot>
+<div webc:root
+	x-bind:class="{'enable-crt-flicker': settings['CRT flicker'], 'enable-crt-color-shear': settings['CRT chromatic aberration']}">
+	<slot></slot>
+</div>
 
 <style webc:scoped="Hologram">
 	:host {
@@ -30,7 +33,7 @@
 		margin-block: 0;
 	}
 
-	:host:not(.disable-crt-flicker)::before {
+	:host.enable-crt-flicker::before {
 		pointer-events: none;
 		content: "";
 
@@ -60,11 +63,12 @@
 		background-size: 100% 2px, 3px 100%;
 	}
 
-	:host:not(.disable-crt-color-shear) {
+	:host.enable-crt-color-shear {
 		animation: color-shear 1.6s infinite;
 	}
 
 	@media (prefers-reduced-motion) {
+
 		:host,
 		:host::before {
 			animation: none;

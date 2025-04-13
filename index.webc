@@ -25,10 +25,28 @@ layout: layouts/cyber.webc
 	</main>
 
 	<div class="side">
+		<settings></settings>
 	</div>
 </bounded>
 
 <style>
+	.special {
+		font-family: var(--ff-special);
+		font-size: 1.5rem;
+	}
+
+	.content {
+		display: flex;
+	}
+
+	main {
+		flex: auto;
+	}
+
+	.side {
+		flex: auto;
+	}
+
 	.welcome p {
 		margin: 0;
 		text-align: center;

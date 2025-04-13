@@ -2,7 +2,32 @@
 layout: layouts/base.webc
 ---
 
-<template @raw="content" webc:nokeep></template>
+<div :x-data="JSON.stringify({ settings: defaultSettings })" x-init="loadSettings(settings)" x-bind:class="{ 'enable-rain': settings['rain'] }" @raw="content"></div>
+
+<script>
+	function loadSettings(settings) {
+		const settingsString = window.localStorage.getItem('settings');
+		if (!settingsString) {
+			window.localStorage.setItem('settings', JSON.stringify(settings));
+			return;
+		}
+
+		const effects = Object.keys(settings);
+
+		try {
+			const windowSettings = JSON.parse(settingsString);
+
+			for (const effect of effects) {
+				if (effect in windowSettings) {
+					settings[effect] = windowSettings[effect];
+				}
+			}
+		} catch (e) {
+			console.error(e);
+			window.localStorage.setItem('settings', JSON.stringify(settings));
+		}
+	}
+</script>
 
 <script type="module" webc:keep>
 	import 'normalize.css/normalize.css';
@@ -58,13 +83,13 @@ layout: layouts/base.webc
 		z-index: var(--z-bg);
 		inset: 0;
 
+		background: var(--cl-bg);
+	}
+
+	body:has(> .enable-rain)::before {
 		background:
 			url('/assets/pixel_rain.gif') center/contain repeat-x,
 			var(--cl-bg);
-	}
-
-	body.disable-rain::before {
-		background: var(--cl-bg);
 	}
 
 	body,
