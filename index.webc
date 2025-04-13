@@ -36,6 +36,32 @@ layout: layouts/cyber.webc
 		<div class="side">
 			<directory></directory>
 			<settings></settings>
+			<site-button></site-button>
+
+			<hologram class="todo">
+				<h2>Todo</h2>
+
+				<!-- prettier-ignore -->
+				<template webc:type="11ty" 11ty:type="md">
+- [ ] todo list
+- [x] webrings
+- [ ] dream journal (thank you [eatsteas](https://eatsteas.neocities.org/dreamjournal/) for the idea!!)
+- [x] about
+	- [x] facts
+	- [x] favorites
+		- [x] music
+		- [x] games
+		- [x] animanga
+		- [x] characters
+	- [x] quiz results
+- [x] (micro)blog
+- [x] guestbook
+- [ ] shrines
+	- [ ] *The Mimosa Confessions*
+- [ ] learning in public
+- [ ] computer
+				</template>
+			</hologram>
 		</div>
 	</div>
 </bounded>
@@ -66,5 +92,13 @@ layout: layouts/cyber.webc
 
 	.info {
 		line-height: 1.6;
+	}
+
+	.todo {
+		line-height: 1.4;
+	}
+
+	.todo > ul > li {
+		margin-block-end: 0.75rem;
 	}
 </style>
