@@ -43,6 +43,7 @@ eleventyNavigation:
 
 		<div class="side">
 			<directory></directory>
+			<status></status>
 			<favorite></favorite>
 			<settings></settings>
 			<site-button></site-button>
