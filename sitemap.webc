@@ -1,8 +1,9 @@
 ---
-layout: layouts/cyber.webc
+layout: cyber.webc
 eleventyNavigation:
   key: Sitemap
   excerpt: this page!
+  order: 3
 ---
 
 <script webc:setup>

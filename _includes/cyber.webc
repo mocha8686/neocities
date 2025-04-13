@@ -1,5 +1,5 @@
 ---
-layout: layouts/base.webc
+layout: base.webc
 fg: hsl(209deg 70% 86% / 100%);
 bg: hsl(208deg 52% 4% / 100%);
 accent: hsl(208deg 100% 80%);

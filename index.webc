@@ -1,5 +1,5 @@
 ---
-layout: layouts/cyber.webc
+layout: cyber.webc
 eleventyNavigation:
   key: Home
   exclude: true
