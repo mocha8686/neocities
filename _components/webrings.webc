@@ -1,0 +1,17 @@
+<hologram>
+	<h2>Webrings</h2>
+	<webring-no-ai></webring-no-ai>
+	<webring-transing-the-internet></webring-transing-the-internet>
+</hologram>
+
+<style webc:scoped="Webrings">
+	.Hologram {
+		display: grid;
+		grid-auto-rows: max-content;
+		grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+		gap: 2rem;
+		place-items: center;
+
+		padding-block: 2rem;
+	}
+</style>

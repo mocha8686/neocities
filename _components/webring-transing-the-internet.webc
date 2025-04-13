@@ -1,0 +1,9 @@
+<script webc:keep defer src="https://transring.neocities.org/ring.js"></script>
+
+<style webc:scoped="TransingTheInternet">
+	div {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+</style>

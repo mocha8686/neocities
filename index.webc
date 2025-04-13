@@ -29,6 +29,7 @@ layout: layouts/cyber.webc
 		</hologram>
 
 		<inspiration></inspiration>
+		<webrings></webrings>
 	</main>
 
 	<div class="side">
