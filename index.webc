@@ -12,13 +12,14 @@ layout: layouts/cyber.webc
 		</anim-marquee>
 	</hologram>
 
-	<main>
-		<hologram class="welcome">
+	<div class="content">
+		<main>
+			<hologram class="welcome">
 			<h2>Welcome</h2>
 			<p>effervescence is ephemeral, bounded by the limits of time. enjoy the now.</p>
-		</hologram>
+			</hologram>
 
-		<hologram class="info">
+			<hologram class="info">
 			<h2>Information</h2>
 			<template webc:type="11ty" 11ty:type="md">
 				welcome in, take a seat~
@@ -26,14 +27,15 @@ layout: layouts/cyber.webc
 				the bar's under construction right now (crazy, i know), but while you're waiting, feel free to learn
 				more [about this site](/about) or find another cool page [on the sitemap~](/sitemap)
 			</template>
-		</hologram>
+			</hologram>
 
-		<inspiration></inspiration>
-		<webrings></webrings>
-	</main>
+			<inspiration></inspiration>
+			<webrings></webrings>
+		</main>
 
-	<div class="side">
-		<settings></settings>
+		<div class="side">
+			<settings></settings>
+		</div>
 	</div>
 </bounded>
 
@@ -53,6 +55,7 @@ layout: layouts/cyber.webc
 
 	.side {
 		flex: auto;
+		min-width: max-content;
 	}
 
 	.welcome p {
