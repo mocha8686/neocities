@@ -5,6 +5,11 @@ layout: layouts/cyber.webc
 <bounded>
 	<hologram>
 		<h1>The Bar at the End of Time</h1>
+		<anim-marquee>
+			<li>it's about time you got here, don't you think?</li>
+			<li>hihihihihi!!!! :3</li>
+			<li class="special">meow meow</li>
+		</anim-marquee>
 	</hologram>
 
 	<main>

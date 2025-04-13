@@ -1,0 +1,98 @@
+<div webc:root x-bind:class="{ 'disable': !settings['marquee'] }">
+	<ul>
+		<slot></slot>
+	</ul>
+	<ul aria-hidden="true">
+		<slot></slot>
+	</ul>
+</div>
+
+<style>
+	.Hologram:has(> .Marquee) {
+		padding: 0;
+	}
+</style>
+
+<style webc:scoped="Marquee">
+	:host {
+		--gap: 1rem;
+		--duration: 15s;
+
+		overflow: hidden;
+		display: flex;
+		flex-direction: row;
+		gap: var(--gap);
+
+		padding-block: 1rem;
+	}
+
+	ul {
+		display: flex;
+		flex: none;
+		gap: var(--gap);
+		justify-content: space-around;
+
+		min-width: 100%;
+		margin: 0;
+
+		list-style-type: none;
+
+		animation: var(--duration) linear infinite forwards marquee;
+	}
+
+	:host.reverse ul {
+		animation-name: marquee-reversed;
+	}
+
+	:host.disable ul {
+		padding-inline: 1rem;
+		animation: none;
+	}
+
+	:host:hover:not(.disable-select) ul {
+		animation-play-state: paused;
+	}
+
+	:host.disable-select {
+		user-select: none;
+	}
+
+	:host.disable {
+		overflow: scroll;
+	}
+
+	:host.disable ul:last-child {
+		display: none;
+	}
+
+	ul>* {
+		display: grid;
+		place-items: center;
+	}
+
+	@keyframes marquee {
+		from {
+			translate: 0 0;
+		}
+
+		to {
+			translate: calc(-100% - var(--gap)) 0;
+		}
+	}
+
+	@keyframes marquee-reversed {
+		from {
+			translate: calc(-100% - var(--gap)) 0;
+		}
+
+		to {
+			translate: 0 0;
+		}
+	}
+
+	@media (prefers-reduced-motion) {
+		ul {
+			animation: none;
+		}
+	}
+</style>
