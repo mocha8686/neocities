@@ -15,18 +15,18 @@ layout: layouts/cyber.webc
 	<div class="content">
 		<main>
 			<hologram class="welcome">
-			<h2>Welcome</h2>
-			<p>effervescence is ephemeral, bounded by the limits of time. enjoy the now.</p>
+				<h2>Welcome</h2>
+				<p>effervescence is ephemeral, bounded by the limits of time. enjoy the now.</p>
 			</hologram>
 
 			<hologram class="info">
-			<h2>Information</h2>
-			<template webc:type="11ty" 11ty:type="md">
-				welcome in, take a seat~
+				<h2>Information</h2>
+				<template webc:type="11ty" 11ty:type="md">
+					welcome in, take a seat~
 
-				the bar's under construction right now (crazy, i know), but while you're waiting, feel free to learn
-				more [about this site](/about) or find another cool page [on the sitemap~](/sitemap)
-			</template>
+					the bar's under construction right now (crazy, i know), but while you're waiting, feel free to learn
+					more [about this site](/about) or find another cool page [on the sitemap~](/sitemap)
+				</template>
 			</hologram>
 
 			<inspiration></inspiration>
