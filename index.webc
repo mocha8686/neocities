@@ -93,7 +93,6 @@ eleventyNavigation:
 
 	.side {
 		flex: auto;
-		min-width: max-content;
 	}
 
 	.welcome p {
