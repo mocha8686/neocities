@@ -2,7 +2,7 @@
 	<ul>
 		<slot></slot>
 	</ul>
-	<ul aria-hidden="true">
+	<ul tabindex="-1" aria-hidden="true">
 		<slot></slot>
 	</ul>
 </div>
