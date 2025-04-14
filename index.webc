@@ -88,6 +88,7 @@ eleventyNavigation:
 
 	main {
 		flex: auto;
+		min-width: 0;
 	}
 
 	.side {
