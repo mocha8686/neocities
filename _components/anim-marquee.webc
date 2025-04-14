@@ -41,7 +41,7 @@
 	}
 
 	:host.reverse ul {
-		animation-name: marquee-reversed;
+		animation-direction: reverse;
 	}
 
 	:host.disable ul {
@@ -77,16 +77,6 @@
 
 		to {
 			translate: calc(-100% - var(--gap)) 0;
-		}
-	}
-
-	@keyframes marquee-reversed {
-		from {
-			translate: calc(-100% - var(--gap)) 0;
-		}
-
-		to {
-			translate: 0 0;
 		}
 	}
 
