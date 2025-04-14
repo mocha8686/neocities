@@ -56,13 +56,12 @@ secondary: hsl(208deg 19% 55%)
 		--cl-accent: ${accent};
 		--cl-secondary: ${secondary};
 	}
-	`
+	`;
 </script>
 
 <style>
 	/* stylelint-disable custom-property-empty-line-before */
 	:root {
-
 		--ff-main: 'Shippori Mincho', 'Times New Roman', serif;
 		--ff-header: 'Michroma', sans-serif;
 		--ff-accent: 'Kosugi Maru', sans-serif;

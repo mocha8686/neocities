@@ -3,11 +3,11 @@ title: Euler-Lagrange
 date: 2024-03-27
 updatedDate: 2024-03-29
 thing:
-    type: math
-    expression: \frac{d}{dt}\left(\frac{\partial L}{\partial \dot{q}}\right)=\frac{\partial L}{\partial q}
+  type: math
+  expression: \frac{d}{dt}\left(\frac{\partial L}{\partial \dot{q}}\right)=\frac{\partial L}{\partial q}
 ---
 
-this one's a real doozy. one day i found a random youtube video talking about [lagrangian mechanics](https://en.wikipedia.org/wiki/Lagrangian_mechanics), and i watched it and i was like, *wow! that sounds cool. lemme try*.... yeah i'm weird, okay?
+this one's a real doozy. one day i found a random youtube video talking about [lagrangian mechanics](https://en.wikipedia.org/wiki/Lagrangian_mechanics), and i watched it and i was like, _wow! that sounds cool. lemme try_.... yeah i'm weird, okay?
 
 and so i did try and it was horribly confusing—but still, some part of me just wanted to learn it for some reason, so i kept going until i finally understood it. and wow, i now know i should've waited until calculus because after calc everything just clicked.
 

@@ -6,7 +6,10 @@
 	<h2>Hyperfixed</h2>
 
 	<h3 @text="review.data.title"></h3>
-	<time :datetime="review.date.toISOString()" @text="formatDate(review.date)"></time>
+	<time
+		:datetime="review.date.toISOString()"
+		@text="formatDate(review.date)"
+	></time>
 
 	<math-expression
 		class="element"

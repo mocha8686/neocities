@@ -1,7 +1,9 @@
 <script webc:setup>
 	const [first, second] = inspirationSites.reduce(
 		([first, second], current, i) =>
-			i % 2 === 0 ? [[...first, current], second] : [first, [...second, current]],
+			i % 2 === 0 ?
+				[[...first, current], second]
+			:	[first, [...second, current]],
 		[[], []],
 	);
 
@@ -12,23 +14,52 @@
 	<h2>Inspiration</h2>
 	<p></p>
 	<nav>
-		<anim-marquee :style="`--duration: ${first.length * factor}s`" :@first="first">
+		<anim-marquee
+			:style="`--duration: ${first.length * factor}s`"
+			:@first="first"
+		>
 			<li webc:for="site of first">
-				<a webc:if="site.image" :href="site.href" target="_blank" rel="noreferrer">
+				<a
+					webc:if="site.image"
+					:href="site.href"
+					target="_blank"
+					rel="noreferrer"
+				>
 					<img :src="site.image" :alt="site.name" width="88" height="31" />
 				</a>
-				<a webc:else :href="site.href" target="_blank" rel="noreferrer" :style="`color: ${site.color}`"
-					@text="site.name"></a>
+				<a
+					webc:else
+					:href="site.href"
+					target="_blank"
+					rel="noreferrer"
+					:style="`color: ${site.color}`"
+					@text="site.name"
+				></a>
 			</li>
 		</anim-marquee>
 
-		<anim-marquee class="reverse" :style="`--duration: ${second.length * factor}s`" :@second="second">
+		<anim-marquee
+			class="reverse"
+			:style="`--duration: ${second.length * factor}s`"
+			:@second="second"
+		>
 			<li webc:for="site of second">
-				<a webc:if="site.image" :href="site.href" target="_blank" rel="noreferrer">
+				<a
+					webc:if="site.image"
+					:href="site.href"
+					target="_blank"
+					rel="noreferrer"
+				>
 					<img :src="site.image" :alt="site.name" width="88" height="31" />
 				</a>
-				<a webc:else :href="site.href" target="_blank" rel="noreferrer" :style="`color: ${site.color}`"
-					@text="site.name"></a>
+				<a
+					webc:else
+					:href="site.href"
+					target="_blank"
+					rel="noreferrer"
+					:style="`color: ${site.color}`"
+					@text="site.name"
+				></a>
 			</li>
 		</anim-marquee>
 	</nav>

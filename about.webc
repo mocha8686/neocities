@@ -9,10 +9,10 @@ eleventyNavigation:
 ---
 
 <bounded>
-<div class="grid">
-	<hologram class="info">
-		<!-- prettier-ignore -->
-		<template webc:type="11ty" 11ty:type="md">
+	<div class="grid">
+		<hologram class="info">
+			<!-- prettier-ignore -->
+			<template webc:type="11ty" 11ty:type="md">
 # About
 
 welcome, internet surfer~
@@ -30,59 +30,59 @@ i'll be sharing my thoughts here about how i'm feeling, whatever i'm hyperfixed 
 if you're not sure where to go, [check out the sitemap](/sitemap). take a look and find a cool page!
 
 P.S. go visit [my bf's page](https://mistakemp4.neocities.org)!!! 🦅🦅🦅🦅🦅
-		</template>
+			</template>
 
-		<back-to-home></back-to-home>
-	</hologram>
+			<back-to-home></back-to-home>
+		</hologram>
 
-	<hologram class="etc">
-		<!-- prettier-ignore -->
-		<template webc:type="11ty" 11ty:type="md">
+		<hologram class="etc">
+			<!-- prettier-ignore -->
+			<template webc:type="11ty" 11ty:type="md">
 ## Bio
 
 - alias: mocha
 - username: mocha8686
-	<div class="comment">because im definitely not getting mocha as a username anywhere <br /> fun fact! the 8686 comes from my discord discriminator, back when those were a thing</comment>
+	<div class="comment">because im definitely not getting mocha as a username anywhere <br /> fun fact! the 8686 comes from my discord discriminator, back when those were a thing</div>
 - mes pronoms: [she/her](en.pronouns.page/@mocha8686)
 - <div class="flags">flags: <eleventy-image class="flag" src="./assets/trans.png" alt="Trans flag"></eleventy-image> <eleventy-image class="flag" src="./assets/bi.png" alt="Bi flag"></eleventy-image></div>
-		</template>
-	</hologram>
+			</template>
+		</hologram>
 
-	<hologram class="etc">
-	<!-- prettier-ignore -->
-		<template webc:type="11ty" 11ty:type="md">
+		<hologram class="etc">
+			<!-- prettier-ignore -->
+			<template webc:type="11ty" 11ty:type="md">
 ## Links
 
 find me on:
 - [github](https://github.com/mocha8686)
-	<div class="comment">many unfinished projects :)<div>
+	<div class="comment">many unfinished projects :)</div>
 - [steam](https://steamcommunity.com/profiles/76561198175517999/)
 - [bluesky](https://bsky.app/profile/mocha8686.bsky.social)
-	<div class="comment">i don't really post, but it's here anyways!<div>
-		</template>
-	</hologram>
+	<div class="comment">i don't really post, but it's here anyways!</div>
+			</template>
+		</hologram>
 
-	<hologram class="etc">
-	<!-- prettier-ignore -->
-		<template webc:type="11ty" 11ty:type="md">
+		<hologram class="etc">
+			<!-- prettier-ignore -->
+			<template webc:type="11ty" 11ty:type="md">
 ## Animanga
 
 1. ミモザの{告白|こくはく} *(the mimosa confessions)*
-	<div class="comment">ohhh my god i cant wait for the next volume!!!<div>
+	<div class="comment">ohhh my god i cant wait for the next volume!!!</div>
 1. {宝石|ほうせき}の{国|くに} *(land of the lustrous)*
-	<div class="comment">😿<div>
+	<div class="comment">😿</div>
 1. steins;gate
-	<div class="comment">amazing story—still need to read the vn<div>
+	<div class="comment">amazing story—still need to read the vn</div>
 1. ゆるキャン△ *(yuru camp/laid-back camp)*
-	<div class="comment">its so cozyyy omggg<div>
+	<div class="comment">its so cozyyy omggg</div>
 1. ぐらんぶる *(grand blue dreaming)*
-	<div class="comment">it has no right to be this funny 💀<div>
-		</template>
-	</hologram>
+	<div class="comment">it has no right to be this funny 💀</div>
+			</template>
+		</hologram>
 
-	<hologram class="etc">
-	<!-- prettier-ignore -->
-	<template webc:type="11ty" 11ty:type="md">
+		<hologram class="etc">
+			<!-- prettier-ignore -->
+			<template webc:type="11ty" 11ty:type="md">
 ## Music
 
 - porter robinson
@@ -110,11 +110,11 @@ find me on:
 - what you know – two door cinema club
 - farcall – feint
 		</template>
-	</hologram>
+		</hologram>
 
-	<hologram class="etc">
-		<!-- prettier-ignore -->
-		<template webc:type="11ty" 11ty:type="md">
+		<hologram class="etc">
+			<!-- prettier-ignore -->
+			<template webc:type="11ty" 11ty:type="md">
 ## Characters
 
 - starlight glimmer – my little pony
@@ -129,12 +129,12 @@ find me on:
 	<div class="comment">he's like the coolest gay twink ever??</div>
 - {桐生|きりゅう}{一馬|かずま} *(kazuma kiryu)* – like a dragon/yakuza
 	<div class="comment">he's been through so much man when can he catch a damn break 💔</div>
-		</template>
-	</hologram>
+			</template>
+		</hologram>
 
-	<hologram class="etc">
-		<!-- prettier-ignore -->
-		<template webc:type="11ty" 11ty:type="md">
+		<hologram class="etc">
+			<!-- prettier-ignore -->
+			<template webc:type="11ty" 11ty:type="md">
 ## Tech Things
 
 - linux distro – arch
@@ -147,12 +147,12 @@ find me on:
 	<div class="comment">meow :3</div>
 - window manager – hyprland
 	<div class="comment">sigh i know... im still looking for alternatives</div>
-		</template>
-	</hologram>
+			</template>
+		</hologram>
 
-	<hologram class="etc">
-		<!-- prettier-ignore -->
-		<template webc:type="11ty" 11ty:type="md">
+		<hologram class="etc">
+			<!-- prettier-ignore -->
+			<template webc:type="11ty" 11ty:type="md">
 ## Games
 
 - {龍|りゅう}が{如|ごと}く *(like a dragon)*
@@ -169,96 +169,99 @@ find me on:
 	<div class="comment">yeah im weird</div>
 - riichi mahjong
 	<div class="comment">yeah im really weird</div>
-		</template>
-	</hologram>
+			</template>
+		</hologram>
 
-	<hologram class="etc quiz">
-	<h2>Quiz Results</h2>
+		<hologram class="etc quiz">
+			<h2>Quiz Results</h2>
 
-<div class="results">
-<quiz-result
-	@name="Which Hatsune Miku Nendoroid Model Are You?"
-	@image="http://www.theotaku.com/guru_results/3913_Snow_Miku.jpg"
-	@link="https://www.theotaku.com/quizzes/view/3913/which_hatsune_miku_nendoroid_model_are_you%3F"
-	></quiz-result>
-<quiz-result
-	@name="What Dere Type Are You?"
-	@image="http://www.theotaku.com/guru_results/4097_Kuudere.jpg"
-	@link="https://theotaku.com/quizzes/view/4097/what_dere_type_are_you%3F"
-	></quiz-result>
-<quiz-result
-	@name="What Eevee Evolution Are You?"
-	@image="http://www.theotaku.com/guru_results/2412_Glaceon.jpg"
-	@link="https://www.theotaku.com/quizzes/view/2412/what_eevee_evolution_are_you%3F"
-	></quiz-result>
-<quiz-result
-	@name="My Little Pony Personality Test!"
-	@image="http://www.theotaku.com/guru_results/2957_Twilight_Sparkle.jpg"
-	@link="https://www.theotaku.com/quizzes/view/2957/my_little_pony_personality_test%21"
-	></quiz-result>
-<quiz-result
-	@name="What Guilty Gear Girl Are You?"
-	@image="http://www.theotaku.com/guru_results/247_May.jpg"
-	@link="https://www.theotaku.com/quizzes/view/247/what_guilty_gear_girl_are_you%3F"
-	></quiz-result>
-<quiz-result
-	@name="What Is Your Bending-Element?"
-	@image="http://www.theotaku.com/guru_results/3879_Earth.jpg"
-	@link="https://www.theotaku.com/quizzes/view/3879/what_is_your_bending-element%3F"
-	></quiz-result>
-<quiz-result
-	@name="Which Minecraft Mob Are You?"
-	@image="http://www.theotaku.com/guru_results/3658_Enderman.jpg"
-	@link="https://www.theotaku.com/quizzes/view/3658/which_minecraft_mob_are_you%3F"
-	></quiz-result>
-<quiz-result
-	@name="Which Puyo Puyo Character Are You?"
-	@image="http://www.theotaku.com/guru_results/3617_Sig.jpg"
-	@link="https://www.theotaku.com/quizzes/view/3617/which_puyo_puyo_character_are_you%3F"
-	></quiz-result>
-<quiz-result
-	@name="Which Sword Art Online Character Are You?"
-	@image="http://www.theotaku.com/guru_results/3394_Sinon.jpg"
-	@link="https://www.theotaku.com/quizzes/view/3394/which_sword_art_online_character_are_you%3F"
-	></quiz-result>
-<quiz-result
-	@name="Which Xenoblade Character Are You?"
-	@image="http://www.theotaku.com/guru_results/3018_Shulk.jpg"
-	@link="https://www.theotaku.com/quizzes/view/3018/which_xenoblade_character_are_you%3F">
-</quiz-result>
-<quiz-result
-	@name="What K-ON! Band Character Are You?"
-	@image="http://www.theotaku.com/guru_results/2675_Azusa_Nakano.jpg"
-	@link="https://www.theotaku.com/quizzes/view/2675/what_k-on%21_band_character_are_you%3F">
-</quiz-result>
-<quiz-result
-	@name="Which SOS Brigade Member Are You?"
-	@image="http://www.theotaku.com/guru_results/1734_Mikuru.jpg"
-	@link="https://www.theotaku.com/quizzes/view/1734/which_sos_brigade_member_are_you%3F">
-</quiz-result>
-<quiz-result
-	@name="What Lucky Star Character Are You?"
-	@image="http://www.theotaku.com/guru_results/1078_Miyuki.jpg"
-	@link="https://www.theotaku.com/quizzes/view/1078/what_lucky_star_character_are_you%3F">
-</quiz-result>
-<quiz-result
-	@name="What Type Of Cookie Are You?"
-	@image="http://www.theotaku.com/guru_results/3458_Sugar_cookie.jpg"
-	@link="https://www.theotaku.com/quizzes/view/3458/what_type_of_cookie_are_you%3F">
-</quiz-result>
-</div>
-	</hologram>
+			<div class="results">
+				<quiz-result
+					@name="Which Hatsune Miku Nendoroid Model Are You?"
+					@image="http://www.theotaku.com/guru_results/3913_Snow_Miku.jpg"
+					@link="https://www.theotaku.com/quizzes/view/3913/which_hatsune_miku_nendoroid_model_are_you%3F"
+				></quiz-result>
+				<quiz-result
+					@name="What Dere Type Are You?"
+					@image="http://www.theotaku.com/guru_results/4097_Kuudere.jpg"
+					@link="https://theotaku.com/quizzes/view/4097/what_dere_type_are_you%3F"
+				></quiz-result>
+				<quiz-result
+					@name="What Eevee Evolution Are You?"
+					@image="http://www.theotaku.com/guru_results/2412_Glaceon.jpg"
+					@link="https://www.theotaku.com/quizzes/view/2412/what_eevee_evolution_are_you%3F"
+				></quiz-result>
+				<quiz-result
+					@name="My Little Pony Personality Test!"
+					@image="http://www.theotaku.com/guru_results/2957_Twilight_Sparkle.jpg"
+					@link="https://www.theotaku.com/quizzes/view/2957/my_little_pony_personality_test%21"
+				></quiz-result>
+				<quiz-result
+					@name="What Guilty Gear Girl Are You?"
+					@image="http://www.theotaku.com/guru_results/247_May.jpg"
+					@link="https://www.theotaku.com/quizzes/view/247/what_guilty_gear_girl_are_you%3F"
+				></quiz-result>
+				<quiz-result
+					@name="What Is Your Bending-Element?"
+					@image="http://www.theotaku.com/guru_results/3879_Earth.jpg"
+					@link="https://www.theotaku.com/quizzes/view/3879/what_is_your_bending-element%3F"
+				></quiz-result>
+				<quiz-result
+					@name="Which Minecraft Mob Are You?"
+					@image="http://www.theotaku.com/guru_results/3658_Enderman.jpg"
+					@link="https://www.theotaku.com/quizzes/view/3658/which_minecraft_mob_are_you%3F"
+				></quiz-result>
+				<quiz-result
+					@name="Which Puyo Puyo Character Are You?"
+					@image="http://www.theotaku.com/guru_results/3617_Sig.jpg"
+					@link="https://www.theotaku.com/quizzes/view/3617/which_puyo_puyo_character_are_you%3F"
+				></quiz-result>
+				<quiz-result
+					@name="Which Sword Art Online Character Are You?"
+					@image="http://www.theotaku.com/guru_results/3394_Sinon.jpg"
+					@link="https://www.theotaku.com/quizzes/view/3394/which_sword_art_online_character_are_you%3F"
+				></quiz-result>
+				<quiz-result
+					@name="Which Xenoblade Character Are You?"
+					@image="http://www.theotaku.com/guru_results/3018_Shulk.jpg"
+					@link="https://www.theotaku.com/quizzes/view/3018/which_xenoblade_character_are_you%3F"
+				></quiz-result>
+				<quiz-result
+					@name="What K-ON! Band Character Are You?"
+					@image="http://www.theotaku.com/guru_results/2675_Azusa_Nakano.jpg"
+					@link="https://www.theotaku.com/quizzes/view/2675/what_k-on%21_band_character_are_you%3F"
+				></quiz-result>
+				<quiz-result
+					@name="Which SOS Brigade Member Are You?"
+					@image="http://www.theotaku.com/guru_results/1734_Mikuru.jpg"
+					@link="https://www.theotaku.com/quizzes/view/1734/which_sos_brigade_member_are_you%3F"
+				></quiz-result>
+				<quiz-result
+					@name="What Lucky Star Character Are You?"
+					@image="http://www.theotaku.com/guru_results/1078_Miyuki.jpg"
+					@link="https://www.theotaku.com/quizzes/view/1078/what_lucky_star_character_are_you%3F"
+				></quiz-result>
+				<quiz-result
+					@name="What Type Of Cookie Are You?"
+					@image="http://www.theotaku.com/guru_results/3458_Sugar_cookie.jpg"
+					@link="https://www.theotaku.com/quizzes/view/3458/what_type_of_cookie_are_you%3F"
+				></quiz-result>
+			</div>
+		</hologram>
 
-	<hologram class="etc filler">
-		<h2>Meow :3</h2>
-		<anim-marquee class="disable-select" :style="`--duration: ${collections.cat.length * 6}s; --gap: 16rem;`">
-			<li webc:for="cat of collections.cat">
-				<pre @text="cat.rawInput"></pre>
-			</li>
-		</anim-marquee>
-		<back-to-home></back-to-home>
-	</hologram>
-</div>
+		<hologram class="etc filler">
+			<h2>Meow :3</h2>
+			<anim-marquee
+				class="disable-select"
+				:style="`--duration: ${collections.cat.length * 6}s; --gap: 16rem;`"
+			>
+				<li webc:for="cat of collections.cat">
+					<pre @text="cat.rawInput"></pre>
+				</li>
+			</anim-marquee>
+			<back-to-home></back-to-home>
+		</hologram>
+	</div>
 </bounded>
 
 <script>
@@ -273,7 +276,7 @@ find me on:
 		--about-span: 3;
 
 		display: grid;
-	 	grid-template-columns: repeat(5, 1fr);
+		grid-template-columns: repeat(5, 1fr);
 	}
 
 	.etc {
@@ -291,13 +294,11 @@ find me on:
 	}
 
 	/* offset starts at var(--about-span) + 1 */
-			:where(:nth-child(4n + 4 of .etc), :nth-child(4n + 7 of .etc))
-		{
+	:where(:nth-child(4n + 4 of .etc), :nth-child(4n + 7 of .etc)) {
 		grid-column: span 3;
 	}
 
-			:where(:nth-child(4n + 5 of .etc), :nth-child(4n + 6 of .etc))
-		{
+	:where(:nth-child(4n + 5 of .etc), :nth-child(4n + 6 of .etc)) {
 		grid-column: span 2;
 	}
 

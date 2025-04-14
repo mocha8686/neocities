@@ -16,10 +16,16 @@ dayjs.extend(utcPlugin);
 
 /** @param {import('@11ty/eleventy').UserConfig} eleventyConfig */
 export default function (eleventyConfig) {
-	eleventyConfig.addFilter('math', expr => katex.renderToString(expr, { displayMode: true }));
+	eleventyConfig.addFilter('math', expr =>
+		katex.renderToString(expr, { displayMode: true }),
+	);
 
-	eleventyConfig.addJavaScriptFunction('formatDate', jsDate => dayjs.utc(jsDate).format('YYYY MMM D'));
-	eleventyConfig.addJavaScriptFunction('formatNumericDate', jsDate => dayjs.utc(jsDate).format('YYYY-MM-DD'));
+	eleventyConfig.addJavaScriptFunction('formatDate', jsDate =>
+		dayjs.utc(jsDate).format('YYYY MMM D'),
+	);
+	eleventyConfig.addJavaScriptFunction('formatNumericDate', jsDate =>
+		dayjs.utc(jsDate).format('YYYY-MM-DD'),
+	);
 
 	eleventyConfig.amendLibrary('md', mdLib => {
 		mdLib.use(markdownItTaskCheckbox);

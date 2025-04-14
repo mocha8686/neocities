@@ -65,7 +65,7 @@
 		display: none;
 	}
 
-	ul>* {
+	ul > * {
 		display: grid;
 		place-items: center;
 	}

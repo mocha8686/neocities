@@ -1,18 +1,31 @@
 <script webc:setup>
-	const code = '<a href="https://mocha8686.neocities.org" target="_blank" rel+"noreferrer"><img src="https://mocha8686.neocities.org/button.gif" alt="A martini glass next to the text, &quot;the end of time&quot;" width="88" height="31" /></a>';
+	const code =
+		'<a href="https://mocha8686.neocities.org" target="_blank" rel+"noreferrer"><img src="https://mocha8686.neocities.org/button.gif" alt="A martini glass next to the text, &quot;the end of time&quot;" width="88" height="31" /></a>';
 </script>
 
 <hologram :x-data="`{ code: '${code}' }`" :@code="code">
 	<h2>Button</h2>
 	<div class="button-container">
-		<eleventy-image src="./assets/button.gif" alt="A martini glass next to the text, 'the end of time'" width="88" height="31"></eleventy-image>
+		<eleventy-image
+			src="./assets/button.gif"
+			alt="A martini glass next to the text, 'the end of time'"
+			width="88"
+			height="31"
+		></eleventy-image>
 	</div>
 
 	<div class="code-container">
 		<code @text="code"></code>
 	</div>
 
-	<button type="button" x-data="{ text: 'copy code' }" x-text="text" x-on:click="copyCode">copy code</button>
+	<button
+		type="button"
+		x-data="{ text: 'copy code' }"
+		x-text="text"
+		x-on:click="copyCode"
+	>
+		copy code
+	</button>
 </hologram>
 
 <script>

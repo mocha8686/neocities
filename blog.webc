@@ -10,27 +10,29 @@ eleventyImport:
 ---
 
 <bounded>
-<div class="Blog-container">
-	<hologram class="blog">
-	<h1>Blog</h1>
+	<div class="Blog-container">
+		<hologram class="blog">
+			<h1>Blog</h1>
 
-	<section webc:for="post of collections.blog.toReversed()">
-		<h2>
-			<time :datetime="post.date.toISOString()" @text="formatNumericDate(post.date)"></time>
-		</h2>
-		<template @html="post.content" webc:nokeep></template>
-	</section>
-
-	</hologram>
-
-	<section class="side">
-		<settings></settings>
-
-		<hologram>
-		<back-to-home></back-to-home>
+			<section webc:for="post of collections.blog.toReversed()">
+				<h2>
+					<time
+						:datetime="post.date.toISOString()"
+						@text="formatNumericDate(post.date)"
+					></time>
+				</h2>
+				<template @html="post.content" webc:nokeep></template>
+			</section>
 		</hologram>
-	</section>
-</div>
+
+		<section class="side">
+			<settings></settings>
+
+			<hologram>
+				<back-to-home></back-to-home>
+			</hologram>
+		</section>
+	</div>
 </bounded>
 
 <style>

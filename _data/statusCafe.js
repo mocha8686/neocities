@@ -1,6 +1,6 @@
 import Fetch from '@11ty/eleventy-fetch';
 import dayjs from 'dayjs';
-import utcPlugin from 'dayjs/plugin/utc.js'
+import utcPlugin from 'dayjs/plugin/utc.js';
 
 dayjs.extend(utcPlugin);
 

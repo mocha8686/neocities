@@ -3,8 +3,8 @@ title: Gaussian Integral
 date: 2024-03-30
 updatedDate: 2024-03-31
 thing:
-    type: math
-    expression: \int_{-\infty}^{\infty}e^{-x^{2}}\;dx=\sqrt{\pi}
+  type: math
+  expression: \int_{-\infty}^{\infty}e^{-x^{2}}\;dx=\sqrt{\pi}
 ---
 
 there's [a great video](https://youtu.be/cy8r7WSuT1I?si=Iog6M8q6-B01h_EB) about this by [3Blue1Brown](https://www.youtube.com/@3blue1brown), which will probably do a much better job of explaining this one than i could ever do, but i do still want to talk about it because i think it's cool
@@ -52,7 +52,7 @@ $$
 \end{align*}
 $$
 
-since y is just a dummy variable *and* independent of x, we can say that $\int_{-\infty}^{\infty}e^{-y^2}\;dy=C$. thus:
+since y is just a dummy variable _and_ independent of x, we can say that $\int_{-\infty}^{\infty}e^{-y^2}\;dy=C$. thus:
 
 $$
 C\int_{-\infty}^{\infty}e^{-y^2}\;dy=C^{2}
@@ -65,7 +65,7 @@ to find the volume, let's consider $e^{-(x^2+y^2)}$ once again. if we look at a 
 $$
 \begin{align*}
 \int_{-\infty}^{\infty}e^{-(x^2+y^2)}\;dydx&=\int_{0}^{\infty}2\pi r\cdot e^{-r^{2}}\;dr \\
-&=\pi\int_{0}^{\infty}2r\cdot e^{-r^{2}}\;dr & \mathrm{Let}\;u=e^{-r^{2}} \\ 
+&=\pi\int_{0}^{\infty}2r\cdot e^{-r^{2}}\;dr & \mathrm{Let}\;u=e^{-r^{2}} \\
 &=\pi\int_{\infty}^{0}1du & \implies du=-2re^{-r^{2}}dr \\
 &=\pi\left[e^{-r^{2}}\right]_{\infty}^{0} \\
 &=\pi\left[e^{-0^{2}}-e^{-\infty^{2}}\right] \\

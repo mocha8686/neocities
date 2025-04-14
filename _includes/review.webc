@@ -4,56 +4,73 @@ layout: cyber.webc
 
 <bounded>
 	<div class="Review-container">
-	<hologram class="review" webc:if="content">
-		<h1 @text="title"></h1>
+		<hologram class="review" webc:if="content">
+			<h1 @text="title"></h1>
 
-		<header>
-			<math-expression class="element" webc:if="thing.type === 'math'" :@expression="thing.expression"></math-expression>
+			<header>
+				<math-expression
+					class="element"
+					webc:if="thing.type === 'math'"
+					:@expression="thing.expression"
+				></math-expression>
 
-			<div class="info-container">
-				<p class="date">
-				<time :datetime="date.toISOString()" @text="formatDate(date)"></time>
-				</p>
+				<div class="info-container">
+					<p class="date">
+						<time
+							:datetime="date.toISOString()"
+							@text="formatDate(date)"
+						></time>
+					</p>
 
-				<p class="updated-date" webc:if="updatedDate">
-				(Updated <time :datetime="updatedDate.toISOString()" @text="formatDate(updatedDate)"></time>)
-				</p>
+					<p class="updated-date" webc:if="updatedDate">
+						(Updated
+						<time
+							:datetime="updatedDate.toISOString()"
+							@text="formatDate(updatedDate)"
+						></time>
+						)
+					</p>
 
-				<a class="close" :href="eleventyNavigation(collections.all).find(i => i.key === 'Reviews').url">X</a>
-			</div>
-		</header>
+					<a
+						class="close"
+						:href="eleventyNavigation(collections.all).find(i => i.key === 'Reviews').url"
+					>
+						X
+					</a>
+				</div>
+			</header>
 
-		<div class="content" @raw="content"></div>
-	</hologram>
-
-	<section class="side">
-		<hologram>
-			<h2 webc:if="content">Reviews</h2>
-			<h1 webc:else>Reviews</h1>
-
-			<navigation>
-				<ul>
-					<li webc:for="review of collections.review.toReversed()">
-						<a :href="review.url" @text="review.data.title"></a>
-					</li>
-				</ul>
-			</navigation>
+			<div class="content" @raw="content"></div>
 		</hologram>
 
-		<settings></settings>
+		<section class="side">
+			<hologram>
+				<h2 webc:if="content">Reviews</h2>
+				<h1 webc:else>Reviews</h1>
 
-		<hologram>
-			<back-to-home></back-to-home>
-		</hologram>
-	</section>
+				<navigation>
+					<ul>
+						<li webc:for="review of collections.review.toReversed()">
+							<a :href="review.url" @text="review.data.title"></a>
+						</li>
+					</ul>
+				</navigation>
+			</hologram>
+
+			<settings></settings>
+
+			<hologram>
+				<back-to-home></back-to-home>
+			</hologram>
+		</section>
 	</div>
 </bounded>
 
 <style>
-.Review-container {
-	display: flex;
-	justify-self: end;
-}
+	.Review-container {
+		display: flex;
+		justify-self: end;
+	}
 
 	header {
 		display: flex;
@@ -65,12 +82,12 @@ layout: cyber.webc
 	}
 
 	.info-container {
-		align-self: start;
 		display: grid;
 		grid-template:
-			"date close" min-content
-			"updated-date close" min-content / max-content min-content;
+			'date close' min-content
+			'updated-date close' min-content / max-content min-content;
 		gap: 0.25rem 1rem;
+		align-self: start;
 	}
 
 	.date,
@@ -94,12 +111,11 @@ layout: cyber.webc
 		place-self: start end;
 	}
 
-
 	.close {
 		grid-area: close;
 		place-self: center;
-		padding: .5rem;
 		margin-block: 1rem;
+		padding: 0.5rem;
 	}
 
 	.review {
@@ -112,7 +128,7 @@ layout: cyber.webc
 		line-height: 1.8;
 	}
 
-	.content :where(h1,h2,h3,h4,h5,h6) {
+	.content :where(h1, h2, h3, h4, h5, h6) {
 		margin-block: 3rem 1rem;
 	}
 

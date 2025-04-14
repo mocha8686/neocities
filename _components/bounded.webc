@@ -8,7 +8,7 @@
 		justify-content: end;
 	}
 
-	:host>.container {
+	:host > .container {
 		flex: auto;
 		max-width: 67vw;
 	}
