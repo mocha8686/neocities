@@ -1,12 +1,17 @@
 ---
 layout: base.webc
-fg: hsl(209deg 70% 86% / 100%);
-bg: hsl(208deg 52% 4% / 100%);
-accent: hsl(208deg 100% 80%);
-secondary: hsl(208deg 19% 55%);
+fg: hsl(209deg 70% 86% / 100%)
+bg: hsl(208deg 52% 4% / 100%)
+accent: hsl(208deg 100% 80%)
+secondary: hsl(208deg 19% 55%)
 ---
 
-<div :x-data="JSON.stringify({ settings: defaultSettings })" x-init="loadSettings(settings)" x-bind:class="{ 'enable-rain': settings['rain'] }" @raw="content"></div>
+<div
+	:x-data="JSON.stringify({ settings: defaultSettings })"
+	x-init="loadSettings(settings)"
+	x-bind:class="{ 'enable-rain': settings['rain'] }"
+	@raw="content"
+></div>
 
 <script>
 	function loadSettings(settings) {
@@ -43,16 +48,16 @@ secondary: hsl(208deg 19% 55%);
 	import '@fontsource/nabla';
 </script>
 
-<style webc:is="style" webc:type="js">
-`
-:root {
-	--cl-fg: ${fg};
-	--cl-bg: ${bg};
-	--cl-accent: ${accent};
-	--cl-secondary: ${secondary};
-}
-`
-</style>
+<script webc:is="style" webc:type="js">
+	`
+	:root {
+		--cl-fg: ${fg};
+		--cl-bg: ${bg};
+		--cl-accent: ${accent};
+		--cl-secondary: ${secondary};
+	}
+	`
+</script>
 
 <style>
 	/* stylelint-disable custom-property-empty-line-before */
