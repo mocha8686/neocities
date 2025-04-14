@@ -26,7 +26,7 @@ layout: cyber.webc
 		<div class="content" @raw="content"></div>
 	</hologram>
 
-	<div class="side">
+	<section class="side">
 		<hologram>
 			<h2 webc:if="content">Reviews</h2>
 			<h1 webc:else>Reviews</h1>
@@ -45,7 +45,7 @@ layout: cyber.webc
 		<hologram>
 			<back-to-home></back-to-home>
 		</hologram>
-	</div>
+	</section>
 	</div>
 </bounded>
 

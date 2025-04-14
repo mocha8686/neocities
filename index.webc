@@ -41,7 +41,7 @@ eleventyNavigation:
 			<webrings></webrings>
 		</main>
 
-		<div class="side">
+		<section class="side">
 			<directory></directory>
 			<status></status>
 			<favorite></favorite>
@@ -72,7 +72,7 @@ eleventyNavigation:
 - [ ] computer
 				</template>
 			</hologram>
-		</div>
+		</section>
 	</div>
 </bounded>
 
