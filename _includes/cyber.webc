@@ -104,7 +104,7 @@ theme:
 
 	body:has(> .enable-rain)::before {
 		background:
-			url('/assets/pixel_rain.gif') center/contain repeat-x,
+			url('/assets/pixel_rain.webp') center/contain repeat-x,
 			var(--cl-bg);
 	}
 
