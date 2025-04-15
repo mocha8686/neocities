@@ -25,7 +25,12 @@
 					target="_blank"
 					rel="noreferrer"
 				>
-					<img :src="site.image" :alt="site.name" width="88" height="31" />
+					<eleventy-image
+						:src="site.image"
+						:alt="site.name"
+						width="88"
+						height="31"
+					></eleventy-image>
 				</a>
 				<a
 					webc:else
@@ -50,7 +55,12 @@
 					target="_blank"
 					rel="noreferrer"
 				>
-					<img :src="site.image" :alt="site.name" width="88" height="31" />
+					<eleventy-image
+						:src="site.image"
+						:alt="site.name"
+						width="88"
+						height="31"
+					></eleventy-image>
 				</a>
 				<a
 					webc:else
