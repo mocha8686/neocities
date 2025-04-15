@@ -1,7 +1,8 @@
 ---
 layout: cyber.webc
-accent: hsl(305deg 80% 70%)
-fg: hsl(305deg 80% 82%)
+theme:
+  accent: hsl(305deg 80% 70%)
+  fg: hsl(305deg 80% 82%)
 eleventyNavigation:
   key: About
   excerpt: more about me

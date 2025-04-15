@@ -1,9 +1,10 @@
 ---
 layout: base.webc
-fg: hsl(209deg 70% 86% / 100%)
-bg: hsl(208deg 52% 4% / 100%)
-accent: hsl(208deg 100% 80%)
-secondary: hsl(208deg 19% 55%)
+theme:
+  fg: hsl(209deg 70% 86% / 100%)
+  bg: hsl(208deg 52% 4% / 100%)
+  accent: hsl(208deg 100% 80%)
+  secondary: hsl(208deg 19% 55%)
 ---
 
 <div
@@ -51,10 +52,10 @@ secondary: hsl(208deg 19% 55%)
 <script webc:is="style" webc:type="js">
 	`
 	:root {
-		--cl-fg: ${fg};
-		--cl-bg: ${bg};
-		--cl-accent: ${accent};
-		--cl-secondary: ${secondary};
+		--cl-fg: ${theme.fg};
+		--cl-bg: ${theme.bg};
+		--cl-accent: ${theme.accent};
+		--cl-secondary: ${theme.secondary};
 	}
 	`;
 </script>
