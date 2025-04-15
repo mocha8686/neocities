@@ -2,7 +2,7 @@ name: Check status.cafe
 
 on:
   schedule:
-    - cron: '12/15 * * * *'
+    - cron: '27 * * * *'
 
 env:
   STATUS_CAFE_USERNAME: mocha8686
