@@ -2,15 +2,15 @@
 	<h2>Webrings</h2>
 	<webring-no-ai></webring-no-ai>
 	<webring-transing-the-internet></webring-transing-the-internet>
+	<webring-bucket></webring-bucket>
 </hologram>
 
 <style webc:scoped="Webrings">
 	.Hologram {
-		display: grid;
-		grid-auto-rows: max-content;
-		grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+		display: flex;
+		flex-wrap: wrap;
 		gap: 2rem;
-		place-items: center;
+		justify-content: space-evenly;
 
 		padding-block: 2rem;
 	}
