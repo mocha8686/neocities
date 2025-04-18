@@ -3,7 +3,6 @@
 	"useTabs": true,
 	"singleQuote": true,
 	"arrowParens": "avoid",
-	"htmlWhitespaceSensitivity": "ignore",
 	"overrides": [
 		{
 			"files": "*.webc",
