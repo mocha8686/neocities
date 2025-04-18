@@ -14,14 +14,13 @@
 
 <span
 	webc:root="override"
-	class="Rainbow"
-	x-bind:class="{ disable: settings['text animations'] }"
+	x-bind:class="{ disable: !settings['text animations'] }"
 >
 	<slot></slot>
 </span>
 
-<style>
-	.Rainbow {
+<style webc:scoped="Rainbow">
+	:host {
 		--duration: 1.5s;
 		--delay: 0ms;
 		--background-size: 200%;
@@ -36,7 +35,7 @@
 		animation: var(--duration) linear var(--delay) infinite forwards rainbow;
 	}
 
-	.rainbow.disable {
+	:host.disable {
 		background-size: 100%;
 		animation: none;
 	}
@@ -52,7 +51,7 @@
 	}
 
 	@media (prefers-reduced-motion) {
-		.rainbow {
+		:host {
 			background-size: 100%;
 			animation: none;
 		}
