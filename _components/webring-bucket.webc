@@ -42,6 +42,7 @@ webring website: https://webring.bucketfish.me
 	:host {
 		display: flex;
 		gap: 2rem;
+		align-items: baseline;
 	}
 
 	* {
