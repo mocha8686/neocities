@@ -280,12 +280,15 @@ find me on:
 		grid-template-columns: repeat(5, 1fr);
 	}
 
-	.etc {
+	.etc :not(:first-child) {
 		line-height: 1.6;
 	}
 
 	.info {
 		grid-area: 1 / 3 / span var(--about-span) / -1;
+	}
+
+	.info :not(:first-child) {
 		line-height: 1.8;
 	}
 
