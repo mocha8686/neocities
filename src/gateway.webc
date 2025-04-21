@@ -1,0 +1,44 @@
+---
+layout: base.webc
+---
+
+<main>
+	<eleventy-image
+		src="./assets/background.jpeg"
+		alt="Abstract background"
+		class="background"
+	></eleventy-image>
+	<h1>Stinky cheese</h1>
+</main>
+
+<style>
+	:root {
+		--z-bg: -1000;
+	}
+
+	body {
+		overflow: hidden;
+		margin: 0;
+	}
+
+	.background {
+		position: fixed;
+		z-index: var(--z-bg);
+		inset: 0;
+
+		min-width: 100lvw;
+		min-height: 100lvh;
+
+		animation: 2s dolly 1s cubic-bezier(0, 1, 0.15, 1) backwards;
+	}
+
+	@keyframes dolly {
+		from {
+			scale: 200%;
+		}
+
+		to {
+			scale: 100%;
+		}
+	}
+</style>
