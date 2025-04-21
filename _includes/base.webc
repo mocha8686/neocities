@@ -1,26 +1,2 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title @text="pageTitle">the end of time</title>
-		<link rel="shortcut icon" href="/favicon.png" type="image/png" />
-
 		<link rel="stylesheet" href="../node_modules/normalize.css/normalize.css" />
 
-		<style @raw="getBundle('css')" webc:keep>
-			/* @stylelint-ignore */
-		</style>
-		<script @raw="getBundle('js')" webc:keep></script>
-
-		<script type="module" webc:keep>
-			import Alpine from 'alpinejs';
-
-			window.Alpine = Alpine;
-
-			Alpine.start();
-		</script>
-	</head>
-
-	<body @raw="content"></body>
-</html>

@@ -5,6 +5,9 @@ updatedDate: 2024-03-31
 thing:
   type: math
   expression: \int_{-\infty}^{\infty}e^{-x^{2}}\;dx=\sqrt{\pi}
+theme:
+  fg: hsl(59 90% 86%);
+  accent: hsl(52 100% 48%);
 ---
 
 there's [a great video](https://youtu.be/cy8r7WSuT1I?si=Iog6M8q6-B01h_EB) about this by [3Blue1Brown](https://www.youtube.com/@3blue1brown), which will probably do a much better job of explaining this one than i could ever do, but i do still want to talk about it because i think it's cool

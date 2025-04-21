@@ -16,6 +16,8 @@ dayjs.extend(utcPlugin);
 
 /** @param {import('@11ty/eleventy').UserConfig} eleventyConfig */
 export default function (eleventyConfig) {
+	eleventyConfig.setInputDirectory('src');
+
 	eleventyConfig.addFilter('math', expr =>
 		katex.renderToString(expr, { displayMode: true }),
 	);
@@ -36,7 +38,7 @@ export default function (eleventyConfig) {
 	eleventyConfig.addPlugin(eleventyNavigationPlugin);
 
 	eleventyConfig.addPlugin(eleventyWebcPlugin, {
-		components: ['_components/**/*.webc', 'npm:@11ty/eleventy-img/*.webc'],
+		components: ['src/_components/**/*.webc', 'npm:@11ty/eleventy-img/*.webc'],
 	});
 
 	eleventyConfig.addPlugin(eleventyImagePlugin, {
