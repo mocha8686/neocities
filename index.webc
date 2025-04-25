@@ -54,7 +54,7 @@ eleventyNavigation:
 				<!-- prettier-ignore -->
 				<template webc:type="11ty" 11ty:type="md">
 - [ ] todo list
-- [x] webrings
+- [ ] make a song for the [beepbox ring](https://juneish.neocities.org/ring/beepbox/)
 - [ ] dream journal (thank you [eatsteas](https://eatsteas.neocities.org/dreamjournal/) for the idea!!)
 - [x] about
 	- [x] facts
