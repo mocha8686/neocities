@@ -29,6 +29,10 @@ export default function (eleventyConfig) {
 		dayjs.utc(jsDate).format('YYYY-MM-DD'),
 	);
 
+	eleventyConfig.addPassthroughCopy({
+		'node_modules/dayjs': 'assets',
+	});
+
 	eleventyConfig.amendLibrary('md', mdLib => {
 		mdLib.use(markdownItTaskCheckbox);
 		mdLib.use(markdownItRuby);

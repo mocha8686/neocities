@@ -12,12 +12,27 @@
 	<time
 		:datetime="statusCafe.timestamp"
 		@text="statusCafe.timeAgo"
-		:x-data="`{ text: '${statusCafe.timeAgo}', timestamp: '${statusCafe.timestamp}', timeAgo: '${statusCafe.timeAgo}' }`"
+		:x-data="`{ text: calculateTimeAgo('${statusCafe.timestamp}'), timestamp: '${statusCafe.timestamp}' }`"
 		x-text="text"
 		x-on:mouseenter="text = timestamp"
-		x-on:mouseleave="text = timeAgo"
+		x-on:mouseleave="updateTimeAgo"
 	></time>
 </hologram>
+
+<script src="../../node_modules/dayjs/dayjs.min.js"></script>
+<script src="../../node_modules/dayjs/plugin/relativeTime.js"></script>
+
+<script>
+	dayjs.extend(window.dayjs_plugin_relativeTime);
+
+	function calculateTimeAgo(timestamp) {
+		return dayjs(timestamp).fromNow();
+	}
+
+	function updateTimeAgo() {
+		this.text = calculateTimeAgo(this.timestamp);
+	}
+</script>
 
 <style webc:scoped="Status">
 	p {

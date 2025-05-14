@@ -13,10 +13,10 @@ export default async function getData() {
 			type: 'json',
 		});
 
+		console.log(res);
 		const [value, unit] = res.timeAgo.split(' ');
 		const timestamp = dayjs.utc().subtract(value, unit);
 		res.timestamp = timestamp.toISOString();
-		delete res.timeAgo;
 		return res;
 	} catch (e) {
 		console.error(e);
