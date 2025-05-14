@@ -14,10 +14,9 @@ export default async function getData() {
 		});
 
 		const [value, unit] = res.timeAgo.split(' ');
-		const now = dayjs.utc();
-		now.subtract(value, unit);
-		res.timestamp = now.toISOString();
-
+		const timestamp = dayjs.utc().subtract(value, unit);
+		res.timestamp = timestamp.toISOString();
+		delete res.timeAgo;
 		return res;
 	} catch (e) {
 		console.error(e);
@@ -29,9 +28,8 @@ export default async function getData() {
 		};
 
 		const [value, unit] = res.timeAgo.split(' ');
-		const now = dayjs.utc();
-		now.subtract(value, unit);
-		res.timestamp = now.toISOString();
+		const timestamp = dayjs.utc().subtract(value, unit);
+		res.timestamp = timestamp.toISOString();
 
 		return res;
 	}
