@@ -10,12 +10,12 @@
     "lint": "prettier --write src && stylelint --fix src"
   },
   "dependencies": {
-    "@astrojs/alpinejs": "^0.4.8",
-    "alpinejs": "^3.14.9",
-    "astro": "^5.12.7"
+    "@astrojs/alpinejs": "^0.4.9",
+    "@types/alpinejs": "^3.13.11",
+    "alpinejs": "^3.15.0",
+    "astro": "^5.13.9"
   },
   "devDependencies": {
-    "@types/alpinejs": "^3.13.11",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
     "stylelint": "^16.23.0",
