@@ -1,11 +1,34 @@
 ---
 import Base from '$src/layouts/Base.astro';
+import Link from '$src/components/Link.astro';
+import Section from '$src/components/Section.astro';
 ---
 
 <Base>
-	<h1>Stinky cheese</h1>
+	<Section disableSpecialTitle class="title">
+		<h1>The Bar at the End of Time</h1>
+	</Section>
+	<div class="section">
+		<Section>
+			<h2>Hi</h2>
+			<p>
+				Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem veniam
+				sequi vel, soluta eveniet voluptates quam perferendis distinctio est
+				saepe.
+			</p>
+		</Section>
+	</div>
+
+	<Link href="#">Hello World</Link>
+
 	<div x-data="{ text: 'world' }">
 		<p>Hello, <span x-text="text"></span>!</p>
 		<input type="text" x-model="text" />
 	</div>
 </Base>
+
+<style>
+	.section {
+		max-width: 30rem;
+	}
+</style>
