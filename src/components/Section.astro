@@ -1,0 +1,19 @@
+---
+interface Props {
+	disableSpecialTitle?: boolean;
+	class?: string;
+}
+
+const {
+	class: className = '',
+	disableSpecialTitle = false,
+	...rest
+}: Props = Astro.props;
+---
+
+<section
+	class:list={[{ 'section-disable-title': disableSpecialTitle }, className]}
+	{...rest}
+>
+	<slot />
+</section>
