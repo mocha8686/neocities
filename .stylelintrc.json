@@ -3,5 +3,13 @@
 		"stylelint-config-standard",
 		"stylelint-config-clean-order",
 		"stylelint-config-html/astro"
-	]
+	],
+	"rules": {
+		"selector-pseudo-class-no-unknown": [
+			true,
+			{
+				"ignorePseudoClasses": ["global"]
+			}
+		]
+	}
 }

@@ -20,6 +20,9 @@ importers:
       astro:
         specifier: ^5.13.9
         version: 5.13.9(@types/node@24.1.0)(rollup@4.46.2)(typescript@5.9.2)
+      sanitize.css:
+        specifier: ^13.0.0
+        version: 13.0.0
     devDependencies:
       prettier:
         specifier: ^3.6.2
@@ -1533,6 +1536,9 @@ packages:
 
   s.color@0.0.15:
     resolution: {integrity: sha512-AUNrbEUHeKY8XsYr/DYpl+qk5+aM+DChopnWOPEzn8YKzOhv4l2zH6LzZms3tOZP3wwdOyc0RmTciyi46HLIuA==}
+
+  sanitize.css@13.0.0:
+    resolution: {integrity: sha512-ZRwKbh/eQ6w9vmTjkuG0Ioi3HBwPFce0O+v//ve+aOq1oeCy7jMV2qzzAlpsNuqpqCBjjriM1lbtZbF/Q8jVyA==}
 
   sass-formatter@0.7.9:
     resolution: {integrity: sha512-CWZ8XiSim+fJVG0cFLStwDvft1VI7uvXdCNJYXhDvowiv+DsbD1nXLiQ4zrE5UBvj5DWZJ93cwN0NX5PMsr1Pw==}
@@ -3631,6 +3637,8 @@ snapshots:
       queue-microtask: 1.2.3
 
   s.color@0.0.15: {}
+
+  sanitize.css@13.0.0: {}
 
   sass-formatter@0.7.9:
     dependencies:
