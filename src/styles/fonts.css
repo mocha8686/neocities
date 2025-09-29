@@ -1,0 +1,66 @@
+@font-face {
+	font-family: 'Eurostile Extended';
+	font-display: swap;
+	src:
+		local('Eurostile Extended'),
+		local('Eurostile'),
+		url('/fonts/Eurostile Extended.woff2') format('woff');
+}
+
+@font-face {
+	font-family: 'Myriad Pro';
+	font-weight: normal;
+	font-display: swap;
+	src:
+		local('Myriad Pro'),
+		url('/fonts/MyriadPro/MyriadProRegular.woff2') format('woff');
+}
+
+@font-face {
+	font-family: 'Myriad Pro';
+	font-weight: 300;
+	font-display: swap;
+	src:
+		local('Myriad Pro'),
+		url('/fonts/MyriadPro/MyriadProLight.woff2') format('woff');
+}
+
+@font-face {
+	font-family: 'Myriad Pro';
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+	src:
+		local('Myriad Pro'),
+		url('/fonts/MyriadPro/MyriadProBold.woff2') format('woff');
+}
+
+@font-face {
+	font-family: 'Myriad Pro';
+	font-weight: bold;
+	font-style: italic;
+	font-display: swap;
+	src:
+		local('Myriad Pro'),
+		url('/fonts/MyriadPro/MyriadProBoldIt.woff2') format('woff');
+}
+
+@font-face {
+	font-family: 'Myriad Pro';
+	font-weight: 600;
+	font-style: normal;
+	font-display: swap;
+	src:
+		local('Myriad Pro'),
+		url('/fonts/MyriadPro/MyriadProSemibold.woff2') format('woff');
+}
+
+@font-face {
+	font-family: 'Myriad Pro';
+	font-weight: 600;
+	font-style: italic;
+	font-display: swap;
+	src:
+		local('Myriad Pro'),
+		url('/fonts/MyriadPro/MyriadSemiboldIt.woff2') format('woff');
+}
