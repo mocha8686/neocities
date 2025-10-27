@@ -1,8 +1,13 @@
 ---
 import 'sanitize.css';
 
-import Bounded from '$src/components/Bounded.astro';
 import Fonts from '$src/components/Fonts.astro';
+
+interface Props {
+	title?: string;
+}
+
+const { title = 'meow' } = Astro.props
 ---
 
 <html lang="en">
@@ -12,45 +17,9 @@ import Fonts from '$src/components/Fonts.astro';
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<Fonts />
-		<title>Astro</title>
+		<title>{title}</title>
 	</head>
 	<body>
-		<Bounded>
-			<slot />
-		</Bounded>
+		<slot />
 	</body>
 </html>
-
-<style is:global>
-	:root {
-		/* stylelint-disable custom-property-empty-line-before */
-
-		--cl-foreground: hsl(0deg 0% 30% / 100%);
-		--cl-background: hsl(0deg 0% 100% / 100%);
-		--cl-accent: hsl(202deg 72% 62%);
-		--cl-accent-dark: hsl(202deg 72% 30% / 100%);
-		--cl-accent-light: hsl(202deg 72% 79% / 100%);
-
-		--ff-main: 'Myriad Pro', sans-serif;
-		--ff-accent: 'Eurostile Extended', sans-serif;
-
-		/* stylelint-enable custom-property-empty-line-before */
-	}
-
-	body {
-		height: 100lvh;
-
-		font-family: var(--ff-main);
-		font-weight: 300;
-		color: var(--cl-foreground);
-
-		background:
-			center / cover no-repeat url('/src/assets/background.jpg'),
-			var(--cl-background);
-	}
-
-	:where(h1, h2, h3, h4, h5, h6) {
-		font-family: var(--ff-accent);
-		text-transform: uppercase;
-	}
-</style>

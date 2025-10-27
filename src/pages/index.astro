@@ -1,10 +1,10 @@
 ---
 import Link from '$src/components/Link.astro';
 import Section from '$src/components/Section.astro';
-import BaseLayout from '$src/layouts/BaseLayout.astro';
+import MainLayout from '$src/layouts/MainLayout.astro';
 ---
 
-<BaseLayout>
+<MainLayout>
 	<Section disableSpecialTitle class="title">
 		<h1>The Bar at the End of Time</h1>
 	</Section>
@@ -25,7 +25,7 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		<p>Hello, <span x-text="text"></span>!</p>
 		<input type="text" x-model="text" />
 	</div>
-</BaseLayout>
+</MainLayout>
 
 <style>
 	.section {
