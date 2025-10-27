@@ -1,6 +1,7 @@
 old/
 package.json
 pnpm-lock.yaml
+src/assets/
 
 # build output
 dist/
