@@ -5,6 +5,7 @@ import BaseLayout from './BaseLayout.astro';
 <BaseLayout>
 	<div class="layout">
 		<slot />
+		<div class="background"></div>
 	</div>
 </BaseLayout>
 
@@ -14,13 +15,19 @@ import BaseLayout from './BaseLayout.astro';
 
 		--cl-foreground: hsl(0deg 0% 30% / 100%);
 		--cl-background: hsl(0deg 0% 100% / 100%);
+
 		--cl-accent: hsl(202deg 72% 62%);
 		--cl-accent-dark: hsl(202deg 72% 30% / 100%);
 		--cl-accent-light: hsl(202deg 72% 79% / 100%);
 		--cl-on-accent: hsl(213 15% 95% / 100%);
 
+		--cl-container: hsl(206 15% 97% / 100%);
+		--cl-outline: hsl(202 35% 91% / 100%);
+
 		--ff-main: 'Myriad Pro', sans-serif;
 		--ff-accent: 'Eurostile Extended', sans-serif;
+
+		--z-bg: -1000;
 
 		/* stylelint-enable custom-property-empty-line-before */
 	}
@@ -32,9 +39,18 @@ import BaseLayout from './BaseLayout.astro';
 		font-weight: 300;
 		color: var(--cl-foreground);
 
-		background:
-			center / cover no-repeat url('/src/assets/background.jpg'),
-			var(--cl-background);
+		background: var(--cl-background);
+	}
+
+	body::before {
+		pointer-events: none;
+		content: '';
+
+		position: fixed;
+		z-index: var(--z-bg);
+		inset: 0;
+
+		background: center / cover no-repeat url('/src/assets/background.jpg');
 	}
 
 	:where(h1, h2, h3, h4, h5, h6) {
