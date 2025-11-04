@@ -57,4 +57,19 @@ const html = await Astro.slots.render('default');
 			translate: calc(-100% - var(--gap)) 0;
 		}
 	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.marquee {
+			overflow: auto;
+		}
+
+		ul {
+			padding-inline: 2em;
+			animation: none;
+		}
+
+		ul[aria-hidden] {
+			display: none;
+		}
+	}
 </style>
