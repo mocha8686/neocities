@@ -1,8 +1,6 @@
 ---
 import 'sanitize.css';
 
-import Fonts from '$src/components/Fonts.astro';
-
 interface Props {
 	title?: string;
 }
@@ -16,7 +14,7 @@ const { title = 'meow' } = Astro.props
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<Fonts />
+		<slot name="head" />
 		<title>{title}</title>
 	</head>
 	<body>

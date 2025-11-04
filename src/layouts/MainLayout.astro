@@ -1,10 +1,17 @@
 ---
+import { Font } from 'astro:assets';
+
 import Marquee from '$src/components/Marquee.astro';
 
 import BaseLayout from './BaseLayout.astro';
 ---
 
 <BaseLayout>
+	<Fragment slot="head">
+		<Font cssVariable="--font-shippori-mincho" preload />
+		<Font cssVariable="--font-zen-old-mincho" preload />
+	</Fragment>
+
 	<div class="layout">
 		<section class="main-content">
 			<Marquee class="header" gap="8em" duration="30s" as="header">
@@ -35,8 +42,8 @@ import BaseLayout from './BaseLayout.astro';
 		--cl-container: hsl(326 15% 97% / 100%);
 		--cl-outline: hsl(326 35% 91% / 100%);
 
-		--ff-main: 'Shippori Mincho', serif;
-		--ff-accent: 'Shippori Mincho', serif;
+		--ff-main: var(--font-shippori-mincho);
+		--ff-accent: var(--font-zen-old-mincho);
 
 		--z-bg: -1000;
 
@@ -77,12 +84,22 @@ import BaseLayout from './BaseLayout.astro';
 	}
 
 	.main-content {
+		display: grid;
+		grid-template-columns: [full-width-start] 2rem [breakout-start] 2rem [content-start] 1fr [content-end] 2rem [breakout-end] 2rem [full-width-end];
+
 		margin-block: 2rem;
+		padding: 0.5rem;
+
 		background: var(--cl-container);
+
+		:where(& > *) {
+			grid-column: content;
+		}
 	}
 
 	.header {
-		margin: 0.5rem;
+		grid-column: full-width;
+
 		padding-block: 0.75rem;
 
 		font-style: italic;
