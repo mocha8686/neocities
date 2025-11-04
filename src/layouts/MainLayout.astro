@@ -88,7 +88,11 @@ import BaseLayout from './BaseLayout.astro';
 		--breakout-margin: 1rem;
 
 		display: grid;
-		grid-template-columns: [full-width-start] var(--full-width-margin) [breakout-start] var(--breakout-margin) [content-start] 1fr [content-end] var(--breakout-margin) [breakout-end] var(--full-width-margin) [full-width-end];
+		grid-template-columns:
+			[full-width-start] var(--full-width-margin)
+			[breakout-start] var(--breakout-margin)
+			[content-start] 1fr [content-end] var(--breakout-margin)
+			[breakout-end] var(--full-width-margin) [full-width-end];
 
 		margin-block: 2rem;
 		padding: 0.5rem;
