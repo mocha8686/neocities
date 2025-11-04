@@ -1,11 +1,24 @@
 ---
+import Marquee from '$src/components/Marquee.astro';
+
 import BaseLayout from './BaseLayout.astro';
 ---
 
 <BaseLayout>
 	<div class="layout">
-		<slot />
-		<div class="background"></div>
+		<section class="main-content">
+			<Marquee class="header" gap="8em" duration="30s" as="header">
+				<li>
+					And all the while, I hoped someone would eventually say it for me.
+				</li>
+				<li>Be careful what you wish for, huh.</li>
+				<li>So tomorrow, you'll say hi as if nothing's changed...!</li>
+				<li>I'm sorry I couldn't face up to this.</li>
+				<li>You reap what you sow.</li>
+				<li>I want to disappear.</li>
+			</Marquee>
+			<slot />
+		</section>
 	</div>
 </BaseLayout>
 
@@ -16,8 +29,8 @@ import BaseLayout from './BaseLayout.astro';
 		--cl-foreground: hsl(0deg 0% 30% / 100%);
 		--cl-background: hsl(0deg 0% 100% / 100%);
 
-		--cl-accent: hsl(313 45% 63%);
-		--cl-on-accent: hsl(313 17% 95% / 100%);
+		--cl-accent: hsl(317 45% 77% / 100%);
+		--cl-on-accent: hsl(317 17% 95% / 100%);
 
 		--cl-container: hsl(326 15% 97% / 100%);
 		--cl-outline: hsl(326 35% 91% / 100%);
@@ -50,17 +63,32 @@ import BaseLayout from './BaseLayout.astro';
 
 	:where(h1, h2, h3, h4, h5, h6) {
 		font-family: var(--ff-accent);
-		text-transform: uppercase;
 	}
 </style>
 
 <style>
 	.layout {
 		display: grid;
-		grid-template-columns: 1fr 60vw 1fr;
+		grid-template-columns: 1fr 40rem 1fr;
 
 		& > :global(*) {
 			grid-column: 2;
 		}
+	}
+
+	.main-content {
+		margin-block: 2rem;
+		background: var(--cl-container);
+	}
+
+	.header {
+		margin: 0.5rem;
+		padding-block: 0.75rem;
+
+		font-style: italic;
+		color: var(--cl-on-accent);
+		text-transform: lowercase;
+
+		background: var(--cl-accent);
 	}
 </style>

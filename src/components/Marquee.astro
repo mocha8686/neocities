@@ -1,0 +1,60 @@
+---
+import type { HTMLTag, Polymorphic } from 'astro/types';
+
+interface OtherProps {
+	duration?: string;
+	gap?: string;
+}
+type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> | OtherProps;
+const {
+	as: Tag = 'div',
+	duration = '10s',
+	gap = '1rem',
+	class: className,
+	...props
+} = Astro.props;
+
+const html = await Astro.slots.render('default');
+---
+
+<Tag class:list={['marquee', className]} style={`gap: ${gap};`} {...props}>
+	<ul>
+		<Fragment set:html={html} />
+	</ul>
+	<ul aria-hidden>
+		<Fragment set:html={html} />
+	</ul>
+</Tag>
+
+<style define:vars={{ duration, gap }}>
+	.marquee {
+		overflow: hidden;
+		display: flex;
+		gap: var(--gap);
+	}
+
+	ul {
+		display: flex;
+		flex-shrink: 0;
+		gap: var(--gap);
+		justify-content: space-around;
+
+		min-width: 100%;
+		margin: 0;
+		padding: 0;
+
+		list-style-type: none;
+
+		animation: var(--duration) linear infinite forwards marquee;
+	}
+
+	@keyframes marquee {
+		from {
+			translate: 0;
+		}
+
+		to {
+			translate: calc(-100% - var(--gap)) 0;
+		}
+	}
+</style>
