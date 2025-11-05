@@ -68,7 +68,8 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 		font-family: var(--ff-accent);
 	}
 
-	q, blockquote {
+	q,
+	blockquote {
 		&::before {
 			content: '“';
 		}

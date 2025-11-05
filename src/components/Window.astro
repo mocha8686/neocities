@@ -14,9 +14,9 @@ const { class: className, ...props }: HTMLAttributes<'section'> = Astro.props;
 
 		display: grid;
 		grid-auto-rows: min-content;
-		grid-template-columns: [full-width-start] var(
-				--padding
-			) [content-start] 1fr [content-end] var(--padding) [full-width-end];
+		grid-template-columns:
+			[full-width-start] var(--padding)
+			[content-start] 1fr [content-end] var(--padding) [full-width-end];
 
 		border: 12px outset var(--cl-outline);
 
