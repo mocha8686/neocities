@@ -18,10 +18,10 @@ const html = await Astro.slots.render('default');
 ---
 
 <Tag class:list={['marquee', className]} style={`gap: ${gap};`} {...props}>
-	<ul>
+	<ul class="marquee-content">
 		<Fragment set:html={html} />
 	</ul>
-	<ul aria-hidden>
+	<ul class="marquee-content" aria-hidden>
 		<Fragment set:html={html} />
 	</ul>
 </Tag>
@@ -33,7 +33,7 @@ const html = await Astro.slots.render('default');
 		gap: var(--gap);
 	}
 
-	ul {
+	.marquee-content {
 		display: flex;
 		flex-shrink: 0;
 		gap: var(--gap);
@@ -43,7 +43,7 @@ const html = await Astro.slots.render('default');
 		margin: 0;
 		padding: 0;
 
-		list-style-type: none;
+		list-style: none;
 
 		animation: var(--duration) linear infinite forwards marquee;
 	}
@@ -63,12 +63,12 @@ const html = await Astro.slots.render('default');
 			overflow: auto;
 		}
 
-		ul {
+		.marquee-content {
 			padding-inline: 2em;
 			animation: none;
 		}
 
-		ul[aria-hidden] {
+		.marquee-content[aria-hidden] {
 			display: none;
 		}
 	}

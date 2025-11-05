@@ -86,6 +86,33 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 			content: '」';
 		}
 	}
+
+	ul:not([class]) {
+		list-style: none;
+
+		li {
+			position: relative;
+
+			&::before {
+				--gap: 0.25rem;
+
+				content: '';
+
+				position: absolute;
+				inset-block: 0;
+				inset-inline-start: calc(-1rem - var(--gap));
+
+				aspect-ratio: 1;
+				width: 1rem;
+
+				background: center/contain no-repeat url('/src/assets/bullets/seal.webp');
+			}
+		}
+	}
+
+	::marker {
+		max-width: 1rem;
+	}
 </style>
 
 <style>
