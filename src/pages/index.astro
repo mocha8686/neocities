@@ -1,13 +1,42 @@
 ---
+import { Image } from 'astro:assets';
+
+import pfp from '$src/assets/mizuki.jpg';
+import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
 ---
 
 <MainLayout>
 	<h1>Have You Seen This Girl?</h1>
+	<section class="bio">
+		<Window class="about">
+			<h2>About</h2>
+			<p>welcome to my virtual home~</p>
+			<p>
+				it's pretty empty in here right now, but feel free to go wandering
+				about. who knows, maybe you'll find a secret or two?
+			</p>
+		</Window>
+
+		<Window class="quote">
+			<h2>Mizuki?</h2>
+			<blockquote lang="ja">ごめん…</blockquote>
+		</Window>
+
+		<Image
+			src={pfp}
+			alt="Akiyama Mizuki"
+			layout="constrained"
+			class="pfp"
+			width={200}
+			height={200}
+		/>
+	</section>
 </MainLayout>
 
 <style>
 	h1 {
+		margin-inline: -0.5rem;
 		padding-block: 0.5rem;
 
 		font-weight: normal;
@@ -16,5 +45,38 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 		text-transform: uppercase;
 
 		background: var(--cl-accent);
+	}
+
+	.bio {
+		display: grid;
+		grid-template:
+			'pfp about' max-content
+			'quote about' max-content / max-content 1fr;
+		gap: 1rem 4rem;
+	}
+
+	.pfp {
+		grid-area: pfp;
+		border: 2px solid var(--cl-outline);
+	}
+
+	.about {
+		grid-area: about;
+		row-gap: 1em;
+
+		p {
+			margin: 0;
+			line-height: 1.45;
+		}
+	}
+
+	.quote {
+		grid-area: quote;
+
+		blockquote {
+			margin: 0.5em 0;
+			font-style: italic;
+			text-align: center;
+		}
 	}
 </style>

@@ -1,0 +1,57 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+const { class: className, ...props }: HTMLAttributes<'section'> = Astro.props;
+---
+
+<section class:list={[className, 'window']} {...props}>
+	<slot />
+</section>
+
+<style>
+	.window {
+		--padding: 1em;
+
+		display: grid;
+		grid-auto-rows: min-content;
+		grid-template-columns: [full-width-start] var(
+				--padding
+			) [content-start] 1fr [content-end] var(--padding) [full-width-end];
+
+		border: 12px outset var(--cl-outline);
+
+		background: var(--cl-container);
+	}
+
+	.window > :global(*) {
+		grid-column: content;
+	}
+
+	.window::before {
+		content: '';
+		min-height: 1.75rem;
+	}
+
+	.window > :global(:where(h1, h2, h3, h4, h5, h6):first-child) {
+		display: grid;
+		place-items: center start;
+
+		margin: 0;
+		padding-inline: 0.75em;
+
+		font-size: 1.3rem;
+		font-weight: normal;
+		color: var(--cl-on-accent);
+		text-transform: lowercase;
+	}
+
+	.window::before,
+	.window > :global(:where(h1, h2, h3, h4, h5, h6):first-child) {
+		grid-column: full-width;
+		background: var(--cl-accent);
+	}
+
+	.window:global(:has(:where(h1, h2, h3, h4, h5, h6):first-child))::before {
+		display: none;
+	}
+</style>
