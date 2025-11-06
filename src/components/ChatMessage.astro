@@ -15,7 +15,7 @@ const { image: src, alt, outbound = false } = Astro.props;
 
 <div class:list={['message', { outbound }]}>
 	<Image {src} {alt} width={iconSize} height={iconSize} />
-	<div class="text">
+	<div class="texts">
 		<slot />
 	</div>
 </div>
@@ -26,25 +26,34 @@ const { image: src, alt, outbound = false } = Astro.props;
 		gap: 0.5em;
 		font-size: 0.875em;
 
-		p {
-			margin: 0;
+		& .texts {
+			display: flex;
+			flex-direction: column;
+			gap: 0.15em;
+			align-items: start;
 		}
 
-		& > .text {
+		& :global(p) {
 			flex: auto;
 
-			margin-inline-end: 1em;
-			padding: 0.25em 0.75em;
+			margin-block: 0;
+			margin-inline: 0 1em;
+			padding: 0.25em 0.85em;
 			border-radius: 1rem;
 
 			background: var(--cl-accent);
 		}
 
 		&.outbound {
-			direction: rtl;
+			flex-direction: row-reverse;
 
-			& > .text {
-				border: 2px solid var(--cl-accent);
+			& .texts {
+				align-items: end;
+			}
+
+			& :global(p) {
+				margin-inline: 1em 0;
+				border: 1px solid var(--cl-accent);
 				background: var(--cl-container);
 			}
 		}
@@ -52,7 +61,7 @@ const { image: src, alt, outbound = false } = Astro.props;
 
 	.icon {
 		aspect-ratio: 1;
-		object-fit: cover;
 		border-radius: 100%;
+		object-fit: cover;
 	}
 </style>
