@@ -124,7 +124,9 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 	.layout {
 		overflow-x: hidden;
 		display: grid;
-		grid-template-columns: 1fr [content-start] minmax(auto, 40rem) [content-end] 1fr;
+		grid-template-columns:
+			1fr [content-start] minmax(auto, 40rem)
+			[content-end] 1fr;
 
 		& > :global(*) {
 			grid-column: content;
@@ -137,6 +139,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 
 		position: relative;
 
+		container-type: inline-size;
 		display: grid;
 		grid-template-columns:
 			[full-width-start] var(--full-width-margin)
@@ -171,6 +174,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 		margin-inline: -0.5rem;
 		padding-block: 0.5rem;
 
+		font-size: clamp(1rem, 0rem + 5.5cqi, 2rem);
 		font-weight: normal;
 		color: var(--cl-on-accent);
 		text-align: center;
