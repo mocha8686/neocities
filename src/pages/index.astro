@@ -79,8 +79,8 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 		</div>
 	</section>
 
-	<p class="find find1" aria-hidden>Find her<br />Find her</p>
-	<div class="find find2" aria-hidden>
+	<p class="find find1">Find her<br />Find her</p>
+	<div class="find find2">
 		<Image src={here} alt="" width={200} height={200} />
 		<p class="is-she-here">Is she here?</p>
 		<p>Find her find her</p>
@@ -161,18 +161,6 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 		width: 16rem;
 	}
 
-	.find {
-		position: absolute;
-
-		font-family: var(--ff-accent);
-		font-size: 3em;
-		font-weight: bold;
-		line-height: 1.1;
-		color: var(--cl-accent);
-		text-shadow: var(--cl-background) -4px 1px;
-		text-transform: uppercase;
-	}
-
 	.find1 {
 		inset-block-start: calc(22rem - 2em);
 		inset-inline-start: -5.2em;
@@ -213,6 +201,22 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 
 		p {
 			margin: 0;
+		}
+	}
+
+	.find {
+		position: absolute;
+
+		font-family: var(--ff-accent);
+		font-size: 3em;
+		font-weight: bold;
+		line-height: 1.1;
+		color: var(--cl-accent);
+		text-shadow: var(--cl-background) -4px 1px;
+		text-transform: uppercase;
+
+		@media screen and (width <= 50rem) {
+			display: none;
 		}
 	}
 </style>
