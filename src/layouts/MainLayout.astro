@@ -124,10 +124,10 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 	.layout {
 		overflow-x: hidden;
 		display: grid;
-		grid-template-columns: 1fr 40rem 1fr;
+		grid-template-columns: 1fr [content-start] minmax(auto, 40rem) [content-end] 1fr;
 
 		& > :global(*) {
-			grid-column: 2;
+			grid-column: content;
 		}
 	}
 
