@@ -122,6 +122,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 
 <style>
 	.layout {
+		overflow-x: hidden;
 		display: grid;
 		grid-template-columns: 1fr 40rem 1fr;
 
