@@ -1,0 +1,58 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
+interface Props {
+	image: ImageMetadata;
+	alt: string;
+	outbound?: boolean;
+}
+
+const iconSize = 32;
+
+const { image: src, alt, outbound = false } = Astro.props;
+---
+
+<div class:list={['message', { outbound }]}>
+	<Image {src} {alt} width={iconSize} height={iconSize} />
+	<div class="text">
+		<slot />
+	</div>
+</div>
+
+<style>
+	.message {
+		display: flex;
+		gap: 0.5em;
+		font-size: 0.875em;
+
+		p {
+			margin: 0;
+		}
+
+		& > .text {
+			flex: auto;
+
+			margin-inline-end: 1em;
+			padding: 0.25em 0.75em;
+			border-radius: 1rem;
+
+			background: var(--cl-accent);
+		}
+
+		&.outbound {
+			direction: rtl;
+
+			& > .text {
+				border: 2px solid var(--cl-accent);
+				background: var(--cl-container);
+			}
+		}
+	}
+
+	.icon {
+		aspect-ratio: 1;
+		object-fit: cover;
+		border-radius: 100%;
+	}
+</style>

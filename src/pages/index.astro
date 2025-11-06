@@ -6,6 +6,7 @@ import cutiemarks from '$src/assets/cutiemarks.jpg';
 import pfp from '$src/assets/mizuki.jpg';
 import smile from '$src/assets/smile!.jpg';
 import Album from '$src/components/Album.astro';
+import Chat from '$src/components/Chat.astro';
 import NavList from '$src/components/NavList.astro';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
@@ -39,30 +40,42 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 		/>
 	</section>
 
-	<section class="nav-albums">
-		<NavList />
+	<section class="info">
+		<div class="info-column">
+			<NavList />
+			<Chat />
+		</div>
 
-		<section class="albums">
-			<h2>albums</h2>
-			<Album
-				image={cutiemarks}
-				href="https://vyletpony.bandcamp.com/album/cutiemarks-and-the-things-that-bind-us"
-				title="CUTIEMARKS"
-				artist="Vylet Pony"
-			/>
-			<Album
-				image={smile}
-				href="https://porterrobinson.co/SMILE"
-				title="SMILE! :D"
-				artist="Porter Robinson"
-			/>
-			<Album
-				image={bakenohana}
-				href="https://youtu.be/UFRIsspP9UE"
-				title="化けの花"
-				artist="NAKISO"
-			/>
-		</section>
+		<div class="info-column">
+			<section class="albums">
+				<h2>Albums</h2>
+				<Album
+					image={cutiemarks}
+					href="https://vyletpony.bandcamp.com/album/cutiemarks-and-the-things-that-bind-us"
+					title="CUTIEMARKS"
+					artist="Vylet Pony"
+				/>
+				<Album
+					image={smile}
+					href="https://porterrobinson.co/SMILE"
+					title="SMILE! :D"
+					artist="Porter Robinson"
+				/>
+				<Album
+					image={bakenohana}
+					href="https://youtu.be/UFRIsspP9UE"
+					title="化けの花"
+					artist="NAKISO"
+				/>
+			</section>
+
+			<Window class="blog-preview">
+				<h2>Blog</h2>
+				<p>
+				under construction!
+				</p>
+			</Window>
+		</div>
 	</section>
 </MainLayout>
 
@@ -112,26 +125,38 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 		}
 	}
 
-	.nav-albums {
+	.info {
 		display: flex;
 		justify-content: space-between;
 	}
 
+	.info-column {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
 	.albums {
+		direction: rtl;
 		display: grid;
 		grid-auto-columns: 1fr;
 		grid-template-rows: max-content 1fr;
 		gap: 1em;
-		direction: rtl;
 
 		h2 {
 			grid-row: 1;
 			margin: 0;
 			text-align: right;
+			text-transform: lowercase;
 		}
 
 		& > :where(*) {
 			grid-row: 2;
 		}
+	}
+
+	.blog-preview {
+		align-self: end;
+		width: 16rem;
 	}
 </style>

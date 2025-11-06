@@ -1,0 +1,41 @@
+---
+import bunnyIcon from '$src/assets/icons/bunny.webp';
+import flowerIcon from '$src/assets/icons/flower.webp';
+import macaronIcon from '$src/assets/icons/macaron.webp';
+import notesIcon from '$src/assets/icons/notes.webp';
+
+import ChatMessage from './ChatMessage.astro';
+
+const bunny = { image: bunnyIcon, alt: 'Pink macaron' };
+const flower = { image: flowerIcon, alt: 'Pink flower bud', outbound: true };
+const macaron = { image: macaronIcon, alt: 'Small bunny doll' };
+const notes = { image: notesIcon, alt: 'Pink shirt button' };
+---
+
+<div class="chat">
+	<ChatMessage {...notes}>
+		<p>Skibidi Ohio</p>
+	</ChatMessage>
+
+	<ChatMessage {...flower}>
+		<p>What the heck</p>
+		<p>Meow meow</p>
+	</ChatMessage>
+
+	<ChatMessage {...bunny}>
+		<p>eugg</p>
+	</ChatMessage>
+
+	<ChatMessage {...macaron}>
+		<p>muehehehehe</p>
+	</ChatMessage>
+</div>
+
+<style>
+	div {
+		display: flex;
+		flex-direction: column;
+		gap: 0.75em;
+		max-width: 12rem;
+	}
+</style>
