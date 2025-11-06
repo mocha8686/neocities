@@ -1,13 +1,19 @@
 ---
 import { Image } from 'astro:assets';
 
+import bakenohana from '$src/assets/bakenohana.png';
+import cutiemarks from '$src/assets/cutiemarks.jpg';
 import pfp from '$src/assets/mizuki.jpg';
+import smile from '$src/assets/smile!.jpg';
+import Album from '$src/components/Album.astro';
+import NavList from '$src/components/NavList.astro';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
 ---
 
 <MainLayout>
 	<h1>Have You Seen This Girl?</h1>
+
 	<section class="bio">
 		<Window class="about">
 			<h2>About</h2>
@@ -31,6 +37,32 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 			width={200}
 			height={200}
 		/>
+	</section>
+
+	<section class="nav-albums">
+		<NavList />
+
+		<section class="albums">
+			<h2>albums</h2>
+			<Album
+				image={cutiemarks}
+				href="https://vyletpony.bandcamp.com/album/cutiemarks-and-the-things-that-bind-us"
+				title="CUTIEMARKS"
+				artist="Vylet Pony"
+			/>
+			<Album
+				image={smile}
+				href="https://porterrobinson.co/SMILE"
+				title="SMILE! :D"
+				artist="Porter Robinson"
+			/>
+			<Album
+				image={bakenohana}
+				href="https://youtu.be/UFRIsspP9UE"
+				title="化けの花"
+				artist="NAKISO"
+			/>
+		</section>
 	</section>
 </MainLayout>
 
@@ -77,6 +109,29 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 			margin: 0.5em 0;
 			font-style: italic;
 			text-align: center;
+		}
+	}
+
+	.nav-albums {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.albums {
+		display: grid;
+		grid-auto-columns: 1fr;
+		grid-template-rows: max-content 1fr;
+		gap: 1em;
+		direction: rtl;
+
+		h2 {
+			grid-row: 1;
+			margin: 0;
+			text-align: right;
+		}
+
+		& > :where(*) {
+			grid-row: 2;
 		}
 	}
 </style>

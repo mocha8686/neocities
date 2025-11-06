@@ -1,0 +1,27 @@
+---
+const links = [
+	{ name: 'about', href: '/about/' },
+	{ name: 'blog', href: '/blog/' },
+	{ name: 'learning in public', href: '/learning/' },
+	{ name: 'shrines', href: '/shrines/' },
+	{ name: 'fun stuff', href: '/fun/' },
+];
+---
+
+<nav>
+	<ul>
+		{
+			links.map(({ name, href }) => (
+				<li>
+					<a {href}>{name}</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>
+
+<style>
+	ul {
+		line-height: 1.3;
+	}
+</style>
