@@ -113,6 +113,10 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 	.info {
 		display: flex;
 		justify-content: space-between;
+
+		@container (width <= 460px) {
+			flex-direction: column;
+		}
 	}
 
 	.info-column {
