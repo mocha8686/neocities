@@ -49,24 +49,26 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 		<div class="info-column">
 			<section class="albums">
 				<h2>Albums</h2>
-				<Album
-					image={cutiemarks}
-					href="https://vyletpony.bandcamp.com/album/cutiemarks-and-the-things-that-bind-us"
-					title="CUTIEMARKS"
-					artist="Vylet Pony"
-				/>
-				<Album
-					image={smile}
-					href="https://porterrobinson.co/SMILE"
-					title="SMILE! :D"
-					artist="Porter Robinson"
-				/>
-				<Album
-					image={bakenohana}
-					href="https://youtu.be/UFRIsspP9UE"
-					title="化けの花"
-					artist="NAKISO"
-				/>
+				<nav>
+					<Album
+						image={bakenohana}
+						href="https://youtu.be/UFRIsspP9UE"
+						title="化けの花"
+						artist="NAKISO"
+					/>
+					<Album
+						image={smile}
+						href="https://porterrobinson.co/SMILE"
+						title="SMILE! :D"
+						artist="Porter Robinson"
+					/>
+					<Album
+						image={cutiemarks}
+						href="https://vyletpony.bandcamp.com/album/cutiemarks-and-the-things-that-bind-us"
+						title="CUTIEMARKS"
+						artist="Vylet Pony"
+					/>
+				</nav>
 			</section>
 
 			<Window class="blog-preview">
@@ -135,19 +137,21 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 	}
 
 	.albums {
-		direction: rtl;
-		display: grid;
-		grid-auto-columns: 1fr;
-		grid-template-rows: max-content 1fr;
+		display: flex;
+		flex-direction: column;
 		gap: 1em;
-
 		margin-block-start: 1.5em;
 
 		h2 {
-			grid-row: 1;
+			align-self: end;
 			margin: 0;
 			text-align: right;
 			text-transform: lowercase;
+		}
+
+		nav {
+			display: flex;
+			gap: 1em;
 		}
 
 		& > :where(*) {
