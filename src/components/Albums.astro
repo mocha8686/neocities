@@ -1,0 +1,41 @@
+---
+import bakenohana from '$src/assets/bakenohana.png';
+import cutiemarks from '$src/assets/cutiemarks.jpg';
+import smile from '$src/assets/smile!.jpg';
+
+import Album from './Album.astro';
+
+const albums = [
+	{
+		image: bakenohana,
+		href: 'https://youtu.be/UFRIsspP9UE',
+		title: '化けの花',
+		artist: 'NAKISO',
+	},
+	{
+		image: smile,
+		href: 'https://porterrobinson.co/SMILE',
+		title: 'SMILE! :D',
+		artist: 'Porter Robinson',
+	},
+	{
+		image: cutiemarks,
+		href: 'https://vyletpony.bandcamp.com/album/cutiemarks-and-the-things-that-bind-us',
+		title: 'CUTIEMARKS',
+		artist: 'Vylet Pony',
+	},
+];
+---
+
+<nav>
+	{albums.map(info => <Album {...info} />)}
+</nav>
+
+<style>
+	nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1em;
+		justify-content: end;
+	}
+</style>

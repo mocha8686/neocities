@@ -1,12 +1,9 @@
 ---
 import { Image } from 'astro:assets';
 
-import bakenohana from '$src/assets/bakenohana.png';
-import cutiemarks from '$src/assets/cutiemarks.jpg';
 import here from '$src/assets/here.jpg';
 import pfp from '$src/assets/mizuki.jpg';
-import smile from '$src/assets/smile!.jpg';
-import Album from '$src/components/Album.astro';
+import Albums from '$src/components/Albums.astro';
 import Chat from '$src/components/Chat.astro';
 import NavList from '$src/components/NavList.astro';
 import Window from '$src/components/Window.astro';
@@ -50,26 +47,7 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 		<div class="info-column">
 			<section class="albums">
 				<h2>Albums</h2>
-				<nav>
-					<Album
-						image={bakenohana}
-						href="https://youtu.be/UFRIsspP9UE"
-						title="化けの花"
-						artist="NAKISO"
-					/>
-					<Album
-						image={smile}
-						href="https://porterrobinson.co/SMILE"
-						title="SMILE! :D"
-						artist="Porter Robinson"
-					/>
-					<Album
-						image={cutiemarks}
-						href="https://vyletpony.bandcamp.com/album/cutiemarks-and-the-things-that-bind-us"
-						title="CUTIEMARKS"
-						artist="Vylet Pony"
-					/>
-				</nav>
+				<Albums />
 			</section>
 
 			<Window class="blog-preview">
@@ -137,22 +115,14 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 		display: flex;
 		flex-direction: column;
 		gap: 1em;
+		align-items: end;
+
 		margin-block-start: 1.5em;
 
 		h2 {
-			align-self: end;
 			margin: 0;
 			text-align: right;
 			text-transform: lowercase;
-		}
-
-		nav {
-			display: flex;
-			gap: 1em;
-		}
-
-		& > :where(*) {
-			grid-row: 2;
 		}
 	}
 
