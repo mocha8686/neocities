@@ -134,6 +134,8 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 		--full-width-margin: 1rem;
 		--breakout-margin: 1rem;
 
+		position: relative;
+
 		display: grid;
 		grid-template-columns:
 			[full-width-start] var(--full-width-margin)

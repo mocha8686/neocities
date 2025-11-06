@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 
 import bakenohana from '$src/assets/bakenohana.png';
 import cutiemarks from '$src/assets/cutiemarks.jpg';
+import here from '$src/assets/here.jpg';
 import pfp from '$src/assets/mizuki.jpg';
 import smile from '$src/assets/smile!.jpg';
 import Album from '$src/components/Album.astro';
@@ -77,6 +78,19 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 			</Window>
 		</div>
 	</section>
+
+	<p class="find find1" aria-hidden>Find her<br />Find her</p>
+	<div class="find find2" aria-hidden>
+		<Image
+			src={here}
+			alt="An overexposed tree with pink flowers hanging down on vines, with a forest of similar trees and a Japanese-style roof in the background."
+			width={200}
+			height={200}
+		/>
+		<p class="is-she-here">Is she here?</p>
+		<p>Find her find her</p>
+		<p>Find her find her</p>
+	</div>
 </MainLayout>
 
 <style>
@@ -162,5 +176,60 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 	.blog-preview {
 		align-self: end;
 		width: 16rem;
+	}
+
+	.find {
+		position: absolute;
+
+		font-family: var(--ff-accent);
+		font-size: 3em;
+		font-weight: bold;
+		line-height: 1.1;
+		color: var(--cl-accent);
+		text-shadow: var(--cl-background) -4px 1px;
+		text-transform: uppercase;
+	}
+
+	.find1 {
+		inset-block-start: calc(22rem - 2em);
+		inset-inline-start: -5.2em;
+	}
+
+	.find2 {
+		inset-block-start: calc(25rem - 2em);
+		inset-inline-end: -10.7em;
+		display: flex;
+		flex-direction: column;
+
+		.is-she-here {
+			position: absolute;
+			inset-block-start: calc(5rem - 1em);
+			inset-inline-start: 6em;
+
+			font-size: 0.9rem;
+			color: red;
+			text-shadow: none;
+
+			&::before {
+				--size: 2rem;
+				--gap: 0.25rem;
+
+				content: '';
+
+				position: absolute;
+				inset-block: 0;
+				inset-inline-start: calc(var(--size) * -1 - var(--gap));
+				translate: 0 -25%;
+
+				width: var(--size);
+				height: var(--size);
+				border: 2px solid red;
+				border-radius: 100%;
+			}
+		}
+
+		p {
+			margin: 0;
+		}
 	}
 </style>
