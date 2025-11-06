@@ -14,6 +14,12 @@ const { title = 'meow' } = Astro.props;
 		<link rel="icon" type="image/png" href="/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+
+		<meta property="og:title" content={title} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://mocha8686.neocities.org/" />
+		<meta property="og:image" content="https://mocha8686.neocities.org/mizuki.jpg" />
+
 		<slot name="head" />
 		<title>{title}</title>
 	</head>
