@@ -166,4 +166,17 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 
 		background: var(--cl-accent);
 	}
+
+	.main-content > :global(h1:first-of-type) {
+		margin-inline: -0.5rem;
+		padding-block: 0.5rem;
+
+		font-weight: normal;
+		color: var(--cl-on-accent);
+		text-align: center;
+		text-transform: uppercase;
+
+		background: var(--cl-accent);
+	}
+
 </style>
