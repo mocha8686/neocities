@@ -6,6 +6,7 @@ interface Props {
 }
 
 const { title = 'meow' } = Astro.props;
+const description = 'find her find her find her find her find her find her find her find her';
 ---
 
 <html lang="en">
@@ -18,7 +19,11 @@ const { title = 'meow' } = Astro.props;
 		<meta property="og:title" content={title} />
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="https://mocha8686.neocities.org/" />
-		<meta property="og:image" content="https://mocha8686.neocities.org/mizuki.jpg" />
+		<meta
+			property="og:image"
+			content="https://mocha8686.neocities.org/mizuki.jpg"
+		/>
+		<meta property="og:description" content={description} />
 
 		<slot name="head" />
 		<title>{title}</title>
