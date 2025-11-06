@@ -1,3 +1,0 @@
-<a :href="link" target="_blank" rel="noreferrer">
-	<img :src="image" :alt="name" />
-</a>

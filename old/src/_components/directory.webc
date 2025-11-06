@@ -1,9 +1,0 @@
-<hologram>
-	<h2>Directory</h2>
-	<navigation>
-		<template
-			@html="eleventyNavigationToHtml(eleventyNavigation(collections.all))"
-			webc:nokeep
-		></template>
-	</navigation>
-</hologram>

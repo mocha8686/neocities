@@ -1,9 +1,0 @@
-<nav webc:root="override">
-	<slot></slot>
-</nav>
-
-<style webc:scoped="Directory">
-	ul {
-		line-height: 1.6;
-	}
-</style>
