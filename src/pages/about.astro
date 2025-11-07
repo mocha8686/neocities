@@ -1,20 +1,15 @@
 ---
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
-import Me from '$src/components/about/Me.astro';
-import Site from '$src/components/about/Site.astro';
+import { render } from 'astro:content';
+import { getSortedTabs, getTabName, type Tab } from '$src/lib/aboutTabs';
 
-const tabs = {
-	me: Me,
-	site: Site,
-};
+const tabs = await getSortedTabs();
+const defaultTab = getTabName(tabs[0]);
 
-const tabNames = Object.keys(tabs);
-const defaultTab = tabNames[0];
-
-const ifTab = (tab: string) => `current === '${tab}'`;
-const ifNotTab = (tab: string) => `current !== '${tab}'`;
-const changeTab = (tab: string) => `current = '${tab}'`;
+const ifTab = (tab: Tab) => `current === '${getTabName(tab)}'`;
+const ifNotTab = (tab: Tab) => `current !== '${getTabName(tab)}'`;
+const changeTab = (tab: Tab) => `current = '${getTabName(tab)}'`;
 ---
 
 <MainLayout>
@@ -29,31 +24,37 @@ const changeTab = (tab: string) => `current = '${tab}'`;
 
 		<nav>
 			{
-				tabNames.map(tab => (
+				tabs.map(tab => (
 					<button x-show={ifNotTab(tab)} @click={changeTab(tab)}>
-						{tab}
+						{getTabName(tab)}
 					</button>
 				))
 			}
 		</nav>
 
 		{
-			Object.entries(tabs).map(([tab, Content]) => (
-				<div class="content-container" x-show={ifTab(tab)}>
-					<Content />
-				</div>
-			))
+			tabs.map(async tab => {
+				const { Content } = await render(tab);
+				return (
+					<div class="content-container" x-show={ifTab(tab)}>
+						<Content />
+					</div>
+				);
+			})
 		}
 	</Window>
 
 	<noscript>
 		{
-			Object.entries(tabs).map(([tab, Content]) => (
-				<Window class="about-window">
-					<h2>{tab}</h2>
-					<Content />
-				</Window>
-			))
+			tabs.map(async tab => {
+				const { Content } = await render(tab);
+				return (
+					<Window class="about-window">
+						<h2>{getTabName(tab)}</h2>
+						<Content />
+					</Window>
+				);
+			})
 		}
 	</noscript>
 

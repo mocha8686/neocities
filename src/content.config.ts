@@ -1,4 +1,4 @@
-import { file } from 'astro/loaders';
+import { file, glob } from 'astro/loaders';
 import { defineCollection, z } from 'astro:content';
 
 const quotes = defineCollection({
@@ -15,4 +15,15 @@ const quotes = defineCollection({
 	}),
 });
 
-export const collections = { quotes };
+const aboutTabs = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: 'src/data/about' }),
+	schema: z.object({
+		id: z.string(),
+		sortOrder: z.number(),
+	}),
+});
+
+export const collections = {
+	aboutTabs,
+	quotes,
+};
