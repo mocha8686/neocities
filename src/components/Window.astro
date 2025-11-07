@@ -23,7 +23,7 @@ const { class: className, ...props }: HTMLAttributes<'section'> = Astro.props;
 		background: var(--cl-container);
 	}
 
-	.window > :global(*) {
+	:global(:where(.window > *)) {
 		grid-column: content;
 	}
 

@@ -1,5 +1,96 @@
 ---
-import UnderConstruction from '$src/layouts/UnderConstruction.astro';
+import Window from '$src/components/Window.astro';
+import MainLayout from '$src/layouts/MainLayout.astro';
+import Me from '$src/components/about/Me.astro';
+import Site from '$src/components/about/Site.astro';
+
+const tabs = {
+	me: Me,
+	site: Site,
+};
+
+const tabNames = Object.keys(tabs);
+const defaultTab = tabNames[0];
+
+const ifTab = (tab: string) => `current === '${tab}'`;
+const ifNotTab = (tab: string) => `current !== '${tab}'`;
+const changeTab = (tab: string) => `current = '${tab}'`;
 ---
 
-<UnderConstruction />
+<MainLayout>
+	<h1>About</h1>
+
+	<Window
+		style="display: none;"
+		x-data={`{ current: '${defaultTab}' }`}
+		x-show="true"
+	>
+		<h2 x-text="current">{defaultTab}</h2>
+
+		<nav>
+			{
+				tabNames.map(tab => (
+					<button x-show={ifNotTab(tab)} @click={changeTab(tab)}>
+						{tab}
+					</button>
+				))
+			}
+		</nav>
+
+		{
+			Object.entries(tabs).map(([tab, Content]) => (
+				<div class="content-container" x-show={ifTab(tab)}>
+					<Content />
+				</div>
+			))
+		}
+	</Window>
+
+	<noscript>
+		{
+			Object.entries(tabs).map(([tab, Content]) => (
+				<Window class="about-window">
+					<h2>{tab}</h2>
+					<Content />
+				</Window>
+			))
+		}
+	</noscript>
+
+	<a class="back" href="/">Back to index</a>
+</MainLayout>
+
+<style>
+	nav {
+		display: flex;
+		grid-column: full-width;
+		flex-wrap: wrap;
+		border: 4px inset var(--cl-outline);
+
+		button {
+			flex: auto;
+			padding-inline: 2.5em;
+		}
+	}
+
+	.content-container {
+		display: contents;
+
+		> * {
+			grid-column: content;
+
+			& + & {
+				margin-block-start: 0;
+			}
+		}
+	}
+
+	.back {
+		display: block;
+		margin-block-start: 2em;
+	}
+
+	.about-window + .about-window {
+		margin-block-start: 2rem;
+	}
+</style>

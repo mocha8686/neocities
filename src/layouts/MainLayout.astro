@@ -79,6 +79,32 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 
 	a {
 		color: var(--cl-text-accent);
+
+		&[href="/"]::before {
+			content: "<< ";
+		}
+	}
+
+	button {
+		--delta-brightness: 5%;
+
+		cursor: pointer;
+
+		border: 1px solid var(--cl-outline);
+
+		font-family: var(--ff-accent);
+		font-size: 1rem;
+		color: var(--cl-on-accent);
+
+		background: var(--cl-accent);
+
+		&:hover, &:focus-visible {
+			filter: brightness(calc(100% + var(--delta-brightness)));
+		}
+
+		&:active {
+			filter: brightness(calc(100% - var(--delta-brightness)));
+		}
 	}
 
 	q,
