@@ -17,7 +17,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 	</Fragment>
 
 	<div class="layout">
-		<section class="main-content">
+		<main>
 			<Marquee class="header" gap="8em" duration="30s" as="header">
 				{quotes.map(quote => <li>{quote}</li>)}
 			</Marquee>
@@ -29,7 +29,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 				<p>Find her find her</p>
 				<p>Find her find her</p>
 			</div>
-		</section>
+		</main>
 	</div>
 </BaseLayout>
 
@@ -141,7 +141,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 		}
 	}
 
-	.main-content {
+	main {
 		--full-width-margin: 1rem;
 		--breakout-margin: 1rem;
 
@@ -178,7 +178,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 		background: var(--cl-accent);
 	}
 
-	.main-content > :global(h1:first-of-type) {
+	main > :global(h1:first-of-type) {
 		margin-inline: -0.5rem;
 		padding-block: 0.5rem;
 
