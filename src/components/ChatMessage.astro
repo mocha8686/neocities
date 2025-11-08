@@ -41,9 +41,9 @@ const { image: src, alt, outbound = false } = Astro.props;
 			padding: 0.25em 0.85em;
 			border-radius: 1rem;
 
-			color: var(--cl-on-accent);
+			color: var(--cl-on-accent-container);
 
-			background: var(--cl-accent);
+			background: var(--cl-accent-container);
 		}
 
 		&.outbound {
@@ -55,7 +55,7 @@ const { image: src, alt, outbound = false } = Astro.props;
 
 			& :global(p) {
 				margin-inline: 1em 0;
-				border: 1px solid var(--cl-accent);
+				border: 1px solid var(--cl-accent-container);
 				color: var(--cl-on-container);
 				background: var(--cl-container);
 			}

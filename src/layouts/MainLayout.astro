@@ -37,16 +37,19 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 	:root {
 		/* stylelint-disable custom-property-empty-line-before */
 
-		--cl-foreground: oklch(42% 0.00 0);
-		--cl-background: oklch(98% 0.00 0);
+		--cl-foreground: oklch(42% 0 0);
+		--cl-background: oklch(98% 0 0);
 
 		--cl-accent: oklch(60% 0.11 337);
 		--cl-on-accent: oklch(from var(--cl-accent) 100% 0.05 h);
 
-		--cl-text-accent: oklch(from var(--cl-accent) calc(l - 0.05) c h);
-
 		--cl-container: oklch(from var(--cl-background) calc(l - 0.03) c h);
 		--cl-outline: oklch(from var(--cl-accent) 90% 0.01 h);
+
+		--cl-accent-container: oklch(
+			from var(--cl-accent) calc(l + 0.1) c h
+		);
+		--cl-on-accent-container: oklch(from var(--cl-accent) 100% 0.05 h);
 
 		--ff-main: var(--font-shippori-mincho);
 		--ff-accent: var(--font-zen-old-mincho);
@@ -79,10 +82,10 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 	}
 
 	a {
-		color: var(--cl-text-accent);
+		color: var(--cl-accent);
 
-		&[href="/"]::before {
-			content: "<< ";
+		&[href='/']::before {
+			content: '<< ';
 		}
 	}
 
@@ -91,7 +94,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 
 		cursor: pointer;
 
-		border: 1px solid var(--cl-outline);
+		border: none;
 
 		font-family: var(--ff-accent);
 		font-size: 1rem;
@@ -99,7 +102,8 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 
 		background: var(--cl-accent);
 
-		&:hover, &:focus-visible {
+		&:hover,
+		&:focus-visible {
 			filter: brightness(calc(100% + var(--delta-brightness)));
 		}
 
@@ -199,10 +203,10 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 		padding-block: 0.75rem;
 
 		font-style: italic;
-		color: var(--cl-on-accent);
+		color: var(--cl-on-accent-container);
 		text-transform: lowercase;
 
-		background: var(--cl-accent);
+		background: var(--cl-accent-container);
 	}
 
 	main > :global(h1:first-of-type) {
@@ -211,11 +215,11 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 
 		font-size: clamp(1rem, 0rem + 5.5cqi, 2rem);
 		font-weight: normal;
-		color: var(--cl-on-accent);
+		color: var(--cl-on-accent-container);
 		text-align: center;
 		text-transform: uppercase;
 
-		background: var(--cl-accent);
+		background: var(--cl-accent-container);
 	}
 
 	.find1 {

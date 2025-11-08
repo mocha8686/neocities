@@ -41,14 +41,14 @@ const { class: className, ...props }: HTMLAttributes<'section'> = Astro.props;
 
 		font-size: 1.3rem;
 		font-weight: normal;
-		color: var(--cl-on-accent);
+		color: var(--cl-on-accent-container);
 		text-transform: lowercase;
 	}
 
 	.window::before,
 	.window > :global(:where(h1, h2, h3, h4, h5, h6):first-child) {
 		grid-column: full-width;
-		background: var(--cl-accent);
+		background: var(--cl-accent-container);
 	}
 
 	.window:global(:has(:where(h1, h2, h3, h4, h5, h6):first-child))::before {
