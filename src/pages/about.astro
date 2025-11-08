@@ -51,7 +51,9 @@ const changeTab = (tab: Tab) => `current = '${getTabName(tab)}'`;
 				return (
 					<Window class="about-window">
 						<h2>{getTabName(tab)}</h2>
-						<Content />
+						<div class="content-container">
+							<Content />
+						</div>
 					</Window>
 				);
 			})
