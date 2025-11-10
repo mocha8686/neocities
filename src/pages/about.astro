@@ -78,6 +78,8 @@ const changeTab = (tab: Tab) => `current = '${getTabName(tab)}'`;
 	}
 
 	.content-container {
+		overflow-y: auto;
+		height: clamp(16rem, 40rem + -60cqi, 28rem);
 
 		> * {
 			grid-column: content;
