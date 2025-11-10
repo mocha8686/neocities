@@ -28,7 +28,7 @@ const html = await Astro.slots.render('default');
 
 <style define:vars={{ duration, gap }}>
 	.marquee {
-		overflow: hidden;
+		overflow: clip;
 		display: flex;
 		gap: var(--gap);
 	}
