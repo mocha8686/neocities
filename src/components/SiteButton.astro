@@ -1,0 +1,65 @@
+---
+import { Image } from 'astro:assets';
+
+import button from '$src/assets/button.gif';
+
+const alt =
+	"An 88x31, with a mizuki on the left and flashing text on the right that reads \"can you find her???\".";
+const code = `<a href="https://mocha8686.neociites.org/" target="_blank" rel="noreferrer"><img src="https://mocha8686.neocities.org/button.gif" alt="${alt}"></a>`;
+const data = JSON.stringify({ code, text: 'Copy code', timeout: null });
+const fn = `() => {
+	clearTimeout(timeout);
+	window.navigator.clipboard.writeText(code);
+	text = 'Copied!';
+	timeout = setTimeout(() => text = 'Copy code', 3000);
+}`;
+---
+
+<div class="container">
+	<Image src={button} {alt} />
+
+	<code>{code}</code>
+
+	<button
+		style="display: none;"
+		x-show="true"
+		x-data={data}
+		x-text="text"
+		@click={fn}
+	>
+		Copy code
+	</button>
+</div>
+
+<style>
+	.container {
+		display: grid;
+		grid-template-columns: minmax(auto, 12rem);
+		grid-template-rows: auto 4rem auto;
+		gap: 1rem;
+		place-items: center;
+		justify-content: center;
+
+		margin-block: 1rem;
+	}
+
+	img {
+	}
+
+	code {
+		overflow-y: auto;
+
+		width: min(20rem, 80%);
+		max-height: 100%;
+		border: 4px inset var(--cl-outline);
+
+		font-size: 0.75rem;
+		color: var(--cl-on-accent);
+
+		background: var(--cl-accent);
+	}
+
+	button {
+		text-transform: lowercase;
+	}
+</style>

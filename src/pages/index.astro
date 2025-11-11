@@ -5,6 +5,7 @@ import pfp from '$src/assets/mizuki.jpg';
 import Albums from '$src/components/Albums.astro';
 import Chat from '$src/components/Chat.astro';
 import NavList from '$src/components/NavList.astro';
+import SiteButton from '$src/components/SiteButton.astro';
 import Webrings from '$src/components/Webrings.astro';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
@@ -57,6 +58,11 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 			<Window class="blog-preview">
 				<h2>Blog</h2>
 				<p>under construction!</p>
+			</Window>
+
+			<Window class="site-button">
+				<h2>Button</h2>
+				<SiteButton />
 			</Window>
 		</div>
 	</section>
@@ -127,6 +133,10 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 	.blog-preview {
 		align-self: end;
 		width: min(18rem, 100%);
+	}
+
+	.site-button {
+		align-self: end;
 	}
 
 	.webrings {
