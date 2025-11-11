@@ -1,0 +1,25 @@
+---
+import Bucket from "./webrings/Bucket.astro";
+import NoAI from "./webrings/NoAI.astro";
+import TransingTheInternet from "./webrings/TransingTheInternet.astro";
+---
+
+<section>
+	<TransingTheInternet />
+	<NoAI />
+	<Bucket />
+</section>
+
+<style>
+	section {
+		display: flex;
+		flex-wrap: wrap;
+		margin-block: 1em;
+		gap: 1.5em 1em;
+		align-items: baseline;
+
+		> * {
+			flex: auto;
+		}
+	}
+</style>

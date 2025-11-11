@@ -14,6 +14,7 @@ import TextWave from '../TextWave.astro';
 	>
 		prev
 	</a>
+
 	<div class="middle">
 		<Image src={axolotl} alt="Axolotl in a bucket" width="20" height="20" />
 
@@ -29,6 +30,7 @@ import TextWave from '../TextWave.astro';
 			🔀
 		</a>
 	</div>
+
 	<a
 		href="https://webring.bucketfish.me/redirect.html?to=next&name=mocha8686"
 		rel="noreferrer"
@@ -58,9 +60,9 @@ webring website: https://webring.bucketfish.me
 		--cl-b: oklch(from var(--cl-base) l c 246);
 		--cl-p: oklch(from var(--cl-base) l c 307);
 
-		display: flex;
 		gap: 2rem;
-		align-items: baseline;
+		display: flex;
+		justify-content: center;
 	}
 
 	* {
@@ -69,6 +71,11 @@ webring website: https://webring.bucketfish.me
 
 	a {
 		text-decoration: none;
+	}
+
+	.middle {
+		display: flex;
+		gap: 0.25em;
 	}
 
 	a,

@@ -1,1 +1,13 @@
+<div class="container">
 <script is:inline defer src="https://transring.neocities.org/ring.js" />
+</div>
+
+<style>
+	.container {
+		& > :global(div) {
+			display: grid;
+			grid-template-columns: 1fr;
+			justify-items: center;
+		}
+	}
+</style>

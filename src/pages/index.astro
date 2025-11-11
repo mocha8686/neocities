@@ -5,6 +5,7 @@ import pfp from '$src/assets/mizuki.jpg';
 import Albums from '$src/components/Albums.astro';
 import Chat from '$src/components/Chat.astro';
 import NavList from '$src/components/NavList.astro';
+import Webrings from '$src/components/Webrings.astro';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
 ---
@@ -57,6 +58,11 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 			</Window>
 		</div>
 	</section>
+
+	<Window class="webrings">
+		<h2>webrings</h2>
+		<Webrings />
+	</Window>
 </MainLayout>
 
 <style>
@@ -133,5 +139,9 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 
 	.blog-preview {
 		align-self: end;
+	}
+
+	.webrings {
+		margin-block-start: 2rem;
 	}
 </style>
