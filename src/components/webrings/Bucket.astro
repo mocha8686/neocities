@@ -1,0 +1,108 @@
+---
+import { Image } from 'astro:assets';
+
+import axolotl from '$src/assets/axolotl.png';
+
+import TextWave from '../TextWave.astro';
+---
+
+<div class="container">
+	<a
+		href="https://webring.bucketfish.me/redirect.html?to=prev&name=mocha8686"
+		rel="noreferrer"
+		class="prev"
+	>
+		prev
+	</a>
+	<div class="middle">
+		<Image src={axolotl} alt="Axolotl in a bucket" width="20" height="20" />
+
+		<a href="https://webring.bucketfish.me" rel="noreferrer" class="title">
+			<TextWave body="bucket webring" />
+		</a>
+
+		<a
+			href="https://webring.bucketfish.me/redirect.html?to=random&name=mocha8686"
+			rel="noreferrer"
+			class="random"
+		>
+			🔀
+		</a>
+	</div>
+	<a
+		href="https://webring.bucketfish.me/redirect.html?to=next&name=mocha8686"
+		rel="noreferrer"
+		class="next"
+	>
+		next
+	</a>
+</div>
+
+<!---
+previous page: https://webring.bucketfish.me/redirect.html?to=prev&name=mocha8686
+
+next page: https://webring.bucketfish.me/redirect.html?to=next&name=mocha8686
+
+random page: https://webring.bucketfish.me/redirect.html?to=random&name=mocha8686
+
+webring website: https://webring.bucketfish.me
+--->
+
+<style>
+	.container {
+		--cl-base: oklch(70% 0.15 0);
+		--cl-r: oklch(from var(--cl-base) l c 18);
+		--cl-y: oklch(from var(--cl-base) l c 88);
+		--cl-o: oklch(from var(--cl-base) l c 109);
+		--cl-g: oklch(from var(--cl-base) l c 148);
+		--cl-b: oklch(from var(--cl-base) l c 246);
+		--cl-p: oklch(from var(--cl-base) l c 307);
+
+		display: flex;
+		gap: 2rem;
+		align-items: baseline;
+	}
+
+	* {
+		white-space: nowrap;
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	a,
+	.middle {
+		position: relative;
+	}
+
+	.prev::after,
+	.next::before,
+	.middle::before {
+		content: '';
+
+		position: absolute;
+		inset-block-end: -4px;
+		inset-inline: 0;
+
+		height: 2px;
+
+		background: linear-gradient(
+			to right,
+			var(--cl-r),
+			var(--cl-y),
+			var(--cl-o),
+			var(--cl-g),
+			var(--cl-b),
+			var(--cl-p)
+		);
+	}
+
+	.prev::before {
+		content: '⥼ ';
+	}
+
+	.next::after {
+		content: ' ⥽';
+	}
+</style>

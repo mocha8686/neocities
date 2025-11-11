@@ -1,0 +1,87 @@
+---
+interface Props {
+	body: string;
+}
+
+const { body } = Astro.props;
+
+function delay(i: number): string {
+	const ms = (i - body.length) * 100;
+	return `${ms}ms`;
+}
+---
+
+<div>
+	{
+		body.split('').map((c, i) => (
+			<span style={`--d: ${delay(i)}`} class:list={{ space: c === ' ' }}>{c}</span>
+		))
+	}
+</div>
+
+<style>
+	div {
+		--background-size: calc(200%);
+	}
+
+	span {
+		--d: 0ms;
+		--amplitude: 1px;
+		--wave-period: 1.5s;
+		--rainbow-period: 3s;
+
+		display: inline-block;
+		animation:
+			calc(var(--wave-period) / 2) ease-in-out var(--d) infinite alternate
+				text-wave,
+			var(--rainbow-period) linear var(--d) infinite forwards rainbow;
+	}
+
+	.space {
+		width: 1ch;
+	}
+
+	@media (prefers-reduced-motion) {
+		span {
+			animation: var(--rainbow-period) linear var(--d) infinite forwards rainbow;
+			animation-play-state: paused;
+		}
+	}
+
+	@keyframes text-wave {
+		from {
+			translate: 0 calc(var(--amplitude) * -1);
+		}
+
+		to {
+			translate: 0 var(--amplitude);
+		}
+	}
+
+	@keyframes rainbow {
+		0%,
+		100% {
+			color: var(--cl-r);
+		}
+
+		17% {
+			color: var(--cl-y);
+		}
+
+		33% {
+			color: var(--cl-o);
+		}
+
+		50% {
+			color: var(--cl-g);
+		}
+
+		67% {
+			color: var(--cl-b);
+		}
+
+		83% {
+			color: var(--cl-p);
+		}
+	}
+</style>
