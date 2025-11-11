@@ -18,7 +18,7 @@ const quotes = defineCollection({
 const quizResults = defineCollection({
 	loader: file('src/data/quizResults.json'),
 	schema: z.object({
-		name: z.string(),
+		id: z.string(),
 		image: z.string(),
 		link: z.string(),
 	}),

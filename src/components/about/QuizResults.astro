@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+
+const results = await getCollection('quizResults');
+---
+
+<ul>
+	{
+		results.map(({ data: { link, id, image } }) => (
+			<li>
+				<a href={link}>
+					<Image
+						class="quiz-result"
+						src={image}
+						alt={id}
+						width={400}
+						height={200}
+					/>
+				</a>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	ul {
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		margin-block: 2rem;
+
+		&::before {
+			display: none;
+		}
+	}
+
+	img {
+		max-width: 100%;
+		height: auto;
+		margin: 0;
+		padding: 0;
+
+		object-fit: contain;
+	}
+
+	a {
+		display: block;
+		text-align: center;
+	}
+</style>

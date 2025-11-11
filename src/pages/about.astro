@@ -3,6 +3,7 @@ import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
 import Me from '$src/components/about/Me.md';
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import QuizResults from '$src/components/about/QuizResults.astro';
 
 interface Tab {
 	name: string;
@@ -13,6 +14,10 @@ const tabs: Tab[] = [
 	{
 		name: 'me',
 		content: Me,
+	},
+	{
+		name: 'quiz results',
+		content: QuizResults,
 	},
 ];
 const defaultTab = tabs[0].name;
@@ -97,7 +102,7 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 			grid-column: content;
 		}
 
-		img {
+		img:not(.quiz-result) {
 			--margin: 1.5rem;
 
 			max-width: 100%;
