@@ -40,7 +40,7 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 		<nav>
 			{
 				tabs.map(tab => (
-					<button x-show={ifNotTab(tab)} @click={changeTab(tab)}>
+					<button :class={`${ifTab(tab)} && 'active'`} x-show={ifNotTab(tab)} @click={changeTab(tab)}>
 						{tab.name}
 					</button>
 				))
@@ -51,7 +51,7 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 			tabs.map(async tab => {
 				const { content: Content } = tab;
 				return (
-					<div class="content-container" x-show={ifTab(tab)}>
+				<div class="content-container" x-show={ifTab(tab)}>
 						<Content />
 					</div>
 				);
@@ -89,6 +89,12 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 			flex: auto;
 			padding: 0.1em 2.5em;
 			font-size: 0.9rem;
+
+			&:not(.active) {
+				& ~ & {
+					border-inline-start: 1px solid var(--cl-outline);
+				}
+			}
 		}
 	}
 
