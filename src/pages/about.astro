@@ -1,15 +1,25 @@
 ---
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
-import { render } from 'astro:content';
-import { getSortedTabs, getTabName, type Tab } from '$src/lib/aboutTabs';
+import Me from '$src/components/about/Me.md';
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 
-const tabs = await getSortedTabs();
-const defaultTab = getTabName(tabs[0]);
+interface Tab {
+	name: string;
+	content: AstroComponentFactory;
+}
 
-const ifTab = (tab: Tab) => `current === '${getTabName(tab)}'`;
-const ifNotTab = (tab: Tab) => `current !== '${getTabName(tab)}'`;
-const changeTab = (tab: Tab) => `current = '${getTabName(tab)}'`;
+const tabs: Tab[] = [
+	{
+		name: 'me',
+		content: Me,
+	},
+];
+const defaultTab = tabs[0].name;
+
+const ifTab = (tab: Tab) => `current === '${tab.name}'`;
+const ifNotTab = (tab: Tab) => `current !== '${tab.name}'`;
+const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 ---
 
 <MainLayout>
@@ -26,7 +36,7 @@ const changeTab = (tab: Tab) => `current = '${getTabName(tab)}'`;
 			{
 				tabs.map(tab => (
 					<button x-show={ifNotTab(tab)} @click={changeTab(tab)}>
-						{getTabName(tab)}
+						{tab.name}
 					</button>
 				))
 			}
@@ -34,7 +44,7 @@ const changeTab = (tab: Tab) => `current = '${getTabName(tab)}'`;
 
 		{
 			tabs.map(async tab => {
-				const { Content } = await render(tab);
+				const { content: Content } = tab;
 				return (
 					<div class="content-container" x-show={ifTab(tab)}>
 						<Content />
@@ -47,10 +57,10 @@ const changeTab = (tab: Tab) => `current = '${getTabName(tab)}'`;
 	<noscript>
 		{
 			tabs.map(async tab => {
-				const { Content } = await render(tab);
+				const { content: Content } = tab;
 				return (
 					<Window class="about-window">
-						<h2>{getTabName(tab)}</h2>
+						<h2>{tab.name}</h2>
 						<div class="content-container">
 							<Content />
 						</div>
@@ -79,10 +89,33 @@ const changeTab = (tab: Tab) => `current = '${getTabName(tab)}'`;
 
 	.content-container {
 		overflow-y: auto;
-		height: clamp(16rem, 40rem + -60cqi, 28rem);
+		grid-column: full-width;
+		height: 28rem;
+		padding-inline: 1rem;
 
 		> * {
 			grid-column: content;
+		}
+
+		img {
+			--margin: 1.5rem;
+
+			max-width: 100%;
+			height: auto;
+			margin-block: var(--margin);
+			padding-inline: clamp(0rem, 10cqi - 2rem, 2rem);
+
+			object-fit: contain;
+
+			&:has(+ em) {
+				margin-block-end: 0;
+			}
+
+			+ em {
+				display: block;
+				margin-block-end: var(--margin);
+				text-align: center;
+			}
 		}
 	}
 
