@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+
+const sites = await getCollection('inspo');
+---
+
+<nav>
+	<ul>
+		{
+			sites.map(({ data: { id, link, image } }) => (
+				<li>
+					<a href={link} rel="noreferrer">
+						<Image class="inspo" src={image} alt={id} width={88} height={31} />
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>
+
+<style>
+	nav {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	ul, li {
+		display: contents;
+	}
+
+	li::before {
+		display: none;
+	}
+
+	a {
+		display: block;
+	}
+</style>

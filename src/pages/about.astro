@@ -1,6 +1,7 @@
 ---
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 
+import ButtonWall from '$src/components/about/ButtonWall.astro';
 import Interests from '$src/components/about/Interests.md';
 import MainLayout from '$src/layouts/MainLayout.astro';
 import Me from '$src/components/about/Me.md';
@@ -24,6 +25,10 @@ const tabs: Tab[] = [
 	{
 		name: 'interests',
 		content: Interests,
+	},
+	{
+		name: 'button wall',
+		content: ButtonWall,
 	},
 ];
 const defaultTab = tabs[0].name;
@@ -122,7 +127,7 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 			border-block-end: 2px solid var(--cl-accent);
 		}
 
-		img:not(.quiz-result) {
+		img:not([class]) {
 			--margin: 1.5rem;
 
 			max-width: 100%;

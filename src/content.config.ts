@@ -24,7 +24,17 @@ const quizResults = defineCollection({
 	}),
 });
 
+const inspo = defineCollection({
+	loader: file('src/data/inspo.json'),
+	schema: z.object({
+		id: z.string(),
+		link: z.string(),
+		image: z.string(),
+	}),
+});
+
 export const collections = {
-	quotes,
+	inspo,
 	quizResults,
+	quotes,
 };
