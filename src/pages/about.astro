@@ -1,10 +1,11 @@
 ---
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 
+import Interests from '$src/components/about/Interests.md';
+import MainLayout from '$src/layouts/MainLayout.astro';
 import Me from '$src/components/about/Me.md';
 import QuizResults from '$src/components/about/QuizResults.astro';
 import Window from '$src/components/Window.astro';
-import MainLayout from '$src/layouts/MainLayout.astro';
 
 interface Tab {
 	name: string;
@@ -19,6 +20,10 @@ const tabs: Tab[] = [
 	{
 		name: 'quiz results',
 		content: QuizResults,
+	},
+	{
+		name: 'interests',
+		content: Interests,
 	},
 ];
 const defaultTab = tabs[0].name;
@@ -111,6 +116,10 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 
 		> * {
 			grid-column: content;
+		}
+
+		h3 {
+			border-block-end: 2px solid var(--cl-accent);
 		}
 
 		img:not(.quiz-result) {
