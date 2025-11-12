@@ -112,6 +112,14 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 		}
 	}
 
+	button:not([class]) {
+		border: 4px outset var(--cl-outline);
+
+		&:active {
+			border-style: inset;
+		}
+	}
+
 	q,
 	blockquote {
 		&::before {
