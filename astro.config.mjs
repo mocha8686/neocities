@@ -1,11 +1,15 @@
 // @ts-check
 import alpinejs from '@astrojs/alpinejs';
 import { defineConfig, fontProviders } from 'astro/config';
+import remarkRuby from 'remark-ruby';
 
 // https://astro.build/config
 export default defineConfig({
 	integrations: [alpinejs()],
 	trailingSlash: 'always',
+	markdown: {
+		remarkPlugins: [remarkRuby],
+	},
 	experimental: {
 		fonts: [
 			{
