@@ -1,22 +1,22 @@
 [
 	{
 		"id": "MISTAKEMP4",
-		"link": "https://mistakemp4.neocities.org",
+		"link": "https://mistakemp4.neocities.org/",
 		"image": "https://mistakemp4.neocities.org/button.gif"
 	},
 	{
 		"id": "eatsteas",
-		"link": "https://eatsteas.neocities.org",
+		"link": "https://eatsteas.neocities.org/",
 		"image": "https://eatsteas.neocities.org/img/eatsteasbutton2.gif"
 	},
 	{
 		"id": "UnicodeAngel",
-		"link": "https://unicodeangel.neocities.org",
+		"link": "https://unicodeangel.neocities.org/",
 		"image": "https://unicodeangel.neocities.org/imgs/UnicodeAngelButton3.gif"
 	},
 	{
 		"id": "Lucky",
-		"link": "https://luckysoft.neocities.org",
+		"link": "https://luckysoft.neocities.org/",
 		"image": "https://luckysoft.neocities.org/images/luckybutton.gif"
 	},
 	{
@@ -26,22 +26,22 @@
 	},
 	{
 		"id": "Cloverbell",
-		"link": "https://cloverbell.neocities.org",
+		"link": "https://cloverbell.neocities.org/",
 		"image": "https://cloverbell.neocities.org/n_n/cloverbell.gif"
 	},
 	{
 		"id": "melps",
-		"link": "https://melps.neocities.org",
+		"link": "https://melps.neocities.org/",
 		"image": "https://melps.neocities.org/limk1.jpg"
 	},
 	{
 		"id": "midosuji",
-		"link": "https://midosuji.neocities.org",
+		"link": "https://midosuji.neocities.org/",
 		"image": "https://midosuji.neocities.org/pics/midolovesyou.gif"
 	},
 	{
 		"id": "turd",
-		"link": "https://turd.neocities.org",
+		"link": "https://turd.neocities.org/",
 		"image": "https://turd.neocities.org/images/turd.png"
 	},
 	{
@@ -58,5 +58,46 @@
 		"id": "doqmeat",
 		"link": "https://doqmeat.com",
 		"image": "https://doqmeat.com/!g/web/doqmeat.png"
+	},
+	{
+		"id": "sadgrl",
+		"link": "https://sadgrl.online",
+		"image": "https://sadgrlonline.github.io/archived-sadgrl.online/assets/images/buttons/sadgrlonline.gif"
+	},
+	{
+		"id": "Oaakys World",
+		"link": "https://oaaky.neocities.org/",
+		"image": "https://i.imgur.com/AdTgkj9.png"
+	},
+	{
+		"id": "Miki's Otome Oasis",
+		"link": "https://aquamiki.neocities.org/",
+		"image": "https://aquamiki.neocities.org/linkbutton.gif"
+	},
+	{
+		"id": "Lilith's Lair",
+		"link": "https://lilithdev.neocities.org/",
+		"image": "https://lilithdev.neocities.org/buttons/lilithdevbtn.gif"
+	},
+	{
+		"id": "decayedg1rl",
+		"link": "https://decayedg1rl.neocities.org/",
+		"image": "https://decayedg1rl.neocities.org/buttons/nntest.gif"
+	},
+	{
+		"id": "ribose",
+		"link": "https://ribo.zone/",
+		"image": "https://ribo.zone/88x31/site/ribose.png"
+	},
+	{
+		"id": "Velvet Blue",
+		"link": "https://velvetblue.neocities.org/",
+		"image": "https://files.catbox.moe/vltthb.png"
+	},
+	{
+		"id": "cadence",
+		"link": "https://cadence.moe/",
+		"image": "https://cadence.moe/static/img/cadence_now.png",
+		"alt": "The text \"cadence now!\" on a purple background. There is a moon-shaped logo on the left side and a tiny star in the bottom right."
 	}
 ]
