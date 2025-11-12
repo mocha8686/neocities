@@ -63,6 +63,12 @@ webring website: https://webring.bucketfish.me
 		display: flex;
 		gap: 2rem;
 		justify-content: center;
+
+		@container (width <= 360px) {
+			flex-direction: column;
+			gap: 0.5em;
+			align-items: center;
+		}
 	}
 
 	* {
