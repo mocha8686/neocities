@@ -1,9 +1,10 @@
 ---
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+
+import Me from '$src/components/about/Me.md';
+import QuizResults from '$src/components/about/QuizResults.astro';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
-import Me from '$src/components/about/Me.md';
-import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
-import QuizResults from '$src/components/about/QuizResults.astro';
 
 interface Tab {
 	name: string;
@@ -40,7 +41,11 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 		<nav>
 			{
 				tabs.map(tab => (
-					<button :class={`${ifTab(tab)} && 'active'`} x-show={ifNotTab(tab)} @click={changeTab(tab)}>
+					<button
+						:class={`${ifTab(tab)} && 'active'`}
+						x-show={ifNotTab(tab)}
+						@click={changeTab(tab)}
+					>
 						{tab.name}
 					</button>
 				))
@@ -51,7 +56,7 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 			tabs.map(async tab => {
 				const { content: Content } = tab;
 				return (
-				<div class="content-container" x-show={ifTab(tab)}>
+					<div class="content-container" x-show={ifTab(tab)}>
 						<Content />
 					</div>
 				);

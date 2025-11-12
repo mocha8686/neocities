@@ -14,7 +14,9 @@ function delay(i: number): string {
 <div>
 	{
 		body.split('').map((c, i) => (
-			<span style={`--d: ${delay(i)}`} class:list={{ space: c === ' ' }}>{c}</span>
+			<span style={`--d: ${delay(i)}`} class:list={{ space: c === ' ' }}>
+				{c}
+			</span>
 		))
 	}
 </div>

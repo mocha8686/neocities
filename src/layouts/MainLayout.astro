@@ -46,9 +46,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 		--cl-container: oklch(from var(--cl-background) calc(l * 0.98) c h);
 		--cl-outline: oklch(from var(--cl-accent) calc(l * 1.5) calc(c * 0.05) h);
 
-		--cl-accent-container: oklch(
-			from var(--cl-accent) calc(l * 1.2) c h
-		);
+		--cl-accent-container: oklch(from var(--cl-accent) calc(l * 1.2) c h);
 		--cl-on-accent-container: oklch(from var(--cl-accent) 100% 0.02 h);
 
 		--ff-main: var(--font-shippori-mincho);
