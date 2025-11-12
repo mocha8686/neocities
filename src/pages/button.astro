@@ -1,0 +1,74 @@
+---
+import { Image } from 'astro:assets';
+
+import derp from '$src/assets/button/derp.webp';
+import MainLayout from '$src/layouts/MainLayout.astro';
+
+const text = 'have you seen this girl ? ? ?';
+const words = text.split(' ').flatMap(s => [s, '']);
+const data = JSON.stringify({ words, index: 0 });
+
+const interval = 350;
+const fn = `
+setInterval(() => {
+	index = (index + 1) % words.length;
+}, ${interval});
+`;
+---
+
+<MainLayout>
+	<div class="button">
+		<div class="image">
+			<Image src={derp} alt="" />
+		</div>
+		<p x-data={data} x-text="words[index]" x-init={fn}></p>
+	</div>
+</MainLayout>
+
+<style>
+	.button {
+		--scale: 4;
+
+		position: relative;
+
+		display: flex;
+
+		aspect-ratio: 88 / 31;
+		width: calc(88px * var(--scale));
+		margin: 2rem;
+		border: calc(4px * var(--scale)) outset var(--cl-outline);
+
+		color: var(--cl-on-accent-container);
+
+		background: var(--cl-accent-container);
+		&::before {
+			pointer-events: none;
+			content: '';
+
+			position: absolute;
+			inset: 0;
+
+			background: center/contain url('/src/assets/button/leaves.gif');
+		}
+	}
+
+	.image {
+		aspect-ratio: 1;
+	}
+
+	img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+	}
+
+	p {
+		display: grid;
+		flex: auto;
+		place-items: center;
+
+		margin: 0;
+
+		font-size: calc(0.75rem * var(--scale));
+	}
+</style>
