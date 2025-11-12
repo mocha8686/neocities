@@ -30,6 +30,7 @@ const inspo = defineCollection({
 		id: z.string(),
 		link: z.string(),
 		image: z.string(),
+		alt: z.string().optional(),
 	}),
 });
 
