@@ -1,82 +1,26 @@
 ---
-import { getCollection } from 'astro:content';
-
+import Back from '$src/components/Back.astro';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
-import Back from '$src/components/Back.astro';
+import { formatDate, getSortedBlogPosts } from '$src/lib/blog';
 
-// const posts = await getCollection('blog');
-const posts = [
-	{
-		title: 'meow meow',
-		src: 'https://picsum.photos/seed/one/400/400',
-		description:
-			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex eos adipisci laudantium earum quis, aut similique corporis autem cum nihil.',
-	},
-	{
-		title: 'another blog post',
-		src: 'https://picsum.photos/seed/two/400/400',
-		description:
-			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sapiente et nam ex nobis? Earum necessitatibus nesciunt autem ab mollitia.',
-	},
-	{
-		title: 'this one for sure',
-		src: 'https://picsum.photos/seed/three/400/400',
-		description:
-			'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem expedita quae repellat, alias perferendis consequatur unde dolorem architecto dignissimos reiciendis.',
-	},
-	{
-		title: 'meow meow',
-		src: 'https://picsum.photos/seed/four/400/400',
-		description:
-			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex eos adipisci laudantium earum quis, aut similique corporis autem cum nihil.',
-	},
-	{
-		title: 'another blog post',
-		src: 'https://picsum.photos/seed/five/400/400',
-		description:
-			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sapiente et nam ex nobis? Earum necessitatibus nesciunt autem ab mollitia.',
-	},
-	{
-		title: 'this one for sure',
-		src: 'https://picsum.photos/seed/six/400/400',
-		description:
-			'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem expedita quae repellat, alias perferendis consequatur unde dolorem architecto dignissimos reiciendis.',
-	},
-	{
-		title: 'meow meow',
-		src: 'https://picsum.photos/seed/seven/400/400',
-		description:
-			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex eos adipisci laudantium earum quis, aut similique corporis autem cum nihil.',
-	},
-	{
-		title: 'another blog post',
-		src: 'https://picsum.photos/seed/eight/400/400',
-		description:
-			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sapiente et nam ex nobis? Earum necessitatibus nesciunt autem ab mollitia.',
-	},
-	{
-		title: 'this one for sure',
-		src: 'https://picsum.photos/seed/nine/400/400',
-		description:
-			'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem expedita quae repellat, alias perferendis consequatur unde dolorem architecto dignissimos reiciendis.',
-	},
-];
+const posts = await getSortedBlogPosts();
 ---
 
 <MainLayout>
-<h1>Blog</h1>
+	<h1>Blog</h1>
 
 	<section class="grid">
 		{
-			posts.map(({ title, src, description }) => (
+			posts.map(({ data: { id, title, headerImage, date, description } }) => (
 				<Window class="post">
 					<h2>{title}</h2>
 					<div class="image-container">
-						<img {src} />
+						<img src={headerImage} />
 					</div>
-					<time datetime="11/13/2025">Nov. 13, 2025</time>
+					<time datetime={date.toISOString()}>{formatDate(date)}</time>
 					<p>{description}</p>
+					<a href={`${id}/`}>Read more</a>
 				</Window>
 			))
 		}
@@ -90,16 +34,16 @@ const posts = [
 		--min-card-size: 14rem;
 
 		display: grid;
-		grid-auto-rows: auto 8rem auto auto;
+		grid-auto-rows: auto 8rem auto auto auto;
 		grid-template-columns: repeat(
-			auto-fit,
+			auto-fill,
 			minmax(min(100%, var(--min-card-size)), auto)
 		);
 		gap: 1rem;
 	}
 
 	.post {
-		grid-row: span 4;
+		grid-row: span 5;
 		grid-template-rows: subgrid;
 		gap: 0;
 		padding-block-end: 1rem;
@@ -130,6 +74,14 @@ const posts = [
 
 		p {
 			margin: 0;
+		}
+
+		a {
+			display: block;
+
+			&::after {
+				content: '…';
+			}
 		}
 	}
 </style>

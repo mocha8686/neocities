@@ -1,4 +1,4 @@
-import { file } from 'astro/loaders';
+import { file, glob } from 'astro/loaders';
 import { defineCollection, z } from 'astro:content';
 
 const quotes = defineCollection({
@@ -34,7 +34,19 @@ const inspo = defineCollection({
 	}),
 });
 
+const blog = defineCollection({
+	loader: glob({base: 'src/data/blog', pattern: '**/*.md'}),
+	schema: z.object({
+		id: z.string(),
+		title: z.string(),
+		headerImage: z.string(),
+		date: z.coerce.date(),
+		description: z.string(),
+	}),
+});
+
 export const collections = {
+	blog,
 	inspo,
 	quizResults,
 	quotes,
