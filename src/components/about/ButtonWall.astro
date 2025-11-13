@@ -2,23 +2,40 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
+import SiteButton from '../SiteButton.astro';
+import Window from '../Window.astro';
+
 const sites = await getCollection('inspo');
 ---
 
 <nav>
 	<ul>
 		{
-		sites.map(({ data: { id, link, image, alt } }) => (
+			sites.map(({ data: { id, link, image, alt } }) => (
 				<li>
 					<a href={link} rel="noreferrer">
-						<Image class="inspo" src={image} alt={alt ?? id} width={88} height={31} />
+						<Image
+							class="inspo"
+							src={image}
+							alt={alt ?? id}
+							width={88}
+							height={31}
+						/>
 					</a>
 				</li>
 			))
 		}
 	</ul>
 </nav>
+
 <p>must collect more...</p>
+
+<p>if you want your button here, feel free to reach out at <a href="https://mocha8686.atabook.org" target="_blank" rel="noreferrer">my guestbook!</a></p>
+
+<Window class="site-button-container">
+	<h3>Link to My Site!</h3>
+	<SiteButton />
+</Window>
 
 <style>
 	nav {
@@ -27,7 +44,8 @@ const sites = await getCollection('inspo');
 		justify-content: center;
 	}
 
-	ul, li {
+	ul,
+	li {
 		display: contents;
 	}
 
@@ -42,5 +60,11 @@ const sites = await getCollection('inspo');
 	p {
 		font-style: italic;
 		text-align: center;
+	}
+
+	.site-button-container {
+		justify-self: center;
+		max-width: 20rem;
+		resize: horizontal;
 	}
 </style>

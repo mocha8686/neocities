@@ -5,16 +5,21 @@ const links = [
 	{ name: 'learning in public', href: '/learning/' },
 	{ name: 'shrines', href: '/shrines/' },
 	{ name: 'fun stuff', href: '/fun/' },
-	{ name: 'guestbook', href: 'https://mocha8686.atabook.org/' },
+	{ name: 'guestbook', href: 'https://mocha8686.atabook.org/', newTab: true },
 ];
+
+const props = (newTab: boolean) =>
+	newTab ? { rel: 'noreferrer', target: '_blank' } : {};
 ---
 
 <nav>
 	<ul>
 		{
-			links.map(({ name, href }) => (
+			links.map(({ name, href, newTab = false }) => (
 				<li>
-					<a {href}>{name}</a>
+					<a {href} {...props(newTab)}>
+						{name}
+					</a>
 				</li>
 			))
 		}
