@@ -140,7 +140,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 	ul:not([class]) {
 		list-style: none;
 
-		li {
+		> li {
 			position: relative;
 
 			&::before {
