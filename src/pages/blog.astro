@@ -1,5 +1,135 @@
 ---
-import UnderConstruction from '$src/layouts/UnderConstruction.astro';
+import { getCollection } from 'astro:content';
+
+import Window from '$src/components/Window.astro';
+import MainLayout from '$src/layouts/MainLayout.astro';
+import Back from '$src/components/Back.astro';
+
+// const posts = await getCollection('blog');
+const posts = [
+	{
+		title: 'meow meow',
+		src: 'https://picsum.photos/seed/one/400/400',
+		description:
+			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex eos adipisci laudantium earum quis, aut similique corporis autem cum nihil.',
+	},
+	{
+		title: 'another blog post',
+		src: 'https://picsum.photos/seed/two/400/400',
+		description:
+			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sapiente et nam ex nobis? Earum necessitatibus nesciunt autem ab mollitia.',
+	},
+	{
+		title: 'this one for sure',
+		src: 'https://picsum.photos/seed/three/400/400',
+		description:
+			'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem expedita quae repellat, alias perferendis consequatur unde dolorem architecto dignissimos reiciendis.',
+	},
+	{
+		title: 'meow meow',
+		src: 'https://picsum.photos/seed/four/400/400',
+		description:
+			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex eos adipisci laudantium earum quis, aut similique corporis autem cum nihil.',
+	},
+	{
+		title: 'another blog post',
+		src: 'https://picsum.photos/seed/five/400/400',
+		description:
+			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sapiente et nam ex nobis? Earum necessitatibus nesciunt autem ab mollitia.',
+	},
+	{
+		title: 'this one for sure',
+		src: 'https://picsum.photos/seed/six/400/400',
+		description:
+			'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem expedita quae repellat, alias perferendis consequatur unde dolorem architecto dignissimos reiciendis.',
+	},
+	{
+		title: 'meow meow',
+		src: 'https://picsum.photos/seed/seven/400/400',
+		description:
+			'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex eos adipisci laudantium earum quis, aut similique corporis autem cum nihil.',
+	},
+	{
+		title: 'another blog post',
+		src: 'https://picsum.photos/seed/eight/400/400',
+		description:
+			'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati sapiente et nam ex nobis? Earum necessitatibus nesciunt autem ab mollitia.',
+	},
+	{
+		title: 'this one for sure',
+		src: 'https://picsum.photos/seed/nine/400/400',
+		description:
+			'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem expedita quae repellat, alias perferendis consequatur unde dolorem architecto dignissimos reiciendis.',
+	},
+];
 ---
 
-<UnderConstruction />
+<MainLayout>
+<h1>Blog</h1>
+
+	<section class="grid">
+		{
+			posts.map(({ title, src, description }) => (
+				<Window class="post">
+					<h2>{title}</h2>
+					<div class="image-container">
+						<img {src} />
+					</div>
+					<time datetime="11/13/2025">Nov. 13, 2025</time>
+					<p>{description}</p>
+				</Window>
+			))
+		}
+	</section>
+
+	<Back />
+</MainLayout>
+
+<style>
+	.grid {
+		--min-card-size: 14rem;
+
+		display: grid;
+		grid-auto-rows: auto 8rem auto auto;
+		grid-template-columns: repeat(
+			auto-fit,
+			minmax(min(100%, var(--min-card-size)), auto)
+		);
+		gap: 1rem;
+	}
+
+	.post {
+		grid-row: span 4;
+		grid-template-rows: subgrid;
+		gap: 0;
+		padding-block-end: 1rem;
+
+		.image-container {
+			overflow: clip;
+			grid-column: full-width;
+			margin-block-end: 1rem;
+			border-block-end: 8px outset var(--cl-outline);
+		}
+
+		img {
+			overflow: clip;
+			display: block;
+
+			max-width: 100%;
+			height: auto;
+
+			object-fit: cover;
+		}
+
+		time {
+			display: block;
+			font-size: 0.75rem;
+			font-style: italic;
+			color: oklch(from var(--cl-foreground) l c h / 90%);
+		}
+
+		p {
+			margin: 0;
+		}
+	}
+</style>
