@@ -1,0 +1,60 @@
+---
+import { formatDate } from '$src/lib/blog';
+import Window from './Window.astro';
+
+interface Props {
+	title: string;
+	image: string;
+	date: Date;
+	description: string;
+	id: string;
+}
+
+const { date, description, id, image, title } = Astro.props;
+---
+
+<Window class="post">
+	<h2>{title}</h2>
+	<div class="image-container" style={{ '--image': `url("${image}")` }}></div>
+	<time datetime={date.toISOString()}>{formatDate(date)}</time>
+	<p>{description}</p>
+	<a href={`/blog/${id}/`}>Read more</a>
+</Window>
+
+<style>
+	.post {
+		grid-row: span 5;
+		grid-template-rows: subgrid;
+		gap: 0;
+		padding-block-end: 1rem;
+
+		.image-container {
+			overflow: clip;
+			grid-column: full-width;
+
+			margin-block-end: 1rem;
+			border-block-end: 8px outset var(--cl-outline);
+
+			background: center/cover var(--image) no-repeat;
+		}
+
+		time {
+			display: block;
+			font-size: 0.75rem;
+			font-style: italic;
+			color: oklch(from var(--cl-foreground) l c h / 90%);
+		}
+
+		p {
+			margin: 0;
+		}
+
+		a {
+			display: block;
+
+			&::after {
+				content: '…';
+			}
+		}
+	}
+</style>

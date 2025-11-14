@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 
 import pfp from '$src/assets/mizuki.jpg';
 import Albums from '$src/components/Albums.astro';
+import BlogPreview from '$src/components/BlogPreview.astro';
 import Chat from '$src/components/Chat.astro';
 import NavList from '$src/components/NavList.astro';
 import SiteButton from '$src/components/SiteButton.astro';
@@ -55,10 +56,7 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 				<Albums />
 			</section>
 
-			<Window class="blog-preview">
-				<h2>Blog</h2>
-				<p>under construction!</p>
-			</Window>
+			<BlogPreview />
 
 			<Window class="site-button">
 				<h2>Button</h2>

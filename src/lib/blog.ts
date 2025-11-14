@@ -1,4 +1,4 @@
-import { getCollection } from "astro:content";
+import { type CollectionEntry, getCollection } from 'astro:content';
 
 export function formatDate(date: Date): string {
 	const months = [
@@ -11,7 +11,9 @@ export function formatDate(date: Date): string {
 		'Jul',
 		'Aug',
 		'Sep',
-		'Oct','Nov','Dec',
+		'Oct',
+		'Nov',
+		'Dec',
 	];
 
 	const day = date.getUTCDate();
@@ -21,9 +23,9 @@ export function formatDate(date: Date): string {
 	return `${month}. ${day}, ${year}`;
 }
 
-export async function getSortedBlogPosts() {
+export async function getSortedBlogPosts(): Promise<CollectionEntry<'blog'>[]> {
 	const posts = await getCollection('blog');
-	type Blog = typeof posts[number];
+	type Blog = (typeof posts)[number];
 
 	function cmp(a: Blog, b: Blog): number {
 		return a.data.date.getTime() - b.data.date.getTime();
@@ -31,4 +33,10 @@ export async function getSortedBlogPosts() {
 
 	const sorted = posts.toSorted(cmp);
 	return sorted;
+}
+
+export async function getLatestBlogPost(): Promise<CollectionEntry<'blog'>> {
+	const posts = await getSortedBlogPosts();
+	const mostRecent = posts.at(0)!;
+	return mostRecent;
 }

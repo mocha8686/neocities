@@ -1,10 +1,8 @@
 ---
-import { Image } from 'astro:assets';
-
 import Back from '$src/components/Back.astro';
-import Window from '$src/components/Window.astro';
+import BlogCard from '$src/components/BlogCard.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
-import { formatDate, getSortedBlogPosts } from '$src/lib/blog';
+import { getSortedBlogPosts } from '$src/lib/blog';
 
 const posts = await getSortedBlogPosts();
 ---
@@ -13,17 +11,7 @@ const posts = await getSortedBlogPosts();
 	<h1>Blog</h1>
 
 	<section class="grid">
-		{
-			posts.map(({ id, data: { title, image, date, description } }) => (
-				<Window class="post">
-					<h2>{title}</h2>
-					<div class="image-container" style={{ '--image': `url("${image}")` }} />
-					<time datetime={date.toISOString()}>{formatDate(date)}</time>
-					<p>{description}</p>
-					<a href={`${id}/`}>Read more</a>
-				</Window>
-			))
-		}
+		{posts.map(({ id, data }) => <BlogCard {id} {...data} />)}
 	</section>
 
 	<Back />
@@ -40,41 +28,5 @@ const posts = await getSortedBlogPosts();
 			minmax(min(100%, var(--min-card-size)), auto)
 		);
 		gap: 1rem;
-	}
-
-	.post {
-		grid-row: span 5;
-		grid-template-rows: subgrid;
-		gap: 0;
-		padding-block-end: 1rem;
-
-		.image-container {
-			overflow: clip;
-			grid-column: full-width;
-
-			margin-block-end: 1rem;
-			border-block-end: 8px outset var(--cl-outline);
-
-			background: center/cover var(--image) no-repeat;
-		}
-
-		time {
-			display: block;
-			font-size: 0.75rem;
-			font-style: italic;
-			color: oklch(from var(--cl-foreground) l c h / 90%);
-		}
-
-		p {
-			margin: 0;
-		}
-
-		a {
-			display: block;
-
-			&::after {
-				content: '…';
-			}
-		}
 	}
 </style>

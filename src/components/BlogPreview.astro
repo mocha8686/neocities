@@ -1,0 +1,20 @@
+---
+import { getLatestBlogPost } from '$src/lib/blog';
+
+import BlogCard from './BlogCard.astro';
+
+const { id, data } = await getLatestBlogPost();
+---
+
+<section>
+	<BlogCard {id} {...data} />
+</section>
+
+<style>
+	section {
+		display: grid;
+		grid-template-rows: auto 8rem auto auto auto;
+		align-self: end;
+		max-width: 18rem;
+	}
+</style>
