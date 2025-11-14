@@ -163,6 +163,46 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 	::marker {
 		max-width: 1rem;
 	}
+
+	main {
+		--full-width-margin: 0.5rem;
+		--breakout-margin: 1rem;
+
+		position: relative;
+
+		container-type: inline-size;
+		display: grid;
+		grid-template-columns:
+			[full-width-start] var(--full-width-margin)
+			[breakout-start] var(--breakout-margin)
+			[content-start] 1fr [content-end] var(--breakout-margin)
+			[breakout-end] var(--full-width-margin) [full-width-end];
+
+		margin-block: 2rem;
+		padding-block: 0.5rem 3rem;
+
+		background: var(--cl-background);
+
+		:where(& > *) {
+			grid-column: content;
+		}
+	}
+
+	main,
+	main > header:nth-child(2) {
+		> h1:first-of-type {
+			margin-inline: -0.5rem;
+			padding-block: 0.5rem;
+
+			font-size: clamp(1rem, 0rem + 5.5cqi, 2rem);
+			font-weight: normal;
+			color: var(--cl-on-accent-container);
+			text-align: center;
+			text-transform: uppercase;
+
+			background: var(--cl-accent-container);
+		}
+	}
 </style>
 
 <style>
@@ -178,52 +218,14 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 		}
 	}
 
-	main {
-		--full-width-margin: 1rem;
-		--breakout-margin: 1rem;
-
-		position: relative;
-
-		container-type: inline-size;
-		display: grid;
-		grid-template-columns:
-			[full-width-start] var(--full-width-margin)
-			[breakout-start] var(--breakout-margin)
-			[content-start] 1fr [content-end] var(--breakout-margin)
-			[breakout-end] var(--full-width-margin) [full-width-end];
-
-		margin-block: 2rem;
-		padding: 0.5rem;
-		padding-block-end: 3rem;
-
-		background: var(--cl-background);
-
-		:where(& > *) {
-			grid-column: content;
-		}
-	}
-
 	.header {
-		grid-column: full-width;
+		grid-column: breakout;
 
 		padding-block: 0.75rem;
 
 		font-style: italic;
 		color: var(--cl-on-accent-container);
 		text-transform: lowercase;
-
-		background: var(--cl-accent-container);
-	}
-
-	main > :global(h1:first-of-type) {
-		margin-inline: -0.5rem;
-		padding-block: 0.5rem;
-
-		font-size: clamp(1rem, 0rem + 5.5cqi, 2rem);
-		font-weight: normal;
-		color: var(--cl-on-accent-container);
-		text-align: center;
-		text-transform: uppercase;
 
 		background: var(--cl-accent-container);
 	}

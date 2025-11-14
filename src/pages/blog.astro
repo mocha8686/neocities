@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 import Back from '$src/components/Back.astro';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
@@ -12,12 +14,10 @@ const posts = await getSortedBlogPosts();
 
 	<section class="grid">
 		{
-			posts.map(({ data: { id, title, headerImage, date, description } }) => (
+			posts.map(({ id, data: { title, image, date, description } }) => (
 				<Window class="post">
 					<h2>{title}</h2>
-					<div class="image-container">
-						<img src={headerImage} />
-					</div>
+					<div class="image-container" style={{ '--image': `url("${image}")` }} />
 					<time datetime={date.toISOString()}>{formatDate(date)}</time>
 					<p>{description}</p>
 					<a href={`${id}/`}>Read more</a>
@@ -51,18 +51,11 @@ const posts = await getSortedBlogPosts();
 		.image-container {
 			overflow: clip;
 			grid-column: full-width;
+
 			margin-block-end: 1rem;
 			border-block-end: 8px outset var(--cl-outline);
-		}
 
-		img {
-			overflow: clip;
-			display: block;
-
-			max-width: 100%;
-			height: auto;
-
-			object-fit: cover;
+			background: center/cover var(--image) no-repeat;
 		}
 
 		time {

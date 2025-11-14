@@ -1,8 +1,21 @@
-<a class="back" href="/">Back to index</a>
+---
+interface Props {
+	href?: string;
+	text?: string;
+}
+
+const { href = '..', text = 'Back to index' } = Astro.props;
+---
+
+<a class="back" {href}>{text}</a>
 
 <style>
 	.back {
 		display: block;
 		margin-block-start: 2em;
+
+		&::before {
+			content: '« ';
+		}
 	}
 </style>

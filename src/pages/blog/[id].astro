@@ -1,0 +1,69 @@
+---
+import Back from '$src/components/Back.astro';
+import Window from '$src/components/Window.astro';
+import MainLayout from '$src/layouts/MainLayout.astro';
+import { formatDate } from '$src/lib/blog';
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+export const getStaticPaths = (async () => {
+	const posts = await getCollection('blog');
+	return posts.map(post => ({
+		params: { id: post.id },
+		props: { post },
+	}));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<MainLayout>
+	<header>
+		<h1>{post.data.title}</h1>
+		<Window class="time-window">
+			<h2>Date</h2>
+			<time datetime={post.data.date.toISOString()}>
+				{formatDate(post.data.date)}
+			</time>
+		</Window>
+	</header>
+	<Content />
+	<Back text="Back to blog index" />
+</MainLayout>
+
+<style define:vars={{ image: `url("${post.data.image}")` }}>
+	header {
+		position: relative;
+
+		display: grid;
+		grid-column: breakout;
+		grid-template-columns: subgrid;
+		align-content: start;
+
+		min-height: 12rem;
+
+		background: center/cover var(--image) no-repeat;
+
+		h1 {
+			grid-column: content;
+		}
+	}
+
+	.time-window {
+		position: absolute;
+		inset-inline-end: 1rem;
+		inset-block-end: -2rem;
+
+		time {
+			padding: 0.5em 1em;
+		}
+	}
+</style>
+
+<style is:global>
+	h2 {
+		border-block-end: 2px solid var(--cl-accent);
+	}
+</style>
