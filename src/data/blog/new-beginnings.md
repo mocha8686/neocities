@@ -19,5 +19,5 @@ so welcome, internet stranger, and i hope you have a good time perusing my brain
 
 p.s. look at this creature
 
-![mizuki with her tongue out](/src/assets/derp.webp)
+![mizuki with her tongue out]($src/assets/derp.webp)
 *blehhhhh*
