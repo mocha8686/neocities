@@ -53,8 +53,8 @@ const { Content } = await render(post);
 
 	.time-window {
 		position: absolute;
-		inset-inline-end: 1rem;
 		inset-block-end: -2rem;
+		inset-inline-end: 1rem;
 
 		time {
 			padding: 0.5em 1em;
@@ -65,5 +65,37 @@ const { Content } = await render(post);
 <style is:global>
 	h2 {
 		border-block-end: 2px solid var(--cl-accent);
+	}
+
+	p {
+		margin: 0;
+
+		& + & {
+			margin-block-start: 1em;
+		}
+	}
+
+	p:has(> img:where(:first-child, :last-child), > img:first-child + em:last-child) {
+		text-align: center;
+
+		img {
+			--margin: 1.5rem;
+
+			max-width: min(20rem, 100%);
+			height: auto;
+			margin-block: var(--margin);
+			padding-inline: clamp(0rem, 10cqi - 2rem, 2rem);
+
+			object-fit: contain;
+			&:has(+ em) {
+				margin-block-end: 0;
+			}
+		}
+
+		em {
+			display: block;
+			margin-block-end: var(--margin);
+			text-align: center;
+		}
 	}
 </style>
