@@ -1,6 +1,6 @@
 ---
 title: New Beginnings
-image: "/src/assets/blog/new_beginnings.webp"
+image: new_beginnings
 date: 2025/11/13
 description: with the rain pouring and the autumn rolling in comes the start of a new site. (with extra pink!)
 ---
@@ -19,5 +19,5 @@ so welcome, internet stranger, and i hope you have a good time perusing my brain
 
 p.s. look at this creature
 
-![mizuki with her tongue out](/src/assets/derp.webp)
+![mizuki with her tongue out]($src/assets/derp.webp)
 *blehhhhh*

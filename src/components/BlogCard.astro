@@ -10,12 +10,13 @@ interface Props {
 	id: string;
 }
 
-const { date, description, id, image, title } = Astro.props;
+const { date, description, id, image: imageName, title } = Astro.props;
+const image: ImageMetadata = (await import(`../assets/blog/${imageName}.webp`)).default;
 ---
 
 <Window class="post">
 	<h2>{title}</h2>
-	<div class="image-container" style={{ '--image': `url("${image}")` }}></div>
+	<div class="image-container" style={{ '--image': `url("${image.src}")` }}></div>
 	<time datetime={date.toISOString()}>{formatDate(date)}</time>
 	<p>{description}</p>
 	<a href={`/blog/${id}/`}>Read more</a>

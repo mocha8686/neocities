@@ -17,6 +17,8 @@ export const getStaticPaths = (async () => {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const image: ImageMetadata = (await import(`../../assets/blog/${post.data.image}.webp`)).default;
 ---
 
 <MainLayout>
@@ -33,7 +35,7 @@ const { Content } = await render(post);
 	<Back text="Back to blog index" />
 </MainLayout>
 
-<style define:vars={{ image: `url("${post.data.image}")` }}>
+<style define:vars={{ image: `url("${image.src}")` }}>
 	header {
 		position: relative;
 
