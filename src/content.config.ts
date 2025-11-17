@@ -35,7 +35,7 @@ const inspo = defineCollection({
 });
 
 const blog = defineCollection({
-	loader: glob({base: 'src/data/blog', pattern: '**/*.md'}),
+	loader: glob({ base: 'src/data/blog', pattern: '**/*.md' }),
 	schema: z.object({
 		title: z.string(),
 		image: z.string(),

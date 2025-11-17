@@ -3,10 +3,10 @@ import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 
 import ButtonWall from '$src/components/about/ButtonWall.astro';
 import Interests from '$src/components/about/Interests.md';
-import MainLayout from '$src/layouts/MainLayout.astro';
 import Me from '$src/components/about/Me.md';
 import QuizResults from '$src/components/about/QuizResults.astro';
 import Window from '$src/components/Window.astro';
+import MainLayout from '$src/layouts/MainLayout.astro';
 
 interface Tab {
 	name: string;
@@ -52,7 +52,7 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 			{
 				tabs.map(tab => (
 					<button
-						:class={`${ifTab(tab)} && 'active'`}
+						x-bind:class={`${ifTab(tab)} && 'active'`}
 						x-show={ifNotTab(tab)}
 						@click={changeTab(tab)}
 					>
