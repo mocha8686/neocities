@@ -1,5 +1,4 @@
 ---
-import Back from '$src/components/Back.astro';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
 import { formatDate } from '$src/lib/blog';
@@ -18,7 +17,9 @@ export const getStaticPaths = (async () => {
 const { post } = Astro.props;
 const { Content } = await render(post);
 
-const image: ImageMetadata = (await import(`../../assets/blog/${post.data.image}.webp`)).default;
+const image: ImageMetadata = (
+	await import(`../../assets/blog/${post.data.image}.webp`)
+).default;
 ---
 
 <MainLayout>
@@ -32,7 +33,6 @@ const image: ImageMetadata = (await import(`../../assets/blog/${post.data.image}
 		</Window>
 	</header>
 	<Content />
-	<Back text="Back to blog index" />
 </MainLayout>
 
 <style define:vars={{ image: `url("${image.src}")` }}>
@@ -77,7 +77,10 @@ const image: ImageMetadata = (await import(`../../assets/blog/${post.data.image}
 		}
 	}
 
-	p:has(> img:where(:first-child, :last-child), > img:first-child + em:last-child) {
+	p:has(
+		> img:where(:first-child, :last-child),
+		> img:first-child + em:last-child
+	) {
 		text-align: center;
 
 		img {

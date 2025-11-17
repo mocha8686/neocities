@@ -4,7 +4,7 @@ interface Props {
 	text?: string;
 }
 
-const { href = '..', text = 'Back to index' } = Astro.props;
+const { href = '..', text = 'Go back' } = Astro.props;
 ---
 
 <a class="back" {href}>{text}</a>

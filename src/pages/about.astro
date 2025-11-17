@@ -1,7 +1,6 @@
 ---
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 
-import Back from '$src/components/Back.astro';
 import ButtonWall from '$src/components/about/ButtonWall.astro';
 import Interests from '$src/components/about/Interests.md';
 import MainLayout from '$src/layouts/MainLayout.astro';
@@ -90,8 +89,6 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 			})
 		}
 	</noscript>
-
-	<Back />
 </MainLayout>
 
 <style>

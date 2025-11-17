@@ -1,5 +1,4 @@
 ---
-import Back from '$src/components/Back.astro';
 import BlogCard from '$src/components/BlogCard.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
 import { getSortedBlogPosts } from '$src/lib/blog';
@@ -13,8 +12,6 @@ const posts = await getSortedBlogPosts();
 	<section class="grid">
 		{posts.map(({ id, data }) => <BlogCard {id} {...data} />)}
 	</section>
-
-	<Back />
 </MainLayout>
 
 <style>

@@ -6,6 +6,18 @@ import here from '$src/assets/here.jpg';
 import Marquee from '$src/components/Marquee.astro';
 
 import BaseLayout from './BaseLayout.astro';
+import Back from '$src/components/Back.astro';
+
+interface Props {
+	back?:
+		| {
+				href?: string;
+				text?: string;
+		  }
+		| 'disable';
+}
+
+const { back } = Astro.props;
 
 const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 ---
@@ -22,6 +34,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 				{quotes.map(quote => <li>{quote}</li>)}
 			</Marquee>
 			<slot />
+			{back !== 'disable' && <Back {...back} />}
 			<p class="find find1">Find her<br />Find her</p>
 			<div class="find find2">
 				<Image src={here} alt="" width={200} height={200} />
