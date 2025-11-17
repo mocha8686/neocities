@@ -220,7 +220,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 
 <style>
 	.layout {
-		overflow-x: hidden;
+		overflow-x: clip;
 		display: grid;
 		grid-template-columns:
 			1fr [content-start] minmax(auto, 40rem)
