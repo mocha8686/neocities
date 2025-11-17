@@ -1,5 +1,36 @@
 ---
-import UnderConstruction from '$src/layouts/UnderConstruction.astro';
+import Back from '$src/components/Back.astro';
+import MainLayout from '$src/layouts/MainLayout.astro';
 ---
 
-<UnderConstruction />
+<MainLayout>
+	<h1>Fun Stuff</h1>
+	<p>
+		here's some fun extra stuff! this page is just an index for extra pages that
+		don't really fit anywhere else, so go ahead and browse through them~
+	</p>
+
+	<nav>
+		<ul>
+			<li>
+				<a href="button/">site button</a>
+				<p>this is literally how i made the site button</p>
+			</li>
+		</ul>
+	</nav>
+
+	<Back />
+</MainLayout>
+
+<style>
+	li {
+		margin-inline-start: 1.5em;
+
+		a + p {
+			margin-block: 0;
+			margin-inline: 1em 0;
+			font-size: 0.9rem;
+			font-style: italic;
+		}
+	}
+</style>
