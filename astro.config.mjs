@@ -39,7 +39,7 @@ export default defineConfig({
 				provider: fontProviders.bunny(),
 				name: 'Blinker',
 				cssVariable: '--font-blinker',
-				weights: [300, 700],
+				weights: [300, 600],
 				fallbacks: ['Ubuntu', 'sans-serif'],
 			},
 		],
