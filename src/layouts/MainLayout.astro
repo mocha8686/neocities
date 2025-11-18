@@ -71,7 +71,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 	}
 
 	body {
-		height: 100lvh;
+		min-height: 100lvh;
 		font-family: var(--ff-main);
 		color: var(--cl-foreground);
 		background: var(--cl-background);
@@ -94,10 +94,6 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 
 	a {
 		color: var(--cl-accent);
-
-		&[href='/']::before {
-			content: '<< ';
-		}
 	}
 
 	button {
