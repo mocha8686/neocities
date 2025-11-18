@@ -1,0 +1,55 @@
+---
+import { Font } from 'astro:assets';
+
+import Back from '$src/components/Back.astro';
+
+import BaseLayout from './BaseLayout.astro';
+---
+
+<BaseLayout>
+	<Fragment slot="head">
+		<Font cssVariable="--font-blinker" preload />
+		<Font cssVariable="--font-fira-code" preload />
+	</Fragment>
+
+	<slot />
+	<Back />
+</BaseLayout>
+
+<style is:global>
+	:root {
+		/* stylelint-disable custom-property-empty-line-before */
+
+		--cl-foreground: oklch(90% 0.01 250);
+		--cl-background: oklch(15% 0.04 250);
+
+		--cl-accent: oklch(80% 0.23 150);
+		--cl-on-accent: oklch(from var(--cl-accent) 15% calc(c * 0.1) h);
+
+		--cl-container: oklch(from var(--cl-background) calc(l * 1.02) c h);
+		--cl-outline: oklch(from var(--cl-accent) calc (l * 0.5) calc(c * 0.05) h);
+
+		--cl-accent-container: oklch(from var(--cl-accent) calc(l * 0.8) c h);
+		--cl-on-accent-container: oklch(from var(--cl-accent) 100% 0.02 h);
+
+		--ff-main: var(--font-blinker);
+		--ff-accent: var(--font-blinker);
+		--ff-code: var(--font-fira-code);
+
+		/* stylelint-enable custom-property-empty-line-before */
+	}
+
+	body {
+		font-family: var(--ff-main);
+		color: var(--cl-foreground);
+		background: var(--cl-background);
+	}
+
+	:where(h1, h2, h3, h4, h5, h6) {
+		font-family: var(--ff-accent);
+	}
+
+	a {
+		color: var(--cl-accent);
+	}
+</style>
