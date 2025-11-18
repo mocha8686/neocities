@@ -1,0 +1,132 @@
+---
+import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
+
+const sets = [{ id: 1, name: 'Basics', description: 'The qualifying set—do you have what it takes?' }];
+---
+
+<CryptopalsLayout>
+	<h1>cryptopals</h1>
+
+	<p>
+		These are my writeups for the
+		<a href="https://cryptopals.com/">cryptopals crypto challenges</a>, written
+		in
+		<a href="https://ziglang.org/">Zig</a>. I've redone these challenges over
+		and over again since I didn't want to refactor the code, once in Rust and
+		now twice in Zig.
+		<a href="https://github.com/mocha8686/cryptopals/">The repository</a>
+		is also available on GitHub.
+	</p>
+
+	<hr />
+
+	<section class="sets">
+		{
+			sets.map(({ id, name, description }) => (
+				<div class="set">
+					<h2>
+						{id}. {name}
+					</h2>
+					<p>{description}</p>
+					<a href={`set${id}/`}>Go</a>
+				</div>
+			))
+		}
+	</section>
+</CryptopalsLayout>
+
+<style>
+	h1::before {
+		content: '$ ';
+	}
+
+	h1::after {
+		content: '|';
+		animation: 1.5s cubic-bezier(0, 1, 0, 1) infinite forwards blink;
+
+		@media (prefers-reduced-motion: reduce) {
+			animation: none;
+		}
+	}
+
+	h1 {
+		font-family: var(--ff-code);
+		color: var(--cl-accent);
+	}
+
+	p {
+		max-width: 60ch;
+		line-height: 1.4;
+		text-wrap: pretty;
+	}
+
+	.sets {
+		--min-card-size: 12rem;
+
+		display: grid;
+		grid-auto-rows: auto 1fr auto;
+		grid-template-columns: repeat(
+			auto-fill,
+			minmax(min(var(--min-card-size), 100%), 1fr)
+		);
+		gap: 1rem;
+	}
+
+	.set {
+		--margin: 0.5rem;
+
+		overflow: clip;
+		display: grid;
+		grid-row: span 3;
+		grid-template-columns:
+			[full-width-start]
+			var(--margin)
+			[content-start]
+			1fr
+			[content-end]
+			var(--margin)
+			[full-width-end];
+		grid-template-rows: subgrid;
+		gap: 1rem;
+
+		padding-block-end: 0.75rem;
+		border-radius: 1rem;
+
+		color: var(--cl-on-container);
+
+		background: var(--cl-container);
+		box-shadow: 0 2px 6px -2px black;
+
+		h2 {
+			grid-column: full-width;
+
+			margin: 0;
+			padding-inline: 0.5em;
+
+			color: var(--cl-on-accent-container);
+
+			background: var(--cl-accent-container);
+		}
+
+		p {
+			grid-column: content;
+			margin: 0;
+		}
+
+		a {
+			display: block;
+			grid-column: content;
+			text-align: end;
+
+			&::after {
+				content: ' »';
+			}
+		}
+	}
+
+	@keyframes blink {
+		50% {
+			opacity: 0;
+		}
+	}
+</style>
