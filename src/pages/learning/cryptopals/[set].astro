@@ -1,0 +1,81 @@
+---
+import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import { getCollection } from 'astro:content';
+
+export const getStaticPaths = (async () => {
+	const sets = await getCollection('cryptopals');
+	return sets.map(set => ({
+		params: { set: set.id },
+		props: { set },
+	}));
+}) satisfies GetStaticPaths;
+
+const { set } = Astro.props;
+const { Content, headings } = await render(set);
+
+const challengeHeadings = headings
+	.filter(heading => heading.depth === 2)
+	.map(({ text, slug }) => ({ href: `#${slug}`, text }));
+---
+
+<CryptopalsLayout>
+	<h1>Set {set.data.number} — {set.data.title}</h1>
+	<p>{set.data.description}</p>
+
+	<nav>
+		<ol>
+			{
+				challengeHeadings.map(({ href, text }) => (
+					<li>
+						<a {href}>{text}</a>
+					</li>
+				))
+			}
+		</ol>
+	</nav>
+
+	<main>
+		<Content />
+	</main>
+</CryptopalsLayout>
+
+<style is:global>
+	h2 {
+		display: flex;
+		border-block-end: 2px solid var(--cl-accent);
+
+		&::before {
+			content: counter(challenge);
+			counter-increment: challenge;
+
+			display: block;
+			flex: none;
+
+			aspect-ratio: 1;
+			margin-inline-end: 0.5em;
+			padding: 0 1ch;
+
+			color: var(--cl-on-accent);
+
+			background: var(--cl-accent);
+		}
+	}
+
+	.astro-code,
+	.astro-code span {
+		font-family: var(--ff-code);
+	}
+
+	pre.astro-code {
+		counter-reset: code-line;
+	}
+
+	.astro-code .line::before {
+		content: counter(code-line);
+		counter-increment: code-line;
+		margin-inline-end: 2ch;
+		opacity: 0.5;
+	}
+</style>

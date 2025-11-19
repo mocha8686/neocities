@@ -1,7 +1,8 @@
 ---
 import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
+import { getCollection } from 'astro:content';
 
-const sets = [{ id: 1, name: 'Basics', description: 'The qualifying set—do you have what it takes?' }];
+const sets = (await getCollection('cryptopals')).toSorted((a, b) => a.data.number - b.data.number);
 ---
 
 <CryptopalsLayout>
@@ -22,13 +23,13 @@ const sets = [{ id: 1, name: 'Basics', description: 'The qualifying set—do you
 
 	<section class="sets">
 		{
-			sets.map(({ id, name, description }) => (
+		sets.map(({ id, data: {title, number, description} }) => (
 				<div class="set">
 					<h2>
-						{id}. {name}
+						{number}. {title}
 					</h2>
 					<p>{description}</p>
-					<a href={`set${id}/`}>Go</a>
+					<a href={`${id}/`}>Go</a>
 				</div>
 			))
 		}
@@ -36,24 +37,6 @@ const sets = [{ id: 1, name: 'Basics', description: 'The qualifying set—do you
 </CryptopalsLayout>
 
 <style>
-	h1::before {
-		content: '$ ';
-	}
-
-	h1::after {
-		content: '|';
-		animation: 1.5s cubic-bezier(0, 1, 0, 1) infinite forwards blink;
-
-		@media (prefers-reduced-motion: reduce) {
-			animation: none;
-		}
-	}
-
-	h1 {
-		font-family: var(--ff-code);
-		color: var(--cl-accent);
-	}
-
 	p {
 		max-width: 60ch;
 		line-height: 1.4;

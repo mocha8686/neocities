@@ -44,8 +44,18 @@ const blog = defineCollection({
 	}),
 });
 
+const cryptopals = defineCollection({
+	loader: glob({ base: 'src/data/cryptopals', pattern: '**/*.md' }),
+	schema: z.object({
+		title: z.string(),
+		number: z.number(),
+		description: z.string(),
+	}),
+});
+
 export const collections = {
 	blog,
+	cryptopals,
 	inspo,
 	quizResults,
 	quotes,
