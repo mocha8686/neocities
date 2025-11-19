@@ -21,29 +21,104 @@ const challengeHeadings = headings
 ---
 
 <CryptopalsLayout>
-	<h1>Set {set.data.number} — {set.data.title}</h1>
-	<p>{set.data.description}</p>
-
-	<nav>
-		<ol>
-			{
-				challengeHeadings.map(({ href, text }) => (
-					<li>
-						<a {href}>{text}</a>
-					</li>
-				))
-			}
-		</ol>
-	</nav>
+	<header>
+		<h1>Set {set.data.number} — {set.data.title}</h1>
+		<p>{set.data.description}</p>
+	</header>
 
 	<main>
+		<nav>
+			<h2>Challenges</h2>
+			<ol>
+				{
+					challengeHeadings.map(({ href, text }) => (
+						<li>
+							<a {href}>{text}</a>
+						</li>
+					))
+				}
+			</ol>
+		</nav>
+
 		<Content />
 	</main>
 </CryptopalsLayout>
 
 <style is:global>
-	h2 {
+	:root {
+		scroll-behavior: smooth;
+	}
+
+	main {
+		--content-width: 80ch;
+		--nav-width: 12rem;
+		--gap: 2rem;
+
+		position: relative;
+		display: grid;
+		grid-template-columns:
+			[full-width-start] 0 [content-start] minmax(auto, var(--content-width))
+			[content-end] auto [full-width-end] var(--gap) [nav-start] minmax(
+				min(var(--nav-width), 100%),
+				1fr
+			)
+			[nav-end];
+
+		> * {
+			grid-column: content;
+		}
+
+		@media screen and (width <= 1000px) {
+			grid-template-columns: [full-width-start] 0 [content-start] minmax(
+					auto,
+					var(--content-width)
+				) [content-end] auto [full-width-end];
+
+			> nav {
+				display: none;
+			}
+		}
+	}
+
+	nav {
+		position: sticky;
+		inset-block-start: 20%;
+
+		grid-column: nav;
+		grid-row: span 9999;
+		align-self: start;
+		justify-self: center;
+
+		h2 {
+			padding-inline-end: 4em;
+			border-block-end: 2px solid var(--cl-accent);
+		}
+
+		a {
+			margin-block: 0.5em;
+			padding-inline-start: 0.5em;
+
+			color: var(--cl-foreground);
+			text-decoration: none;
+
+			transition: all 150ms ease;
+
+			&:hover,
+			&:focus-visible {
+				color: var(--cl-accent);
+				text-decoration: underline;
+			}
+		}
+	}
+
+	main > :nth-child(2) {
+		counter-reset: challenge;
+	}
+
+	main > h2 {
+		scroll-margin-block-start: 1em;
 		display: flex;
+		grid-column: full-width;
 		border-block-end: 2px solid var(--cl-accent);
 
 		&::before {
@@ -51,7 +126,7 @@ const challengeHeadings = headings
 			counter-increment: challenge;
 
 			display: block;
-			flex: none;
+			flex: 0 3.2ex;
 
 			aspect-ratio: 1;
 			margin-inline-end: 0.5em;
@@ -61,6 +136,10 @@ const challengeHeadings = headings
 
 			background: var(--cl-accent);
 		}
+	}
+
+	.astro-code {
+		padding: 0.5em 2ch;
 	}
 
 	.astro-code,

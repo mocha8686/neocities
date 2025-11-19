@@ -78,4 +78,19 @@ import BaseLayout from './BaseLayout.astro';
 		font-family: var(--ff-code);
 		color: var(--cl-accent);
 	}
+
+	code,
+	kbd,
+	samp {
+		font-family: var(--ff-code);
+		font-size: 0.9rem;
+	}
+
+	p > :is(code, kbd, samp) {
+		color: var(--cl-accent);
+	}
+
+	p {
+		text-wrap: pretty;
+	}
 </style>
