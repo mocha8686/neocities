@@ -69,10 +69,9 @@ const challengeHeadings = headings
 		}
 
 		@media screen and (width <= 1000px) {
-			grid-template-columns: [full-width-start] 0 [content-start] minmax(
-					auto,
-					var(--content-width)
-				) [content-end] auto [full-width-end];
+			grid-template-columns:
+				[full-width-start] 0 [content-start] minmax(auto, var(--content-width))
+				[content-end] auto [full-width-end];
 
 			> nav {
 				display: none;
@@ -151,10 +150,16 @@ const challengeHeadings = headings
 		counter-reset: code-line;
 	}
 
-	.astro-code .line::before {
-		content: counter(code-line);
-		counter-increment: code-line;
-		margin-inline-end: 2ch;
-		opacity: 0.5;
+	.astro-code .line{
+		&::before {
+			content: counter(code-line);
+			counter-increment: code-line;
+			margin-inline-end: 2ch;
+			opacity: 0.5;
+		}
+
+		&:nth-child(-n + 9)::before {
+			content: ' ' counter(code-line);
+		}
 	}
 </style>
