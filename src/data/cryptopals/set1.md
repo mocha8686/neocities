@@ -207,3 +207,55 @@ test "set 1 challenge 1" {
     );
 }
 ```
+
+## Fixed XOR
+
+The process for fixed XOR is fairly simple. I decided to mutate `self` to save on extra allocations. A more functional approach would be to instead return a new `Data` object, but I decided against it since I'm working with Zig, which I've found to lend itself much more to mutating state than pure functions.
+
+We first check that both buffers are of equal length, then we iterate over both buffers, performing an XOR-assign on our own bytes.
+
+```zig
+// src/Data.zig
+
+pub fn xor(self: *Self, other: Self) !void {
+    if (self.len() != other.len()) {
+        return error.Unimplemented;
+    }
+
+    for (other.bytes, 0..) |byte, i| {
+        self.bytes[i] ^= byte;
+    }
+}
+```
+
+Again, here's the test for challenge 2.
+
+```zig
+// src/root.zig
+
+test "set 1 challenge 2" {
+    const allocator = std.testing.allocator;
+
+    var lhs = try Data.fromHex(
+        allocator,
+        "1c0111001f010100061a024b53535009181c",
+    );
+    defer lhs.deinit();
+
+    const rhs = try Data.fromHex(
+        allocator,
+        "686974207468652062756c6c277320657965",
+    );
+    defer rhs.deinit();
+
+    try lhs.xor(rhs);
+
+    const hex = cipher.Hex{};
+    try lhs.encode(hex);
+
+    try std.testing.expectEqualStrings(
+        "746865206b696420646f6e277420706c6179",
+        lhs.bytes,
+    );
+}
+```
