@@ -9,6 +9,9 @@ export default defineConfig({
 	trailingSlash: 'always',
 	markdown: {
 		remarkPlugins: [remarkRuby],
+		shikiConfig: {
+			theme: 'houston',
+		},
 	},
 	experimental: {
 		fonts: [
