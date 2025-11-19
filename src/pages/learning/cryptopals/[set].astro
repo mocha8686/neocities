@@ -50,11 +50,12 @@ const challengeHeadings = headings
 	}
 
 	main {
-		--content-width: 80ch;
+		--content-width: 75ch;
 		--nav-width: 12rem;
 		--gap: 2rem;
 
 		position: relative;
+		container-type: inline-size;
 		display: grid;
 		grid-template-columns:
 			[full-width-start] 0 [content-start] minmax(auto, var(--content-width))
@@ -68,6 +69,76 @@ const challengeHeadings = headings
 			grid-column: content;
 		}
 
+		> :nth-child(2) {
+			counter-reset: challenge;
+		}
+
+		> h2 {
+			scroll-margin-block-start: 1em;
+			display: flex;
+			grid-column: full-width;
+			border-block-end: 2px solid var(--cl-accent);
+
+			&::before {
+				content: counter(challenge);
+				counter-increment: challenge;
+
+				display: block;
+				flex: 0 3.2ex;
+
+				aspect-ratio: 1;
+				margin-inline-end: 0.5em;
+				padding: 0 1ch;
+
+				color: var(--cl-on-accent);
+
+				background: var(--cl-accent);
+			}
+		}
+
+		> p {
+			line-height: 1.8;
+
+			& + & {
+				margin-block-start: 0;
+			}
+
+			@container (width < 800px) {
+				line-height: 1.6;
+			}
+		}
+
+		> nav {
+			position: sticky;
+			inset-block-start: 20%;
+
+			grid-column: nav;
+			grid-row: span 9999;
+			align-self: start;
+			justify-self: center;
+
+			h2 {
+				padding-inline-end: 4em;
+				border-block-end: 2px solid var(--cl-accent);
+			}
+
+			a {
+				margin-block: 0.5em;
+				padding-inline-start: 0.5em;
+
+				color: var(--cl-foreground);
+				text-decoration: none;
+
+				transition: all 150ms ease;
+
+				&:hover,
+				&:focus-visible {
+					color: var(--cl-accent);
+					text-decoration: underline;
+				}
+			}
+		}
+
 		@media screen and (width <= 1000px) {
 			grid-template-columns:
 				[full-width-start] 0 [content-start] minmax(auto, var(--content-width))
@@ -76,64 +147,6 @@ const challengeHeadings = headings
 			> nav {
 				display: none;
 			}
-		}
-	}
-
-	nav {
-		position: sticky;
-		inset-block-start: 20%;
-
-		grid-column: nav;
-		grid-row: span 9999;
-		align-self: start;
-		justify-self: center;
-
-		h2 {
-			padding-inline-end: 4em;
-			border-block-end: 2px solid var(--cl-accent);
-		}
-
-		a {
-			margin-block: 0.5em;
-			padding-inline-start: 0.5em;
-
-			color: var(--cl-foreground);
-			text-decoration: none;
-
-			transition: all 150ms ease;
-
-			&:hover,
-			&:focus-visible {
-				color: var(--cl-accent);
-				text-decoration: underline;
-			}
-		}
-	}
-
-	main > :nth-child(2) {
-		counter-reset: challenge;
-	}
-
-	main > h2 {
-		scroll-margin-block-start: 1em;
-		display: flex;
-		grid-column: full-width;
-		border-block-end: 2px solid var(--cl-accent);
-
-		&::before {
-			content: counter(challenge);
-			counter-increment: challenge;
-
-			display: block;
-			flex: 0 3.2ex;
-
-			aspect-ratio: 1;
-			margin-inline-end: 0.5em;
-			padding: 0 1ch;
-
-			color: var(--cl-on-accent);
-
-			background: var(--cl-accent);
 		}
 	}
 
@@ -150,7 +163,7 @@ const challengeHeadings = headings
 		counter-reset: code-line;
 	}
 
-	.astro-code .line{
+	.astro-code .line {
 		&::before {
 			content: counter(code-line);
 			counter-increment: code-line;
