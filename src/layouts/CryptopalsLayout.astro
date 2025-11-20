@@ -84,10 +84,16 @@ import BaseLayout from './BaseLayout.astro';
 	samp {
 		font-family: var(--ff-code);
 		font-size: 0.9rem;
+		color: var(--cl-accent);
 	}
 
-	:where(p, details) :is(code, kbd, samp) {
-		color: var(--cl-accent);
+	.astro-code {
+		code,
+		kbd,
+		samp {
+			font-size: 1rem;
+			color: inherit;
+		}
 	}
 
 	p {
