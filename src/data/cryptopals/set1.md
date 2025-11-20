@@ -370,6 +370,8 @@ const map = Frequencies.initComptime(frequencies);
 Now, we just have to write a function that loops over the bytes in a piece of `Data` and tells us its score. We also make sure that our lookup is case-insensitive.
 
 ```zig
+// src/attack/score.zig
+
 pub fn score(data: Data) i32 {
     var res: i32 = 0;
     for (data.bytes) |b| {
@@ -384,6 +386,8 @@ Now, we can start guessing our single-byte key. We simply loop over each `(0..=2
 We also return our key byte to report later as well.
 
 ```zig
+// src/attack/xor.zig
+
 pub fn singleCharacterXOR(data: *Data) !u8 {
     var bestGuess: Data = blk: {
         var guess = try Data.copy(data.allocator, &.{0});
@@ -420,6 +424,8 @@ pub fn singleCharacterXOR(data: *Data) !u8 {
 Finally, it's time to test our function. We'll load our encrypted text into a `Data`, then we'll run `singleCharacterXOR` on it.
 
 ```zig
+// src/attack/xor.zig
+
 test "set 1 challenge 3" {
     const allocator = std.testing.allocator;
 
@@ -462,6 +468,8 @@ This algorithm is going to be pretty similar to `singleCharacterXOR`; we iterate
 Here's the code:
 
 ```zig
+// src/attack/xor.zig
+
 test "set 1 challenge 4" {
     const allocator = std.testing.allocator;
 
