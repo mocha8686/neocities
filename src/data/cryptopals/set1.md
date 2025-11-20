@@ -441,3 +441,63 @@ test "set 1 challenge 3" {
 - `<KEY>` – `'X'`
 - `<PLAINTEXT>` – `"Cooking MC's like a pound of bacon"`
 </details>
+
+## Detect single-character XOR
+
+> One of the 60-character strings in [this file](https://cryptopals.com/static/challenge-data/4.txt) has been encrypted by single-character XOR.
+> 
+> Find it.
+> 
+> (Your code from #3 should help.)
+
+This one's more of a "pure" coding challenge than the others, in the sense that the goal is to solve a problem by building an algorithm out of the tools that you've already made. Thus, we'll be doing all of our work on this challenge inside of a test.
+
+This challenge is pretty simple. We have to iterate over the lines of a text file, parse them as hex strings, and perform single-character XOR on them to decrypt them as best we can. Then, we have to find the one line that's actually encrypted via single-character XOR, and output that.
+
+We can use the builtin `@embedFile` to load the contents of the file into memory as a string, then we can create an iterator with `std.mem.splitScalar`, passing in our text and our delimiter (in our case, `\n`).
+
+This algorithm is going to be pretty similar to `singleCharacterXOR`; we iterate over each line, try to decrypt it, then score it like we did inside our brute forcer. The hardest part is keeping track of those "best guesses."
+
+Here's the code:
+
+```zig
+test "set 1 challenge 4" {
+    const allocator = std.testing.allocator;
+
+    const text = @embedFile("../data/4.txt");
+    var iter = std.mem.splitScalar(u8, text, '\n');
+
+    var bestGuess: ?Data = null;
+    var bestScore: i32 = std.math.minInt(i32);
+    var bestKey: u8 = undefined;
+
+    defer bestGuess.?.deinit();
+
+    while (iter.next()) |str| {
+        var guess = try Data.fromHex(allocator, str);
+        errdefer guess.deinit();
+        const key = try singleCharacterXOR(&guess);
+        const guessScore = score(guess);
+        if (guessScore > bestScore) {
+            if (bestGuess) |g| {
+                g.deinit();
+            }
+            bestGuess = guess;
+            bestScore = guessScore;
+            bestKey = key;
+        } else {
+            guess.deinit();
+        }
+    }
+
+    try std.testing.expectEqual('<KEY>', bestKey);
+    try std.testing.expectEqualStrings("<PLAINTEXT>", bestGuess.?.bytes);
+}
+```
+
+<details>
+<summary>Answers</summary>
+
+- `<KEY>` – `'5'`
+- `<PLAINTEXT>` – `"Now that the party is jumping\n"`
+</details>
