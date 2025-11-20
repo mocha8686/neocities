@@ -62,6 +62,16 @@ Now, we can move on to the real challenges.
 
 ## Convert hex to base64
 
+> The string:
+>
+> `49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d`
+> 
+> Should produce:
+>
+> `SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t`
+>
+> So go ahead and make that happen. You'll need to use this code for the rest of the exercises.
+
 I started by creating `fromHex` and `fromBase64` methods, which both take `[]const u8`'s of their respective format. These two methods are mainly for convenience, as we'll see in a bit.
 
 For decoding hex, we can use `std.fmt.hexToBytes`, which takes an output and input buffer. The output buffer must be at least half the size of the input buffer, since each byte is represented by two characters in hex (e.g. `169` = `0b11001001` = `0xa9`).
@@ -209,6 +219,20 @@ test "set 1 challenge 1" {
 ```
 
 ## Fixed XOR
+
+> Write a function that takes two equal-length buffers and produces their XOR combination.
+>
+> If your function works properly, then when you feed it the string:
+>
+> `1c0111001f010100061a024b53535009181c`
+>
+> ... after hex decoding, and when XOR'd against:
+>
+> `686974207468652062756c6c277320657965`
+>
+> ... should produce:
+> 
+> `746865206b696420646f6e277420706c6179`
 
 The process for fixed XOR is fairly simple. I decided to mutate `self` to save on extra allocations. A more functional approach would be to instead return a new `Data` object, but I decided against it since I'm working with Zig, which I've found to lend itself much more to mutating state than pure functions.
 
