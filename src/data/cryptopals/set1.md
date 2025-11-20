@@ -65,7 +65,7 @@ Now, we can move on to the real challenges.
 > The string:
 >
 > `49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d`
-> 
+>
 > Should produce:
 >
 > `SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t`
@@ -231,7 +231,7 @@ test "set 1 challenge 1" {
 > `686974207468652062756c6c277320657965`
 >
 > ... should produce:
-> 
+>
 > `746865206b696420646f6e277420706c6179`
 
 The process for fixed XOR is fairly simple. I decided to mutate `self` to save on extra allocations. A more functional approach would be to instead return a new `Data` object, but I decided against it since I'm working with Zig, which I've found to lend itself much more to mutating state than pure functions.
@@ -255,9 +255,10 @@ pub fn xor(self: *Self, other: Self) !void {
 Again, here's the test for challenge 2.
 
 ```zig
-// src/root.zig
+// src/cipher/XOR.zig
 
 test "set 1 challenge 2" {
+    const std = @import("std");
     const allocator = std.testing.allocator;
 
     var lhs = try Data.fromHex(
@@ -274,7 +275,7 @@ test "set 1 challenge 2" {
 
     try lhs.xor(rhs);
 
-    const hex = cipher.Hex{};
+    const hex = @import("Hex.zig"){};
     try lhs.encode(hex);
 
     try std.testing.expectEqualStrings(
@@ -445,9 +446,9 @@ test "set 1 challenge 3" {
 ## Detect single-character XOR
 
 > One of the 60-character strings in [this file](https://cryptopals.com/static/challenge-data/4.txt) has been encrypted by single-character XOR.
-> 
+>
 > Find it.
-> 
+>
 > (Your code from #3 should help.)
 
 This one's more of a "pure" coding challenge than the others, in the sense that the goal is to solve a problem by building an algorithm out of the tools that you've already made. Thus, we'll be doing all of our work on this challenge inside of a test.
