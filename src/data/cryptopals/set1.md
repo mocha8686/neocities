@@ -554,3 +554,193 @@ test "set 1 challenge 5" {
     );
 }
 ```
+
+## Break repeating-key XOR
+
+> There's a file here. It's been base64'd after being encrypted with repeating-key XOR.
+>
+> Decrypt it.
+>
+> Here's how:
+>
+> 1. Let KEYSIZE be the guessed length of the key; try values from 2 to (say) 40.
+> 2. Write a function to compute the edit distance/Hamming distance between two strings. The Hamming distance is just the number of differing bits. The distance between `this is a test` and `wokka wokka!!!` is 37. Make sure your code agrees before you proceed.
+> 3. For each KEYSIZE, take the first KEYSIZE worth of bytes, and the second KEYSIZE worth of bytes, and find the edit distance between them. Normalize this result by dividing by KEYSIZE.
+> 4. The KEYSIZE with the smallest normalized edit distance is probably the key. You could proceed perhaps with the smallest 2-3 KEYSIZE values. Or take 4 KEYSIZE blocks instead of 2 and average the distances.
+> 5. Now that you probably know the KEYSIZE: break the ciphertext into blocks of KEYSIZE length.
+> 6. Now transpose the blocks: make a block that is the first byte of every block, and a block that is the second byte of every block, and so on.
+> 7. Solve each block as if it was single-character XOR. You already have code to do this.
+> 8. For each block, the single-byte XOR key that produces the best looking histogram is the repeating-key XOR key byte for that block. Put them together and you have the key.
+>
+> This code is going to turn out to be surprisingly useful later on. Breaking repeating-key XOR ("Vigenere") statistically is obviously an academic exercise, a "Crypto 101" thing. But more people "know how" to break it than can actually break it, and a similar technique breaks something much more important.
+
+This challenge is massive. At a high level, we want to guess the keysize, then partition the data to do our single-character brute forcing, before unpartitioning it to get our plaintext.
+
+Let's begin.
+
+### Hamming distance
+
+To guess the keysize, we're going to look for patterns in the data. If we assume our encrypted text comes from a repeating-key XOR of length `n`, we can intuit that there might be patterns between chunks of length `n`, and in fact, there are. If we take the Hamming distance between two blocks that match the key length, it will tend to be smaller.
+
+The phrase "number of differing bits" may seem familiar. In fact, this is one way to intuit the XOR function. We can simply count the number of `1`'s in the binary representation of the resulting XOR between two bytes Zig has a builtin called `@popCount` that does exactly this. For example,
+
+```zig
+@popCount(0b01101000) == 3
+```
+
+We can repeat this procedure for an entire block, summing all of the `@popCounts`, to get our Hamming distance.
+
+```zig
+// src/Data.zig
+
+ pub fn hammingDistance(self: Self, other: Self) u32 {
+    var res: u32 = 0;
+    for (self.bytes, other.bytes) |a, b| {
+        res += @popCount(a ^ b);
+    }
+    return res;
+}
+```
+
+This function assumes that both of the `Data` are of equal lengths; otherwise, the calculation would make no sense.
+
+I also wrote a test, taken from the problem statement.
+
+```zig
+// src/Data.zig
+
+test "hamming distance" {
+    const allocator = std.testing.allocator;
+
+    const lhs = try Self.copy(allocator, "wokka wokka!!!");
+    defer lhs.deinit();
+
+    const rhs = try Self.copy(allocator, "this is a test");
+    defer rhs.deinit();
+
+    try std.testing.expectEqual(37, lhs.hammingDistance(rhs));
+}
+```
+
+### Guessing the keysize
+
+To guess the keysize, we'll again use a score-maximizing function similar to `singleCharacterXOR`, but instead, we'll be trying to minimize Hamming distance.
+
+First, we have to divide our input into equal-sized blocks, one size for each `keysize` we're trying to guess. We will take the problem text's suggestion and try key lengths from 2 to 40. Of course, we can modify this later, but more values means more computation time.
+
+We'll loop over `(2..=40)`, taking each integer as our `keysize`. We can divide our data into blocks using `std.mem.window` with `size == advance == keysize`, which will iterate over our blocks.
+
+```zig
+for (2..41) |keysize| {
+    var windows = std.mem.window(u8, data.bytes, keysize, keysize);
+
+    while (windows.next()) |current| {
+        // ...
+    }
+}
+```
+
+We'll store the `previous` block per iteration to compare to our `current` block, and use the two to add to a running `sizeScore`. Here's a little snippet from the code:
+
+```zig
+for (2..41) |keysize| {
+    var sizeScore: u32 = 0;
+
+    var windows = std.mem.window(u8, data.bytes, keysize, keysize);
+    var prev: ?[]const u8 = null;
+
+    while (windows.next()) |current| {
+        if (prev) |previous| {
+            // ...
+        }
+        prev = current;
+    }
+}
+```
+
+Inside the loop, we'll construct `Data` structs from previous and current to get our hamming distance, which we'll add to sizeScore. We also want to keep track of our total iterations, since we want to average the Hamming distances.
+
+We'll also make sure that our two blocks are the same length, which won't be the case if we reach the last block and our total data length isn't divisible by our `keysize`.
+
+```zig
+var sizeScore: u32 = 0;
+var n: u32 = 0;
+
+// ...
+
+while (windows.next()) |current| {
+    if (prev) |previous| {
+        if (previous.len != current.len) break;
+
+        const lhs = try Data.copy(allocator, previous);
+        defer lhs.deinit();
+
+        const rhs = try Data.copy(allocator, current);
+        defer rhs.deinit();
+
+        sizeScore += lhs.hammingDistance(rhs);
+        n += 1;
+    }
+    prev = current;
+}
+```
+
+At the end, we'll multiply `sizeScore` by `100`, since we're going to divide it by `n` to average it out over the number of blocks. We're also going to divide it by `keysize` to get the Hamming distance of each set of blocks per block per keysize, or essentially, the average Hamming distance per byte with a certain `keysize`.
+
+```zig
+sizeScore *= 100;
+sizeScore /= n * @as(u32, @intCast(keysize));
+```
+
+Then, we simply find the `keysize` that yields the smallest normalized Hamming distance across each block, and return that. Here's the full code for this process:
+
+```zig
+// src/attack/xor.zig
+
+fn guessKeysize(data: Data) !u32 {
+   const allocator = data.allocator;
+
+   var bestScore: u32 = std.math.maxInt(i32);
+   var bestKeysize: u32 = 0;
+
+   for (2..41) |keysize| {
+       var sizeScore: u32 = 0;
+       var n: u32 = 0;
+
+       var windows = std.mem.window(u8, data.bytes, keysize, keysize);
+       var prev: ?[]const u8 = null;
+
+       while (windows.next()) |current| {
+           if (prev) |previous| {
+               if (previous.len != current.len) break;
+
+               const lhs = try Data.copy(allocator, previous);
+               defer lhs.deinit();
+
+               const rhs = try Data.copy(allocator, current);
+               defer rhs.deinit();
+
+               sizeScore += lhs.hammingDistance(rhs);
+               n += 1;
+           }
+           prev = current;
+       }
+
+       sizeScore *= 100;
+       sizeScore /= n * @as(u32, @intCast(keysize));;
+
+       if (sizeScore < bestScore) {
+           bestScore = sizeScore;
+           bestKeysize = @as(u32, @intCast(keysize));
+       }
+   }
+
+   return bestKeysize;
+}
+```
+
+### Partitioning
+
+### Decrypting
+
+### Unpartitioning
