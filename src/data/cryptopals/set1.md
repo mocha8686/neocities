@@ -283,3 +283,161 @@ test "set 1 challenge 2" {
     );
 }
 ```
+
+## Single-byte XOR cipher
+
+> The hex encoded string:
+>
+> `1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736`
+>
+> ... has been XOR'd against a single character. Find the key, decrypt the message.
+>
+> You can do this by hand. But don't: write code to do it for you.
+>
+> How? Devise some method for "scoring" a piece of English plaintext. Character frequency is a good metric. Evaluate each output and choose the one with the best score.
+
+In preparation for this challenge and future challenges, I decided to first implement repeating-key XOR, which is essentially an XOR, but with wrapping back around to the first character once the end of the shorter string is reached.
+
+Since we're mutating `self`, if our buffer is larger or of equal length to the other buffer, we can use the same buffer. However, if it's smaller, we will need to reallocate a larger buffer to accomodate the new data.
+
+```zig
+// src/Data.zig
+
+pub fn xor(self: *Self, other: Self) !void {
+    if (self.len() >= other.len()) {
+        const size = self.len();
+        for (0..size) |i| {
+            const l = other.len();
+            self.bytes[i] ^= other.bytes[i % l];
+        }
+    } else {
+        const size = other.len();
+        const buf = try self.allocator.alloc(u8, size);
+        const l = self.len();
+        for (0..size) |i| {
+            buf[i] = self.bytes[i % l] ^ other.bytes[i];
+        }
+        self.reinit(buf);
+    }
+}
+```
+
+Now, to "score" a piece of plaintext. Like the problem text suggests, we'll use [English character frequency](https://en.wikipedia.org/wiki/Letter_frequency) (i.e. [ETAOIN SHRDLU](https://en.wikipedia.org/wiki/Etaoin_shrdlu)) to cryptanalyze a best-choice for the key.
+
+The code is fairly simple; we simply loop over each byte, look it up in a frequency dictionary, then sum the scores. If we don't find a byte in the letter dictionary, we apply a small penalty. Another neat little trick is giving spaces a very high score, since they are by far the most common "character" in English texts.
+
+In Zig, we can generate a `StaticStringMap` at `comptime`, which basically means the frequency dictionary will be baked into the program data. The process is a little convoluted, but it's not too bad.
+
+```zig
+// src/attack/score.zig
+
+const Frequencies = StaticStringMap(i32);
+
+const FrequencyKV = struct { []const u8, i32 };
+const frequencies: []const FrequencyKV = &.{
+    .{ " ", 20000 },
+    .{ "e", 12700 },
+    .{ "t", 9100 },
+    .{ "a", 8200 },
+    .{ "o", 7500 },
+    .{ "i", 7000 },
+    .{ "n", 6700 },
+    .{ "s", 6300 },
+    .{ "h", 6100 },
+    .{ "r", 6000 },
+    .{ "d", 4000 },
+    .{ "l", 4000 },
+    .{ "c", 2000 },
+    .{ "u", 2000 },
+    .{ "m", 2000 },
+    .{ "w", 2000 },
+    .{ "f", 2000 },
+    .{ "g", 2000 },
+    .{ "y", 2000 },
+    .{ "p", 1000 },
+    .{ "b", 1000 },
+    .{ "v", 980 },
+    .{ "k", 770 },
+    .{ "j", 160 },
+    .{ "x", 150 },
+    .{ "q", 120 },
+    .{ "z", 74 },
+};
+const map = Frequencies.initComptime(frequencies);
+```
+
+Now, we just have to write a function that loops over the bytes in a piece of `Data` and tells us its score. We also make sure that our lookup is case-insensitive.
+
+```zig
+pub fn score(data: Data) i32 {
+    var res: i32 = 0;
+    for (data.bytes) |b| {
+        res += map.get(&.{std.ascii.toLower(b)}) orelse -1000;
+    }
+    return res;
+}
+```
+
+Now, we can start guessing our single-byte key. We simply loop over each `(0..=255)` as our target byte, perform an XOR on it with our data, and get the resulting score. Whichever buffer whose byte key yields the highest score is the one we reassign to our `Data`.
+
+We also return our key byte to report later as well.
+
+```zig
+pub fn singleCharacterXOR(data: *Data) !u8 {
+    var bestGuess: Data = blk: {
+        var guess = try Data.copy(data.allocator, &.{0});
+        errdefer guess.deinit();
+        try guess.xor(data.*);
+        break :blk guess;
+    };
+    var bestScore: i32 = score(bestGuess);
+    var bestChar: u8 = 0;
+
+    for (1..std.math.maxInt(u8)) |n| {
+        const c: u8 = @intCast(n);
+
+        var guess = try Data.copy(data.allocator, &.{c});
+        errdefer guess.deinit();
+
+        try guess.xor(data.*);
+        const guessScore = score(guess);
+        if (guessScore > bestScore) {
+            bestGuess.deinit();
+            bestScore = guessScore;
+            bestGuess = guess;
+            bestChar = c;
+        } else {
+            guess.deinit();
+        }
+    }
+
+    data.reinit(bestGuess.bytes);
+    return bestChar;
+}
+```
+
+Finally, it's time to test our function. We'll load our encrypted text into a `Data`, then we'll run `singleCharacterXOR` on it.
+
+```zig
+test "set 1 challenge 3" {
+    const allocator = std.testing.allocator;
+
+    var data = try Data.fromHex(
+        allocator,
+        "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736",
+    );
+    defer data.deinit();
+
+    const byte = try singleCharacterXOR(&data);
+
+    try std.testing.expectEqual('<KEY>', byte);
+    try std.testing.expectEqualStrings("<PLAINTEXT>", data.bytes);
+}
+```
+
+<details>
+<summary>Answers</summary>
+
+- `<KEY>` – `'X'`
+- `<PLAINTEXT>` – `"Cooking MC's like a pound of bacon"`
+</details>

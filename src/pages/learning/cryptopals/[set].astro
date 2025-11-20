@@ -114,6 +114,34 @@ const challengeHeadings = headings
 			}
 		}
 
+		> details {
+			padding-inline-start: 1em;
+			border-inline-start: 0.4em solid var(--cl-accent);
+
+			summary {
+				font-size: 1.25rem;
+				font-weight: bold;
+
+				&::after {
+					content: '';
+
+					display: inline-block;
+
+					aspect-ratio: 1;
+					width: 1.25em;
+					margin-inline-start: 0.25em;
+
+					vertical-align: text-bottom;
+
+					background-color: var(--cl-accent);
+
+					mask-image: url('/src/assets/icons/info.svg');
+					mask-repeat: no-repeat;
+					mask-size: 100% 100%;
+				}
+			}
+		}
+
 		> nav {
 			position: sticky;
 			inset-block-start: 20%;
