@@ -252,6 +252,20 @@ pub fn xor(self: *Self, other: Self) !void {
 }
 ```
 
+I also created a (very simple) cipher for it, which takes a fixed key. We'll see this pattern used in later sets. Note that `encode` is the same as `decode` since XOR is an [involution](https://en.wikipedia.org/wiki/Involution_(mathematics)). In fact, `encode` just calls `decode`, since they do the same thing.
+
+```zig
+key: Data,
+
+pub fn decode(self: Self, data: *Data) !void {
+    try data.xor(self.key);
+}
+
+pub fn encode(self: Self, data: *Data) !void {
+    try self.decode(data);
+}
+```
+
 Again, here's the test for challenge 2.
 
 ```zig
