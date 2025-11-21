@@ -241,12 +241,12 @@ We first check that both buffers are of equal length, then we iterate over both 
 ```zig
 // src/Data.zig
 
-pub fn xor(self: *Self, other: Self) !void {
-    if (self.len() != other.len()) {
+pub fn xor(self: *Self, other: []const u8) !void {
+    if (self.len() != other.len) {
         return error.Unimplemented;
     }
 
-    for (other.bytes, 0..) |byte, i| {
+    for (other, 0..) |byte, i| {
         self.bytes[i] ^= byte;
     }
 }
@@ -255,7 +255,7 @@ pub fn xor(self: *Self, other: Self) !void {
 I also created a (very simple) cipher for it, which takes a fixed key. We'll see this pattern used in later sets. Note that `encode` is the same as `decode` since XOR is an [involution](https://en.wikipedia.org/wiki/Involution_(mathematics)). In fact, `encode` just calls `decode`, since they do the same thing.
 
 ```zig
-key: Data,
+key: []const u8,
 
 pub fn decode(self: Self, data: *Data) !void {
     try data.xor(self.key);
@@ -287,7 +287,7 @@ test "set 1 challenge 2" {
     );
     defer rhs.deinit();
 
-    try lhs.xor(rhs);
+    try lhs.xor(rhs.bytes);
 
     const hex = @import("Hex.zig"){};
     try lhs.encode(hex);
@@ -318,19 +318,19 @@ Since we're mutating `self`, if our buffer is larger or of equal length to the o
 ```zig
 // src/Data.zig
 
-pub fn xor(self: *Self, other: Self) !void {
-    if (self.len() >= other.len()) {
+pub fn xor(self: *Self, other: []const u8) !void {
+    if (self.len() >= other.len) {
         const size = self.len();
         for (0..size) |i| {
-            const l = other.len();
-            self.bytes[i] ^= other.bytes[i % l];
+            const l = other.len;
+            self.bytes[i] ^= other[i % l];
         }
     } else {
-        const size = other.len();
+        const size = other.len;
         const buf = try self.allocator.alloc(u8, size);
         const l = self.len();
         for (0..size) |i| {
-            buf[i] = self.bytes[i % l] ^ other.bytes[i];
+            buf[i] = self.bytes[i % l] ^ other[i];
         }
         self.reinit(buf);
     }
@@ -381,21 +381,21 @@ const frequencies: []const FrequencyKV = &.{
 const map = Frequencies.initComptime(frequencies);
 ```
 
-Now, we just have to write a function that loops over the bytes in a piece of `Data` and tells us its score. We also make sure that our lookup is case-insensitive.
+Now, we just have to write a function that loops over the input `bytes` and tells us its score. We also make sure that our lookup is case-insensitive.
 
 ```zig
 // src/attack/score.zig
 
-pub fn score(data: Data) i32 {
+pub fn score(bytes: []const u8) i32 {
     var res: i32 = 0;
-    for (data.bytes) |b| {
+    for (bytes) |b| {
         res += map.get(&.{std.ascii.toLower(b)}) orelse -1000;
     }
     return res;
 }
 ```
 
-Now, we can start guessing our single-byte key. We simply loop over each `(0..=255)` as our target byte, perform an XOR on it with our data, and get the resulting score. Whichever buffer whose byte key yields the highest score is the one we reassign to our `Data`.
+Now, we can start guessing our single-byte key. We simply loop over each `(0..=255)` as our target byte, perform an XOR on it with our data, and get the resulting score. Whichever buffer whose byte key yields the highest score is the one we finally XOR on our `Data`.
 
 We also return our key byte to report later as well.
 
@@ -403,34 +403,24 @@ We also return our key byte to report later as well.
 // src/attack/xor.zig
 
 pub fn singleCharacterXOR(data: *Data) !u8 {
-    var bestGuess: Data = blk: {
-        var guess = try Data.copy(data.allocator, &.{0});
-        errdefer guess.deinit();
-        try guess.xor(data.*);
-        break :blk guess;
-    };
-    var bestScore: i32 = score(bestGuess);
+    var bestScore: i32 = std.math.minInt(i32);
     var bestChar: u8 = 0;
 
-    for (1..std.math.maxInt(u8)) |n| {
+    for (0..std.math.maxInt(u8)) |n| {
         const c: u8 = @intCast(n);
 
-        var guess = try Data.copy(data.allocator, &.{c});
-        errdefer guess.deinit();
+        try data.xor(&.{c});
 
-        try guess.xor(data.*);
-        const guessScore = score(guess);
+        const guessScore = score(data.bytes);
         if (guessScore > bestScore) {
-            bestGuess.deinit();
             bestScore = guessScore;
-            bestGuess = guess;
             bestChar = c;
-        } else {
-            guess.deinit();
         }
+
+        try data.xor(&.{c});
     }
 
-    data.reinit(bestGuess.bytes);
+    try data.xor(&.{bestChar});
     return bestChar;
 }
 ```
@@ -554,10 +544,7 @@ test "set 1 challenge 5" {
     var data = try Data.copy(allocator, "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal");
     defer data.deinit();
 
-    const key = try Data.copy(allocator, "ICE");
-    defer key.deinit();
-
-    try data.xor(key);
+    try data.xor("ICE");
 
     const hex = @import("Hex.zig"){};
     try data.encode(hex);
@@ -605,34 +592,37 @@ The phrase "number of differing bits" may seem familiar. In fact, this is one wa
 We can repeat this procedure for an entire block, summing all of the `@popCounts`, to get our Hamming distance.
 
 ```zig
-// src/Data.zig
+// src/hammingDistance.zig
 
- pub fn hammingDistance(self: Self, other: Self) u32 {
+pub fn hammingDistance(lhs: []const u8, rhs: []const u8) u32 {
     var res: u32 = 0;
-    for (self.bytes, other.bytes) |a, b| {
+    for (lhs, rhs) |a, b| {
         res += @popCount(a ^ b);
     }
     return res;
 }
 ```
 
-This function assumes that both of the `Data` are of equal lengths; otherwise, the calculation would make no sense.
+This function assumes that both of the inputs are of equal lengths; otherwise, the calculation would make no sense.
 
 I also wrote a test, taken from the problem statement.
 
 ```zig
-// src/Data.zig
+// src/hammingDistance.zig
 
 test "hamming distance" {
-    const allocator = std.testing.allocator;
+    const std = @import("std");
+    try std.testing.expectEqual(37, hammingDistance("wokka wokka!!!", "this is a test"));
+}
+```
 
-    const lhs = try Self.copy(allocator, "wokka wokka!!!");
-    defer lhs.deinit();
+Finally, I also a conveniece method to `Data`.
 
-    const rhs = try Self.copy(allocator, "this is a test");
-    defer rhs.deinit();
+```zig
+// src/Data.zig
 
-    try std.testing.expectEqual(37, lhs.hammingDistance(rhs));
+pub fn hammingDistance(self: Self, other: []const u8) u32 {
+    return @import("hammingDistance.zig").hammingDistance(self.bytes, other);
 }
 ```
 
@@ -646,7 +636,7 @@ We'll loop over `(2..=40)`, taking each integer as our `keysize`. We can divide 
 
 ```zig
 for (2..41) |keysize| {
-    var windows = std.mem.window(u8, data.bytes, keysize, keysize);
+    var windows = std.mem.window(u8, bytes, keysize, keysize);
 
     while (windows.next()) |current| {
         // ...
@@ -685,14 +675,7 @@ var n: u32 = 0;
 while (windows.next()) |current| {
     if (prev) |previous| {
         if (previous.len != current.len) break;
-
-        const lhs = try Data.copy(allocator, previous);
-        defer lhs.deinit();
-
-        const rhs = try Data.copy(allocator, current);
-        defer rhs.deinit();
-
-        sizeScore += lhs.hammingDistance(rhs);
+        sizeScore += hammingDistance(previous, current);
         n += 1;
     }
     prev = current;
@@ -711,45 +694,36 @@ Then, we simply find the `keysize` that yields the smallest normalized Hamming d
 ```zig
 // src/attack/xor.zig
 
-fn guessKeysize(data: Data) !u32 {
-   const allocator = data.allocator;
+fn guessKeysize(bytes: []const u8) u32 {
+    var bestScore: u32 = std.math.maxInt(i32);
+    var bestKeysize: u32 = 0;
 
-   var bestScore: u32 = std.math.maxInt(i32);
-   var bestKeysize: u32 = 0;
+    for (2..41) |keysize| {
+        var sizeScore: u32 = 0;
+        var n: u32 = 0;
 
-   for (2..41) |keysize| {
-       var sizeScore: u32 = 0;
-       var n: u32 = 0;
+        var windows = std.mem.window(u8, bytes, keysize, keysize);
+        var prev: ?[]const u8 = null;
 
-       var windows = std.mem.window(u8, data.bytes, keysize, keysize);
-       var prev: ?[]const u8 = null;
+        while (windows.next()) |current| {
+            if (prev) |previous| {
+                if (previous.len != current.len) break;
+                sizeScore += hammingDistance(previous, current);
+                n += 1;
+            }
+            prev = current;
+        }
 
-       while (windows.next()) |current| {
-           if (prev) |previous| {
-               if (previous.len != current.len) break;
+        sizeScore *= 100;
+        sizeScore /= n * @as(u32, @intCast(keysize));
 
-               const lhs = try Data.copy(allocator, previous);
-               defer lhs.deinit();
+        if (sizeScore < bestScore) {
+            bestScore = sizeScore;
+            bestKeysize = @as(u32, @intCast(keysize));
+        }
+    }
 
-               const rhs = try Data.copy(allocator, current);
-               defer rhs.deinit();
-
-               sizeScore += lhs.hammingDistance(rhs);
-               n += 1;
-           }
-           prev = current;
-       }
-
-       sizeScore *= 100;
-       sizeScore /= n * @as(u32, @intCast(keysize));;
-
-       if (sizeScore < bestScore) {
-           bestScore = sizeScore;
-           bestKeysize = @as(u32, @intCast(keysize));
-       }
-   }
-
-   return bestKeysize;
+    return bestKeysize;
 }
 ```
 
@@ -929,7 +903,7 @@ Now that we have all the components of our `repeatingKeyXOR` function, we can fi
 pub fn repeatingKeyXOR(data: *Data) !Data {
     const allocator = data.allocator;
 
-    const keysize = try guessKeysize(data.*);
+    const keysize = guessKeysize(data.bytes);
     var key = try allocator.alloc(u8, keysize);
     errdefer allocator.free(key);
 
