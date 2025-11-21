@@ -188,8 +188,12 @@ const challengeHeadings = headings.reduce<Heading[]>(
 
 			+ blockquote {
 				padding-inline-start: 1em;
+				padding-inline-end: 0.5em;
 				border-inline-start: 0.4em solid var(--cl-accent);
+
 				font-style: italic;
+
+				background: var(--cl-container);
 
 				li {
 					line-height: 1.5;
@@ -214,8 +218,10 @@ const challengeHeadings = headings.reduce<Heading[]>(
 		> details {
 			padding-inline-start: 1em;
 			border-inline-start: 0.4em solid var(--cl-accent);
+			background: var(--cl-container);
 
 			summary {
+				padding-block: 0.5em;
 				font-size: 1.25rem;
 				font-weight: bold;
 
