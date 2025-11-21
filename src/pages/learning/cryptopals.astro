@@ -1,6 +1,7 @@
 ---
-import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
 import { getCollection } from 'astro:content';
+
+import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
 
 const sets = (await getCollection('cryptopals')).toSorted((a, b) => a.data.number - b.data.number);
 ---
@@ -104,12 +105,6 @@ const sets = (await getCollection('cryptopals')).toSorted((a, b) => a.data.numbe
 			&::after {
 				content: ' »';
 			}
-		}
-	}
-
-	@keyframes blink {
-		50% {
-			opacity: 0;
 		}
 	}
 </style>
