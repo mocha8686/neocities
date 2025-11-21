@@ -868,4 +868,102 @@ fn partition(data: Data, keysize: u32) ![]Data {
 
 ### Decrypting
 
+Now that we have our data partitioned, the decryption is simple. We simply have to call `singleCharacterXOR` on each of our blocks. We'll also keep track of the key bytes returned to construct the full key.
+
+```zig
+const keysize = try guessKeysize(data.*);
+var key = try allocator.alloc(u8, keysize);
+errdefer allocator.free(key);
+
+var blocks = try partition(data.*, keysize);
+defer allocator.free(blocks);
+
+for (0..keysize) |n| {
+    key[n] = try singleCharacterXOR(&blocks[n]);
+}
+```
+
 ### Unpartitioning
+
+Finally, we want to reverse our partitioning to reconstruct the original plaintext. We create a new buffer with a size equal to our original ciphertext. Then, we take the first bytes from each decrypted block and pack them together, then we do the same with the second bytes, the third bytes, and so on.
+
+```zig
+// src/attack/xor.zig
+
+fn unpartition(allocator: std.mem.Allocator, blocks: []Data, keysize: u32, len: usize) ![]u8 {
+    var buf = try allocator.alloc(u8, len);
+    errdefer allocator.free(buf);
+
+    for (blocks, 0..) |block, i| {
+        defer block.deinit();
+        for (block.bytes, 0..) |b, n| {
+            buf[keysize * n + i] = b;
+        }
+    }
+
+    return buf;
+}
+```
+
+### The full picture
+
+Now that we have all the components of our `repeatingKeyXOR` function, we can finally construct the function in full. Here it is:
+
+```zig
+// src/attack/xor.zig
+
+pub fn repeatingKeyXOR(data: *Data) !Data {
+    const allocator = data.allocator;
+
+    const keysize = try guessKeysize(data.*);
+    var key = try allocator.alloc(u8, keysize);
+    errdefer allocator.free(key);
+
+    var blocks = try partition(data.*, keysize);
+    defer allocator.free(blocks);
+
+    for (0..keysize) |n| {
+        key[n] = try singleCharacterXOR(&blocks[n]);
+    }
+
+    const buf = try unpartition(allocator, blocks, keysize, data.len());
+    data.reinit(buf);
+    return Data.init(allocator, key);
+}
+```
+
+And here's the test:
+
+```zig
+// src/attack/xor.zig
+
+test "set 1 challenge 6" {
+    const allocator = std.testing.allocator;
+
+    const text = @embedFile("../data/6.txt");
+    const size = std.mem.replacementSize(u8, text, "\n", "");
+    const buf = try allocator.alloc(u8, size);
+    defer allocator.free(buf);
+    _ = std.mem.replace(u8, text, "\n", "", buf);
+
+    var data = try Data.fromBase64(allocator, buf);
+    defer data.deinit();
+
+    const key = try repeatingKeyXOR(&data);
+    defer key.deinit();
+
+    try std.testing.expectEqualStrings("<KEY>", key.bytes);
+    try std.testing.expectEqualStrings(
+        @embedFile("../data/funky.txt"),
+        data.bytes,
+    );
+}
+```
+
+<details>
+<summary>Answers</summary>
+
+- `<KEY>` – `Terminator X: Bring the noise`
+- [funky.txt](/funky.txt)
+</details>
+
