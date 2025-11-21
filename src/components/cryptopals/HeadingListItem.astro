@@ -7,7 +7,9 @@ const { href, text } = Astro.props;
 const slug = href.slice(1);
 ---
 
-<a {href} x-bind:class=`$store.heading.active === '${slug}' && 'active'`>{text}</a>
+<a {href} x-bind:class=`$store.heading.active === '${slug}' && 'active'`>
+	{text}
+</a>
 
 <style>
 	a {

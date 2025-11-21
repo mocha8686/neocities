@@ -24,22 +24,23 @@ function getAllHeadingSlugs(headings: Heading[]): string[] {
 function formatSlugs(children: Heading[]): string {
 	return JSON.stringify(getAllHeadingSlugs(children));
 }
-
 ---
 
 <ol>
 	{
-	headings.map(({ children, ...heading }) => (
+		headings.map(({ children, ...heading }) => (
 			<li>
 				{children ?
-				<details x-bind:open={`$store.heading.active === '${slug(heading)}' || ${formatSlugs(children)}.includes($store.heading.active)`}>
-					<summary>
-						<HeadingListItem {...heading} />
-					</summary>
+					<details
+						x-bind:open={`$store.heading.active === '${slug(heading)}' || ${formatSlugs(children)}.includes($store.heading.active)`}
+					>
+						<summary>
+							<HeadingListItem {...heading} />
+						</summary>
 
-					<Astro.self headings={children} />
-				</details>
-				: <HeadingListItem {...heading} />}
+						<Astro.self headings={children} />
+					</details>
+				:	<HeadingListItem {...heading} />}
 			</li>
 		))
 	}

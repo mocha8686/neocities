@@ -1,10 +1,11 @@
 ---
-import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import { getCollection } from 'astro:content';
+
 import type { Heading } from '$src/components/cryptopals/Heading';
 import HeadingList from '$src/components/cryptopals/HeadingList.astro';
+import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
 
 export const getStaticPaths = (async () => {
 	const sets = await getCollection('cryptopals');
@@ -67,7 +68,7 @@ const challengeHeadings = headings.reduce<Heading[]>(
 </CryptopalsLayout>
 
 <script>
-	import Alpine from "alpinejs";
+	import Alpine from 'alpinejs';
 
 	type StateEntry = {
 		value: string;
@@ -100,7 +101,7 @@ const challengeHeadings = headings.reduce<Heading[]>(
 			if (arr.length > 0) {
 				this.entries = arr;
 			}
-		}
+		},
 	};
 	type Heading = typeof state;
 
@@ -156,7 +157,11 @@ const challengeHeadings = headings.reduce<Heading[]>(
 			counter-reset: challenge;
 		}
 
-		h2, h3, h4, h5, h6 {
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
 			scroll-margin-block-start: 1em;
 		}
 
@@ -273,7 +278,7 @@ const challengeHeadings = headings.reduce<Heading[]>(
 		counter-reset: code-line;
 	}
 
-	.astro-code:not([data-language="plaintext"]) .line {
+	.astro-code:not([data-language='plaintext']) .line {
 		&::before {
 			content: counter(code-line);
 			counter-increment: code-line;
@@ -286,7 +291,7 @@ const challengeHeadings = headings.reduce<Heading[]>(
 		}
 	}
 
-	.astro-code[data-language="plaintext"] {
+	.astro-code[data-language='plaintext'] {
 		line-height: 1.1;
 	}
 </style>

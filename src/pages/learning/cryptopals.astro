@@ -3,7 +3,9 @@ import { getCollection } from 'astro:content';
 
 import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
 
-const sets = (await getCollection('cryptopals')).toSorted((a, b) => a.data.number - b.data.number);
+const sets = (await getCollection('cryptopals')).toSorted(
+	(a, b) => a.data.number - b.data.number,
+);
 ---
 
 <CryptopalsLayout>
@@ -24,7 +26,7 @@ const sets = (await getCollection('cryptopals')).toSorted((a, b) => a.data.numbe
 
 	<section class="sets">
 		{
-		sets.map(({ id, data: {title, number, description} }) => (
+			sets.map(({ id, data: { title, number, description } }) => (
 				<div class="set">
 					<h2>
 						{number}. {title}
