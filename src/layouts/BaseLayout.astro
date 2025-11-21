@@ -36,6 +36,45 @@ const description =
 
 <style is:global>
 	:root {
+		/* stylelint-disable custom-property-empty-line-before */
+
+		--cl-default-light: oklch(98% 0 0);
+		--cl-default-dark: oklch(10% 0 0);
+
+		--cl-foreground: light-dark(
+			var(--cl-dark, var(--cl-default-dark)),
+			var(--cl-light, var(--cl-default-light))
+		);
+		--cl-background: light-dark(
+			var(--cl-light, var(--cl-default-light)),
+			var(--cl-dark, var(--cl-default-dark))
+		);
+
+		--cl-on-accent: light-dark(
+			oklch(from var(--cl-accent) 100% calc(c * 0.1) h),
+			oklch(from var(--cl-accent) 15% calc(c * 0.1) h)
+		);
+
+		--cl-container: light-dark(
+			oklch(from var(--cl-background) calc(l * 0.98) c h),
+			oklch(from var(--cl-background) calc(l * 1.3) c h)
+		);
+		--cl-outline: light-dark(
+			oklch(from var(--cl-accent) calc(l * 1.5) calc(c * 0.05) h),
+			oklch(from var(--cl-accent) calc(l * 0.5) calc(c * 0.05) h)
+		);
+
+		--cl-accent-container: light-dark(
+			oklch(from var(--cl-accent) calc(l * 1.2) c h),
+			oklch(from var(--cl-accent) calc(l * 0.8) calc(c * 0.9) h)
+		);
+		--cl-on-accent-container: light-dark(
+			oklch(from var(--cl-accent) 100% 0.02 h),
+			oklch(from var(--cl-accent) 15% 0.02 h)
+		);
+
+		/* stylelint-enable custom-property-empty-line-before */
+
 		cursor: auto;
 	}
 </style>

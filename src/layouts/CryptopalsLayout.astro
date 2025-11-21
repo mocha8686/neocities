@@ -19,26 +19,17 @@ import BaseLayout from './BaseLayout.astro';
 <style is:global>
 	:root {
 		/* stylelint-disable custom-property-empty-line-before */
-
-		--cl-foreground: oklch(90% 0.01 250);
-		--cl-background: oklch(15% 0.04 250);
-
+		--cl-light: oklch(90% 0.01 250);
+		--cl-dark: oklch(15% 0.04 250);
 		--cl-accent: oklch(80% 0.23 150);
-		--cl-on-accent: oklch(from var(--cl-accent) 15% calc(c * 0.1) h);
-
-		--cl-container: oklch(from var(--cl-background) calc(l * 1.3) c h);
-		--cl-outline: oklch(from var(--cl-accent) calc (l * 0.5) calc(c * 0.05) h);
-
-		--cl-accent-container: oklch(
-			from var(--cl-accent) calc(l * 0.8) calc(c * 0.9) h
-		);
-		--cl-on-accent-container: oklch(from var(--cl-accent) 15% 0.02 h);
 
 		--ff-main: var(--font-blinker);
 		--ff-accent: var(--font-blinker);
 		--ff-code: var(--font-fira-code);
 
 		/* stylelint-enable custom-property-empty-line-before */
+
+		color-scheme: only dark;
 	}
 
 	body {

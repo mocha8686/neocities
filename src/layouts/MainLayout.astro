@@ -50,17 +50,9 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 	:root {
 		/* stylelint-disable custom-property-empty-line-before */
 
-		--cl-foreground: oklch(10% 0 0);
-		--cl-background: oklch(98% 0 0);
-
+		--cl-light: oklch(98% 0 0);
+		--cl-dark: oklch(10% 0 0);
 		--cl-accent: oklch(60% 0.11 337);
-		--cl-on-accent: oklch(from var(--cl-accent) 100% calc(c * 0.1) h);
-
-		--cl-container: oklch(from var(--cl-background) calc(l * 0.98) c h);
-		--cl-outline: oklch(from var(--cl-accent) calc(l * 1.5) calc(c * 0.05) h);
-
-		--cl-accent-container: oklch(from var(--cl-accent) calc(l * 1.2) c h);
-		--cl-on-accent-container: oklch(from var(--cl-accent) 100% 0.02 h);
 
 		--ff-main: var(--font-shippori-mincho);
 		--ff-accent: var(--font-zen-old-mincho);
@@ -68,6 +60,8 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 		--z-bg: -1000;
 
 		/* stylelint-enable custom-property-empty-line-before */
+
+		color-scheme: only light;
 	}
 
 	body {
