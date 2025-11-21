@@ -981,3 +981,115 @@ test "set 1 challenge 6" {
 - [funky.txt](/funky.txt)
 </details>
 
+## AES in ECB mode
+
+> The Base64-encoded content in [this file](https://cryptopals.com/static/challenge-data/7.txt) has been encrypted via AES-128 in ECB mode under the key
+> 
+> "YELLOW SUBMARINE".
+> (case-sensitive, without the quotes; exactly 16 characters; I like "YELLOW SUBMARINE" because it's exactly 16 bytes long, and now you do too).
+> 
+> Decrypt it. You know the key, after all.
+> 
+> Easiest way: use OpenSSL::Cipher and give it AES-128-ECB as the cipher.
+
+[AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard), or Advanced Encryption Standard, is a symmetric-key block cipher, which essentially means one key is used to both encrypt and decrypt a fixed-size block of data. In our case, AES-128 will encrypt a 128-bit (or 16-byte) block.
+
+[ECB mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB), or electronic codebook, is a method of encrypting an arbitrary-length block of data (although, probably the most insecure—you'll see why in the next set). It simply splits our data into 16-byte blocks, encodes them using AES-128, then concatenates them together.
+
+The algorithm itself is quite complicated, involving abstract algebra and Galois fields, so like the problem statement suggests, we're just going to use a library. (Though, I do plan on studying abstract algebra in the near future, so keep an eye out for that!)
+
+In our case, we'll use the Zig standard library, which has functions for AES. Like `base64`, we need to create an `encoder` and `decoder`. We use the `std.crypto.core.aes.Aes128` type and we can use `Aes128.initDec(key)` and `Aes128.initEnc(key)` to create our `decoder` and `encoder`, respectively.
+
+We'll focus on decoding, since the process for encoding is pretty much the same. Once we have our `decoder`, we can iterate over our bytes and call `decoder.decrypt`, passing in an output and input buffer. The function expects both the output and input to be fixed 16-byte arrays, so we can double-index into our slices with comptime-known bounds to coalesce our slices into arrays.
+
+```zig
+const blocksize = 16;
+
+if (data.length % blocksize != 0) {
+    return error.InvalidSize;
+}
+
+const decoder = std.crypto.core.aes.Aes128.initDec(self.key);
+var res = try allocator.alloc(u8, data.len());
+
+var windows = std.mem.window(u8, data.bytes, blocksize, blocksize);
+var i: u32 = 0;
+while (windows.next()) |block| {
+    decoder.decrypt(res[i * blocksize .. (i + 1) * blocksize][0..blocksize], block[0..blocksize]);
+    i += 1;
+}
+
+data.reinit(res);
+```
+
+We'll see how we can encode arbitrary-length `Data` in the next set.
+
+Note how I indexed into `res`. The first slice simply calculates the same sliding window as `std.mem.window`, but manually. The second slice basically tells the compiler that this slice is `blocksize` bytes long.
+
+I also created a new cipher like we did for `Hex`, `Base64`, and `XOR`.
+
+```zig
+// src/cipher/AesEcb.zig
+const Self = @This();
+
+key: [16]u8,
+
+pub fn decode(self: Self, data: *Data) !void {
+    const allocator = data.allocator;
+    const blocksize = 16;
+
+    const decoder = std.crypto.core.aes.Aes128.initDec(self.key);
+    var res = try allocator.alloc(u8, data.len());
+
+    var windows = std.mem.window(u8, data.bytes, blocksize, blocksize);
+    var i: u32 = 0;
+    while (windows.next()) |block| {
+        decoder.decrypt(res[i * blocksize .. (i + 1) * blocksize][0..blocksize], block[0..blocksize]);
+        i += 1;
+    }
+
+    data.reinit(res);
+    try data.unpad();
+}
+
+pub fn encode(self: Self, data: *Data) !void {
+    const allocator = data.allocator;
+    const blocksize = 16;
+
+    try data.pad(blocksize);
+
+    const encoder = std.crypto.core.aes.Aes128.initEnc(self.key);
+    var res = try allocator.alloc(u8, data.len());
+
+    var windows = std.mem.window(u8, data.bytes, blocksize, blocksize);
+    var i: u32 = 0;
+    while (windows.next()) |block| {
+        encoder.encrypt(res[i * blocksize .. (i + 1) * blocksize][0..blocksize], block[0..blocksize]);
+        i += 1;
+    }
+
+    data.reinit(res);
+}
+```
+
+Now for the test.
+
+```zig
+test "set 1 challenge 7" {
+    const allocator = std.testing.allocator;
+
+    const text = @embedFile("../data/7.txt");
+    const size = std.mem.replacementSize(u8, text, "\n", "");
+    const buf = try allocator.alloc(u8, size);
+    defer allocator.free(buf);
+    _ = std.mem.replace(u8, text, "\n", "", buf);
+
+    var data = try Data.fromBase64(allocator, buf);
+    defer data.deinit();
+
+    const AES = Self{ .key = "YELLOW SUBMARINE".* };
+    try data.decode(AES);
+
+    try std.testing.expectEqualStrings(@embedFile("../data/funky.txt"), data.bytes);
+}
+```
