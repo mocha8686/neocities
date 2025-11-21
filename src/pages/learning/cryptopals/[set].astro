@@ -69,11 +69,37 @@ const challengeHeadings = headings.reduce<Heading[]>(
 <script>
 	import Alpine from "alpinejs";
 
-	const state = {
-		active: "",
+	type StateEntry = {
+		value: string;
+		isActive: boolean;
+	};
+	const initial: StateEntry[] = [];
 
-		setActive(value: string) {
-			this.active = value;
+	const state = {
+		entries: initial,
+
+		get active(): string | undefined {
+			return this.entries.at(-1)?.value;
+		},
+
+		set active(value: string) {
+			this.entries.push({ value, isActive: true });
+			this.prune();
+		},
+
+		inactive(value: string) {
+			const entry = this.entries.find(s => s.value === value);
+			if (entry) {
+				entry.isActive = false;
+				this.prune();
+			}
+		},
+
+		prune() {
+			const arr = this.entries.filter(s => s.isActive && s.value.length > 0);
+			if (arr.length > 0) {
+				this.entries = arr;
+			}
 		}
 	};
 	type Heading = typeof state;
@@ -82,9 +108,11 @@ const challengeHeadings = headings.reduce<Heading[]>(
 
 	const callback = (entries: IntersectionObserverEntry[]) => {
 		for (const entry of entries) {
+			const heading: Heading = Alpine.store('heading');
 			if (entry.isIntersecting) {
-				const heading: Heading = Alpine.store('heading');
-				heading.setActive(entry.target.id);
+				heading.active = entry.target.id;
+			} else {
+				heading.inactive(entry.target.id);
 			}
 		}
 	};
