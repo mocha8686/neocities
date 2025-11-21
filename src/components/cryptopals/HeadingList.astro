@@ -32,7 +32,7 @@ function formatSlugs(children: Heading[]): string {
 	headings.map(({ children, ...heading }) => (
 			<li>
 				{children ?
-				<details x-bind:open=`$store.heading.active === '${slug(heading)}' || ${formatSlugs(children)}.includes($store.heading.active)`>
+				<details x-bind:open={`$store.heading.active === '${slug(heading)}' || ${formatSlugs(children)}.includes($store.heading.active)`}>
 					<summary>
 						<HeadingListItem {...heading} />
 					</summary>
