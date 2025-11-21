@@ -245,7 +245,7 @@ const challengeHeadings = headings.reduce<Heading[]>(
 		counter-reset: code-line;
 	}
 
-	.astro-code .line {
+	.astro-code:not([data-language="plaintext"]) .line {
 		&::before {
 			content: counter(code-line);
 			counter-increment: code-line;
@@ -256,5 +256,9 @@ const challengeHeadings = headings.reduce<Heading[]>(
 		&:nth-child(-n + 9)::before {
 			content: ' ' counter(code-line);
 		}
+	}
+
+	.astro-code[data-language="plaintext"] {
+		line-height: 1.1;
 	}
 </style>

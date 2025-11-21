@@ -741,6 +741,131 @@ fn guessKeysize(data: Data) !u32 {
 
 ### Partitioning
 
+Now that we have a good guess for our `keysize`, we want to prepare the data for performing single-byte XOR. If we assume the key is `keysize` long, we know that every `keysize`th byte has been XOR'd with the same byte, so we can take those bytes and perform our `singleCharacterXOR` on them.
+
+```
+            ┌ keysize = 4
+            ├───┬───┬───┬───┬───┬───┬───┐
+       key: meowmeowmeowmeowmeowmeowme
+ciphertext: qwertyuiopasdfghjklzxcvbnm
+            │   │   │   │   │   │   │
+       key: m   m   m   m   m   m   m ─► mmmmmmm
+ciphertext: q   t   o   d   j   x   n ─► qtodjxn
+```
+
+We can similarly group every `(keysize + 1)`th byte, every `(keysize + 2)`th byte, and so on, until `(2 * keysize - 1)`. We're essentially creating a partition over our ciphertext using the integers mod `keysize` as indices to group our blocks.
+
+Now, to implement this algorithm in Zig. We'll create another function for it, which will return a slice of `Data`. First, we need to allocate our arrays. We want to make a partition to hold each group of each byte from `keysize`, which means we'll need `(keysize)` partitions. For each partition, we'll want at least `length / keysize` bytes, plus one more if our keysize doesn't neatly divide our length.
+
+```
+            meowmeow..............owme
+            11112222333344445555666677
+ciphertext: qwertyuiopasdfghjklzxcvbnm
+       key: meowmeowmeowmeowmeowmeowme
+
+       ┌──────────────────────────────┐
+       │  length   26                 │
+       │ ─────── = ── = 6 remainder 2 │
+       │ keysize    4   │           │ │
+       └────────────┼───┼───────────┼─┘
+         ┌──────────┘   │           │
+         │   ┌──────────┼───────────┘
+         │   │          └──────────┐
+         ▼   ▼                     ▼
+       first 2 buckets have length 6 + 1
+    last 4 - 2 buckets have length 6
+
+key byte │ 1234567 │ length
+─────────┼─────────┼────────
+       m │ qtodjxn │ 7
+       e │ wypfkcm │ 7
+       o │ euaglv  │ 6
+       w │ rishzb  │ 6
+```
+
+So, in order to calculate the size for each partition, we'll first calculate the `lengthPerBlock` and the `remainder`, and we'll also allocate `(keysize)` arrays of `[]u8` to store our buckets.
+
+```zig
+const lengthPerBlock = data.len() / keysize;
+const remainder = data.len() % keysize;
+
+var blocks = try allocator.alloc([]u8, keysize);
+defer allocator.free(blocks);
+```
+
+Once we make space for our blocks, we'll allocate the blocks themselves. We'll keep track of the index to know whether to add that extra byte or not as well.
+
+```zig
+for (0..keysize) |n| {
+    const blockLength = lengthPerBlock + (if (n < remainder) @as(usize, 1) else @as(usize, 0));
+    blocks[n] = try allocator.alloc(u8, blockLength);
+    errdefer allocator.free(blocks[n]);
+}
+```
+
+Now, we'll want to swizzle the bytes into their respective blocks. We'll use `std.mem.window` again, using `keysize` as our window size. The `n`th byte of each window will go into the `n`th block. We'll also keep track of how many bytes we've added to each block to make sure we index into each block correctly.
+
+```zig
+var windows = std.mem.window(u8, data.bytes, keysize, keysize);
+var i: usize = 0;
+while (windows.next()) |window| {
+    for (window, 0..) |b, n| {
+        blocks[n][i] = b;
+    }
+    i += 1;
+}
+```
+
+Finally, we'll create `Data` structs out of each of the blocks.
+
+```zig
+var dataBlocks = try allocator.alloc(Data, keysize);
+errdefer allocator.free(dataBlocks);
+for (0..keysize) |n| {
+    dataBlocks[n] = Data.init(allocator, blocks[n]);
+}
+
+return dataBlocks;
+```
+
+Here's the `partition` function in full.
+
+```zig
+// src/attack/xor.zig
+
+fn partition(data: Data, keysize: u32) ![]Data {
+    const allocator = data.allocator;
+    const lengthPerBlock = data.len() / keysize;
+    const remainder = data.len() % keysize;
+
+    var blocks = try allocator.alloc([]u8, keysize);
+    defer allocator.free(blocks);
+
+    for (0..keysize) |n| {
+        const blockLength = lengthPerBlock + (if (n < remainder) @as(usize, 1) else @as(usize, 0));
+        blocks[n] = try allocator.alloc(u8, blockLength);
+        errdefer allocator.free(blocks[n]);
+    }
+
+    var windows = std.mem.window(u8, data.bytes, keysize, keysize);
+    var i: usize = 0;
+    while (windows.next()) |window| {
+        for (window, 0..) |b, n| {
+            blocks[n][i] = b;
+        }
+        i += 1;
+    }
+
+    var dataBlocks = try allocator.alloc(Data, keysize);
+    errdefer allocator.free(dataBlocks);
+    for (0..keysize) |n| {
+        dataBlocks[n] = Data.init(allocator, blocks[n]);
+    }
+
+    return dataBlocks;
+}
+```
+
 ### Decrypting
 
 ### Unpartitioning
