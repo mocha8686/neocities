@@ -1,0 +1,39 @@
+---
+import type { Heading } from './Heading';
+import HeadingListItem from './HeadingListItem.astro';
+
+interface Props {
+	headings: Heading[];
+}
+
+const { headings } = Astro.props;
+---
+
+<ol>
+	{
+	headings.map(({ children, ...heading }) => (
+			<li>
+				{children ?
+					<details>
+						<summary>
+							<HeadingListItem {...heading} />
+						</summary>
+
+						<Astro.self headings={children} />
+					</details>
+					: <HeadingListItem {...heading} />}
+			</li>
+		))
+	}
+</ol>
+
+<style>
+	summary {
+		margin-inline-start: -0.9em;
+	}
+
+	details > :not(summary) {
+		margin-inline-start: 1em;
+		border-inline-start: 2px solid var(--cl-accent);
+	}
+</style>

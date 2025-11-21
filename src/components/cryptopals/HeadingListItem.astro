@@ -1,0 +1,29 @@
+---
+import type { Heading } from './Heading';
+
+type Props = Pick<Heading, 'href' | 'text'>;
+
+const { href, text } = Astro.props;
+const slug = href.slice(1);
+---
+
+<a {href} x-bind:class=`$heading === ${slug} && active`>{text}</a>
+
+<style>
+	a {
+		margin-block: 0.5em;
+		padding-inline-start: 0.5em;
+
+		color: var(--cl-foreground);
+		text-decoration: none;
+
+		transition: all 150ms ease;
+
+		&.active,
+		&:hover,
+		&:focus-visible {
+			color: var(--cl-accent);
+			text-decoration: underline;
+		}
+	}
+</style>

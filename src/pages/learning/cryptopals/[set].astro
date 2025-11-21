@@ -3,6 +3,8 @@ import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import { getCollection } from 'astro:content';
+import type { Heading } from '$src/components/cryptopals/Heading';
+import HeadingList from '$src/components/cryptopals/HeadingList.astro';
 
 export const getStaticPaths = (async () => {
 	const sets = await getCollection('cryptopals');
@@ -15,9 +17,37 @@ export const getStaticPaths = (async () => {
 const { set } = Astro.props;
 const { Content, headings } = await render(set);
 
-const challengeHeadings = headings
-	.filter(heading => heading.depth === 2)
-	.map(({ text, slug }) => ({ href: `#${slug}`, text }));
+const challengeHeadings = headings.reduce<Heading[]>(
+	(acc: Heading[], heading) => {
+		function getArrayAtDepth(arr: Heading[], depth: number): Heading[] {
+			const heading = arr.at(-1);
+
+			if (!heading || heading.depth === depth) return arr;
+
+			if (!heading.children) {
+				if (heading.depth !== depth - 1) {
+					throw new Error(
+						`Invalid heading nesting (found h${depth} under h${heading.depth})`,
+					);
+				}
+
+				heading.children = [];
+				return heading.children;
+			} else {
+				return getArrayAtDepth(heading.children, depth);
+			}
+		}
+
+		const arr = getArrayAtDepth(acc, heading.depth);
+		arr.push({
+			href: `#${heading.slug}`,
+			text: heading.text,
+			depth: heading.depth,
+		});
+		return acc;
+	},
+	[],
+);
 ---
 
 <CryptopalsLayout>
@@ -29,15 +59,7 @@ const challengeHeadings = headings
 	<main>
 		<nav>
 			<h2>Challenges</h2>
-			<ol>
-				{
-					challengeHeadings.map(({ href, text }) => (
-						<li>
-							<a {href}>{text}</a>
-						</li>
-					))
-				}
-			</ol>
+			<HeadingList headings={challengeHeadings} />
 		</nav>
 
 		<Content />
@@ -76,8 +98,11 @@ const challengeHeadings = headings
 			counter-reset: challenge;
 		}
 
-		> h2 {
+		h2, h3, h4, h5, h6 {
 			scroll-margin-block-start: 1em;
+		}
+
+		> h2 {
 			display: flex;
 			grid-column: full-width;
 			border-block-end: 2px solid var(--cl-accent);
@@ -163,22 +188,6 @@ const challengeHeadings = headings
 			h2 {
 				padding-inline-end: 4em;
 				border-block-end: 2px solid var(--cl-accent);
-			}
-
-			a {
-				margin-block: 0.5em;
-				padding-inline-start: 0.5em;
-
-				color: var(--cl-foreground);
-				text-decoration: none;
-
-				transition: all 150ms ease;
-
-				&:hover,
-				&:focus-visible {
-					color: var(--cl-accent);
-					text-decoration: underline;
-				}
 			}
 		}
 
