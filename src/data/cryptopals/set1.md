@@ -1093,3 +1093,100 @@ test "set 1 challenge 7" {
     try std.testing.expectEqualStrings(@embedFile("../data/funky.txt"), data.bytes);
 }
 ```
+
+## Detect AES in ECB mode
+
+> [In this file](https://cryptopals.com/static/challenge-data/8.txt) are a bunch of hex-encoded ciphertexts.
+> 
+> One of them has been encrypted with ECB.
+> 
+> Detect it.
+> 
+> Remember that the problem with ECB is that it is stateless and deterministic; the same 16 byte plaintext block will always produce the same 16 byte ciphertext.
+
+This is another pure challenge, except this time, we don't even need any of our library.
+
+The challenge is hinting for us to take a look at 16-byte blocks again. Basically, given a long enough plaintext, there will eventually be two blocks that have the same plaintext. Even though we may not be able to directly break AES yet on a single block, we can look at the relationship between blocks and extract information from there.
+
+```
+blocksize = 4
+           1234---4---4---4---4---4
+plaintext: abcabcabcabcabcabcabcabc
+           └┬─┘└┬─┘└┬─┘└┬─┘└┬─┘└┬─┘
+            │   │   │   │   │   └──────────────┐
+            │   │   │   │   └───────────┐      │
+            │   │   │   └────────┐      │      │
+            │   │   └─────┐      │      │      │
+            │   └──┐      │      │      │      │
+            ▼      ▼      ▼      ▼      ▼      ▼
+           ┌──────┬──────┬──────┬──────┬──────┬──────┐
+plaintext  │ abca │ bcab │ cabc │ abca │ bcab │ cabc │
+           ├──────┼──────┼──────┼──────┼──────┼──────┤
+ciphertext │ tjkh │ zbvx │ dfgk │ tjkh │ zbvx │ dfgk │ 
+           └───┬──┴───┬──┴───┬──┴──┬───┴──┬───┴──┬───┘ 
+               └──────┼──────┼─────┘      │      │
+                      └──────┼────────────┘      │
+                             └───────────────────┘
+```
+
+So, we're going to find the line in the input file with the maximum number of repeated blocks.
+
+For each file, we'll create 16-byte windows and store them into an `ArrayList` as we go over them. If any of the new chunks we see is equal to any chunk inside the `ArrayList`, we'll know we've hit a duplicate block, and we can record that.
+
+We can look for the line with the largest score, and we'll know that's the one that was encryped with AES-128-ECB.
+
+Here's the code.
+
+```zig
+// src/cipher/AesEcb.zig
+
+test "set 1 challenge 8" {
+    const allocator = std.testing.allocator;
+    const Chunks = std.ArrayList([]const u8);
+
+    const text = @embedFile("../data/8.txt");
+
+    var lines = std.mem.splitScalar(u8, text, '\n');
+    var bestGuess: ?[]const u8 = null;
+    var bestScore: u32 = std.math.minInt(u32);
+
+    while (lines.next()) |str| {
+        var windows = std.mem.window(u8, str, 16, 16);
+        var chunks = try Chunks.initCapacity(allocator, (str.len / 16) + 1);
+        defer chunks.deinit(allocator);
+        var score: u32 = 0;
+
+        while (windows.next()) |current| {
+            for (chunks.items) |target| {
+                if (std.mem.eql(u8, current, target)) {
+                    score += 1;
+                }
+            }
+            try chunks.append(allocator, current);
+        }
+
+        if (score > bestScore) {
+            bestGuess = str;
+            bestScore = score;
+        }
+    }
+
+    try std.testing.expectEqualStrings(
+        "<ANSWER>",
+        bestGuess.?,
+    );
+}
+```
+
+<details>
+<summary>Answer</summary>
+
+- `<ANSWER>` – `d880619740a8a19b7840a8a31c810a3d08649af70dc06f4fd5d2d69c744cd283e2dd052f6b641dbf9d11b0348542bb5708649af70dc06f4fd5d2d69c744cd2839475c9dfdbc1d46597949d9c7e82bf5a08649af70dc06f4fd5d2d69c744cd28397a93eab8d6aecd566489154789a6b0308649af70dc06f4fd5d2d69c744cd283d403180c98c8f6db1f2a3f9c4040deb0ab51b29933f2c123c58386b06fba186a`
+- This string is on line 133 of [`8.txt`](https://cryptopals.com/static/challenge-data/8.txt).
+</details>
+
+## Summary
+
+Overall, this set wasn't too bad. [Challenge 6 – Break repeating-key XOR](#break-repeating-key-xor) did take quite a bit of time, but since I've already gone through these first few challenges about 3 times or so, it felt a lot easier this time around.
+
+Onto the next set!
