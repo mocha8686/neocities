@@ -15,7 +15,7 @@ function getAllHeadingSlugs(headings: Heading[]): string[] {
 		const res = [slug(heading)];
 		if (heading.children) {
 			const childSlugs = getAllHeadingSlugs(heading.children);
-			res.concat(childSlugs);
+			res.push(...childSlugs);
 		}
 		return res;
 	});
@@ -34,12 +34,12 @@ function formatSlugs(children: Heading[]): string {
 				{children ?
 				<details x-bind:open=`$store.heading.active === '${slug(heading)}' || ${formatSlugs(children)}.includes($store.heading.active)`>
 					<summary>
-							<HeadingListItem {...heading} />
-						</summary>
+						<HeadingListItem {...heading} />
+					</summary>
 
-						<Astro.self headings={children} />
-					</details>
-					: <HeadingListItem {...heading} />}
+					<Astro.self headings={children} />
+				</details>
+				: <HeadingListItem {...heading} />}
 			</li>
 		))
 	}
