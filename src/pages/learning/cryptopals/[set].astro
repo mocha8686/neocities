@@ -168,8 +168,8 @@ const challengeHeadings = headings.reduce<Heading[]>(
 		> h2 {
 			display: flex;
 			grid-column: full-width;
-			border-block-end: 2px solid var(--cl-accent);
 			margin-block-start: 2.5em;
+			border-block-end: 2px solid var(--cl-accent-container);
 
 			&::before {
 				content: counter(challenge);
@@ -182,9 +182,9 @@ const challengeHeadings = headings.reduce<Heading[]>(
 				margin-inline-end: 0.5em;
 				padding: 0 1ch;
 
-				color: var(--cl-on-accent);
+				color: var(--cl-on-accent-container);
 
-				background: var(--cl-accent);
+				background: var(--cl-accent-container);
 			}
 
 			+ blockquote {
