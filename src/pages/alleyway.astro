@@ -14,12 +14,24 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		x-data="{ body: $store.text.body, speaker: $store.text.speaker, show: $store.text.show, lines: $store.text.lines }"
 		x-show="show"
 	>
-		<h1 x-text="speaker"></h1>
+		<h1 x-bind:data-text="speaker" x-text="speaker"></h1>
 		<div class="body">
 			<template x-for="line in lines">
-				<p x-text="line"></p>
+				<p x-bind:data-text="line" x-text="line"></p>
 			</template>
 		</div>
+		<svg>
+			<filter id="shadow">
+				<feMorphology in="SourceGraphic" operator="dilate" radius="2.5" result="shape"></feMorphology>
+				<feFlood flood-color="#444566" flood-opacity="0.75" result="color"></feFlood>
+				<feComposite in="color" in2="shape" operator="in" result="outline"></feComposite>
+
+				<feMerge>
+					<feMergeNode in="outline" />
+					<feMergeNode in="SourceGraphic" />
+				</feMerge>
+			</filter>
+		</svg>
 	</div>
 
 	<script>
@@ -98,23 +110,12 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		}
 
 		h1 {
-			--alpha: 0.5;
-			--offset: 2px;
-
-			--shadow: oklch(from var(--cl-dark) l c h / var(--alpha));
-			--offset-minus: calc(var(--offset) * -1);
-
 			position: relative;
 
 			margin: 0;
 
 			font-size: var(--fs-main);
 			font-weight: var(--fw-heading);
-			text-shadow:
-				var(--offset) var(--offset) var(--shadow),
-				var(--offset) var(--offset-minus) var(--shadow),
-				var(--offset-minus) var(--offset) var(--shadow),
-				var(--offset-minus) var(--offset-minus) var(--shadow);
 			letter-spacing: 1px;
 
 			&::after {
@@ -150,5 +151,19 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 				margin-block-start: -0.2em;
 			}
 		}
+
+		h1, p {
+			&::before {
+				content: attr(data-text);
+				filter: url(#shadow);
+				position: absolute;
+				z-index: -300;
+			}
+		}
+	}
+
+	svg {
+		position: fixed;
+		pointer-events: none;
 	}
 </style>
