@@ -4,6 +4,7 @@ pnpm-lock.yaml
 src/assets/
 src/data/
 *.md
+*.yaml
 
 # build output
 dist/

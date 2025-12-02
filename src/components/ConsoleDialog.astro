@@ -9,13 +9,13 @@ const entry = parseNode(data);
 
 <script>
 	import {
-	clearStore,
-	displayEntry,
-	type Entry,
-	getStoredChoices,
-	getStoredIndex,
-	resume,
-} from '$src/lib/script';
+		clearStore,
+		displayEntry,
+		type Entry,
+		getStoredChoices,
+		getStoredIndex,
+		resume,
+	} from '$src/lib/script';
 
 	const el = document.getElementById('console-script')!;
 	let entry: Entry = JSON.parse(el.dataset.entry!);

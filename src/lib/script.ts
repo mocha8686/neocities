@@ -14,8 +14,8 @@ export type Text = string[];
 export type Choices = Record<string, Entry>;
 
 export interface Entry {
-	text: Text;
 	choices?: Choices;
+	text: Text;
 }
 
 export type NodeEntry = string | { [key: string]: Node };
