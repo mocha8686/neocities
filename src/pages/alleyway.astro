@@ -1,0 +1,37 @@
+---
+import { Font } from 'astro:assets';
+
+import BaseLayout from '$src/layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+	<Fragment slot="head">
+		<Font cssVariable="--font-rodin" preload />
+	</Fragment>
+
+	<h1>hello, world!</h1>
+	<p>something</p>
+</BaseLayout>
+
+<style is:global>
+	:root {
+		--ff-main: var(--font-rodin);
+
+		--fw-body: 600;
+		--fw-heading: 800;
+	}
+
+	body {
+		font-family: var(--ff-main);
+		font-weight: var(--fw-body);
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-weight: var(--fw-heading);
+	}
+</style>
