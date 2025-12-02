@@ -92,7 +92,6 @@ export function displayEntry(entry: Entry, i = 0) {
 		}
 	} else {
 		console.log(line);
-
 		const timeout =
 			line === '...' ? ELLIPSIS_DELAY : line.length * TEXT_SPEED + TEXT_DELAY;
 		setTimeout(() => displayEntry(entry, i + 1), timeout);
@@ -108,12 +107,14 @@ function formatLast(last: string, choices: Choices) {
 
 function unmountChoices(choices: Choices) {
 	for (const choice of Object.keys(choices)) {
+		// @ts-expect-error 7015
 		delete window[choice];
 	}
 }
 
 function mountChoices(choices: Choices) {
 	for (const [choice, entry] of Object.entries(choices)) {
+		// @ts-expect-error 7015
 		window[choice] = () => {
 			unmountChoices(choices);
 			setTimeout(() => {
