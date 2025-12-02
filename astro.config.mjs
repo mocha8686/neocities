@@ -1,5 +1,6 @@
 // @ts-check
 import alpinejs from '@astrojs/alpinejs';
+import yaml from '@rollup/plugin-yaml';
 import { defineConfig, fontProviders } from 'astro/config';
 import remarkRuby from 'remark-ruby';
 
@@ -12,6 +13,9 @@ export default defineConfig({
 		shikiConfig: {
 			theme: 'houston',
 		},
+	},
+	vite: {
+		plugins: [yaml()],
 	},
 	experimental: {
 		fonts: [
