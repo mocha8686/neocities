@@ -62,9 +62,9 @@ export default defineConfig({
 						src: ['./src/assets/alleyway/RodinNTLG Pro DB.otf'],
 					},
 					{
-						weight: 800,
+						weight: 700,
 						style: 'normal',
-						src: ['./src/assets/alleyway/RodinNTLG Pro EB.otf'],
+						src: ['./src/assets/alleyway/RodinNTLG Pro B.otf'],
 					},
 				],
 				fallbacks: ['Helvetica', 'Calibri', 'sans-serif'],
