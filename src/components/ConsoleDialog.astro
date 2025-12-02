@@ -8,9 +8,28 @@ const entry = parseNode(data);
 <div id="console-script" data-entry={JSON.stringify(entry)}></div>
 
 <script>
-	import { displayEntry, type Entry } from '$src/lib/script';
+	import {
+	clearStore,
+	displayEntry,
+	type Entry,
+	getStoredChoices,
+	getStoredIndex,
+	resume,
+} from '$src/lib/script';
 
 	const el = document.getElementById('console-script')!;
-	const entry: Entry = JSON.parse(el.dataset.entry!);
+	let entry: Entry = JSON.parse(el.dataset.entry!);
+
+	const choices = getStoredChoices();
+	if (choices.length > 0) {
+		const index = getStoredIndex();
+		const newEntry = resume(entry, choices, index);
+		if (newEntry) {
+			entry = newEntry;
+		} else {
+			clearStore();
+		}
+	}
+
 	displayEntry(entry);
 </script>
