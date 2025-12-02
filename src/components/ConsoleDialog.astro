@@ -1,5 +1,6 @@
 ---
 import { parseNode } from '$src/lib/script';
+// @ts-expect-error 2307
 import data from '$src/lib/script.yaml';
 
 const entry = parseNode(data);
@@ -17,19 +18,26 @@ const entry = parseNode(data);
 		resume,
 	} from '$src/lib/script';
 
-	const el = document.getElementById('console-script')!;
-	let entry: Entry = JSON.parse(el.dataset.entry!);
+	function main() {
+		const el = document.getElementById('console-script')!;
+		let entry: Entry = JSON.parse(el.dataset.entry!);
 
-	const choices = getStoredChoices();
-	if (choices.length > 0) {
-		const index = getStoredIndex();
-		const newEntry = resume(entry, choices, index);
-		if (newEntry) {
-			entry = newEntry;
-		} else {
-			clearStore();
+		const choices = getStoredChoices();
+		if (choices.length > 0) {
+			const index = getStoredIndex();
+			const newEntry = resume(entry, choices, index);
+
+			if (newEntry) {
+				entry = newEntry;
+			} else if (newEntry === undefined) {
+				clearStore();
+			} else {
+				return;
+			}
 		}
+
+		displayEntry(entry);
 	}
 
-	displayEntry(entry);
+	main();
 </script>

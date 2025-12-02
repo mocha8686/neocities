@@ -44,7 +44,7 @@ export function resume(
 	root: Entry,
 	choices: string[],
 	i: number,
-): Entry | null {
+): Entry | null | undefined {
 	if (i < 0) return null;
 
 	const entry = choices.reduce<Entry | undefined>(
@@ -52,18 +52,19 @@ export function resume(
 		root,
 	);
 	if (!entry) {
-		return null;
+		return undefined;
 	}
 
 	if (i >= entry.text.length) {
-		return null;
+		return undefined;
 	}
 
 	const text = entry.text.slice(i);
-	if (text.length > 1 || entry.choices) {
-		text.unshift(RESUME_TEXT);
+	if (text.length === 1 && !entry.choices) {
+		return null;
 	}
 
+	text.unshift(RESUME_TEXT);
 	return {
 		text,
 		choices: entry.choices,
