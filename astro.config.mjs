@@ -49,6 +49,26 @@ export default defineConfig({
 				weights: [300, 600],
 				fallbacks: ['Ubuntu', 'sans-serif'],
 			},
+
+			// alleyway
+			{
+				provider: 'local',
+				name: 'RodinNTLG',
+				cssVariable: '--font-rodin',
+				variants: [
+					{
+						weight: 600,
+						style: 'normal',
+						src: ['./src/assets/alleyway/RodinNTLG Pro DB.otf'],
+					},
+					{
+						weight: 800,
+						style: 'normal',
+						src: ['./src/assets/alleyway/RodinNTLG Pro EB.otf'],
+					},
+				],
+				fallbacks: ['Helvetica', 'Calibri', 'sans-serif'],
+			},
 		],
 	},
 });
