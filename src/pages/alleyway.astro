@@ -9,29 +9,146 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		<Font cssVariable="--font-rodin" preload />
 	</Fragment>
 
-	<h1>hello, world!</h1>
-	<p>something</p>
+	<div
+		class="text"
+		x-data="{ body: $store.text.body, speaker: $store.text.speaker, show: $store.text.show, lines: $store.text.lines }"
+		x-show="show"
+	>
+		<h1 x-text="speaker"></h1>
+		<div class="body">
+			<template x-for="line in lines">
+				<p x-text="line"></p>
+			</template>
+		</div>
+	</div>
+
+	<script>
+		import Alpine from 'alpinejs';
+
+		// @ts-expect-error ignore yaml import
+		import script from '$src/lib/alleyway.yaml';
+
+		Alpine.store('text', {
+			show: true,
+			// speaker: 'Mizuki',
+			// body: '...',
+			speaker: 'Mafuyu',
+			body: 'Thank you for your patience.\nHow does your foot feel?',
+
+			get lines() {
+				// @ts-expect-error tsc doesn't know what this is
+				return this.body.split('\n');
+			},
+		});
+	</script>
 </BaseLayout>
 
 <style is:global>
 	:root {
+		--cl-light: #fff;
+		--cl-dark: #444566;
+
 		--ff-main: var(--font-rodin);
+		--fs-main: 1.5rem;
 
 		--fw-body: 600;
 		--fw-heading: 800;
 	}
 
 	body {
+		display: grid;
+		grid-template:
+			'clear' 1fr
+			'text' calc(6em + 4rem) / auto;
+
+		height: 100vh;
+
 		font-family: var(--ff-main);
-		font-weight: var(--fw-body);
+		font-size: var(--fs-main);
+		color: var(--cl-light);
+
+		background: center/cover url('/src/assets/alleyway/alleyway.png') no-repeat;
 	}
 
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		font-weight: var(--fw-heading);
+	.text {
+		--text-margin: 1fr;
+		--text-area-size: 6fr;
+
+		--alpha: 0.25;
+		--stop: 50%;
+
+		display: grid;
+		grid-area: text;
+		grid-template-columns:
+			var(--text-margin)
+			[content-start] var(--text-area-size) [content-end] var(--text-margin);
+		grid-template-rows: auto 1fr;
+		row-gap: 0.25rem;
+
+		padding-block-start: 1.5rem;
+
+		background: linear-gradient(
+			to top,
+			rgb(0 0 0 / var(--alpha)) var(--stop),
+			transparent
+		);
+
+		> * {
+			grid-column: content;
+		}
+
+		h1 {
+			--alpha: 0.5;
+			--offset: 2px;
+
+			--shadow: oklch(from var(--cl-dark) l c h / var(--alpha));
+			--offset-minus: calc(var(--offset) * -1);
+
+			position: relative;
+
+			margin: 0;
+
+			font-size: var(--fs-main);
+			font-weight: var(--fw-heading);
+			text-shadow:
+				var(--offset) var(--offset) var(--shadow),
+				var(--offset) var(--offset-minus) var(--shadow),
+				var(--offset-minus) var(--offset) var(--shadow),
+				var(--offset-minus) var(--offset-minus) var(--shadow);
+			letter-spacing: 1px;
+
+			&::after {
+				--alpha: 0.5;
+				--stop: 60%;
+
+				content: '';
+
+				position: absolute;
+				z-index: -500;
+				inset-block-end: 0.25ex;
+				inset-inline: -0.5em 0;
+
+				height: 0.65ex;
+				border-radius: 1rem;
+
+				opacity: var(--alpha);
+				background: linear-gradient(
+					to right,
+					var(--cl-light),
+					transparent var(--stop)
+				);
+			}
+		}
+
+		p {
+			margin: 0;
+			margin-inline-start: 0.5em;
+			font-size: var(--fs-main);
+			font-weight: var(--fw-body);
+
+			+ p {
+				margin-block-start: -0.2em;
+			}
+		}
 	}
 </style>
