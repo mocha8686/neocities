@@ -23,13 +23,19 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		</div>
 		<svg>
 			<filter id="shadow">
-				<feMorphology in="SourceGraphic" operator="dilate" radius="2.5" result="shape"></feMorphology>
-				<feFlood flood-color="#444566" flood-opacity="0.75" result="color"></feFlood>
-				<feComposite in="color" in2="shape" operator="in" result="outline"></feComposite>
+				<feMorphology
+					in="SourceGraphic"
+					operator="dilate"
+					radius="2.5"
+					result="shape"></feMorphology>
+				<feFlood flood-color="#444566" flood-opacity="0.75" result="color"
+				></feFlood>
+				<feComposite in="color" in2="shape" operator="in" result="outline"
+				></feComposite>
 
 				<feMerge>
-					<feMergeNode in="outline" />
-					<feMergeNode in="SourceGraphic" />
+					<feMergeNode in="outline"></feMergeNode>
+					<feMergeNode in="SourceGraphic"></feMergeNode>
 				</feMerge>
 			</filter>
 		</svg>
@@ -80,7 +86,9 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		font-size: var(--fs-main);
 		color: var(--cl-light);
 
-		background: center/cover url('/src/assets/alleyway/alleyway.png') no-repeat, var(--cl-dark);
+		background:
+			center/cover url('/src/assets/alleyway/alleyway.png') no-repeat,
+			var(--cl-dark);
 	}
 
 	.text {
@@ -153,18 +161,19 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 			}
 		}
 
-		h1, p {
+		h1,
+		p {
 			&::before {
 				content: attr(data-text);
-				filter: url(#shadow);
 				position: absolute;
 				z-index: -300;
+				filter: url(#shadow);
 			}
 		}
 	}
 
 	svg {
-		position: fixed;
 		pointer-events: none;
+		position: fixed;
 	}
 </style>
