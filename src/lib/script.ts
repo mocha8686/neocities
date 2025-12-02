@@ -1,14 +1,17 @@
+import type { Alpine } from 'alpinejs';
+
 const TEXT_SPEED = 100;
 const TEXT_DELAY = 2000;
 const CHOICE_DELAY = 750;
 const ELLIPSIS_DELAY = 5000;
 
-const RESUME_TEXT = 'as i was saying...';
+const RESUME_TEXT = 'you\'re back...';
 const BULLET = '♡';
 const DIVIDER = '. ₊ ⊹ .  ⟡  . ⊹ ₊ .';
 
-const CHOICES_KEY = 'our_journey';
-const INDEX_KEY = 'our_steps';
+export const CHOICES_KEY = 'our_journey';
+export const INDEX_KEY = 'our_steps';
+export const STATE_KEY = 'our_place';
 
 export type Text = string[];
 export type Choices = Record<string, Entry>;
@@ -44,7 +47,7 @@ export function resume(
 	root: Entry,
 	choices: string[],
 	i: number,
-): Entry | null | undefined {
+): [number, Entry] | null | undefined {
 	if (i < 0) return null;
 
 	const entry = choices.reduce<Entry | undefined>(
@@ -59,19 +62,15 @@ export function resume(
 		return undefined;
 	}
 
-	const text = entry.text.slice(i);
-	if (text.length === 1 && !entry.choices) {
+	if (i + 1 === entry.text.length && !entry.choices) {
 		return null;
 	}
 
-	text.unshift(RESUME_TEXT);
-	return {
-		text,
-		choices: entry.choices,
-	};
+	console.log(RESUME_TEXT);
+	return [i, entry];
 }
 
-export function displayEntry(entry: Entry, i = 0) {
+export function displayEntry(Alpine: Alpine, entry: Entry, i = 0) {
 	if (i < 0 || i >= entry.text.length) {
 		throw new Error(
 			`index ${i} out of range for text of length ${entry.text.length}`,
@@ -83,11 +82,16 @@ export function displayEntry(entry: Entry, i = 0) {
 	const line = entry.text[i];
 	const isLast = i + 1 === entry.text.length;
 
+	if (line === 'what am i supposed to do...?') {
+		// @ts-expect-error ignore implicit any
+		Alpine.store('state').value = 'cascading feelings';
+	}
+
 	if (isLast) {
 		if (entry.choices) {
 			const text = formatLast(line, entry.choices);
 			console.log(text);
-			mountChoices(entry.choices);
+			mountChoices(Alpine, entry.choices);
 		} else {
 			console.log(line);
 		}
@@ -95,7 +99,7 @@ export function displayEntry(entry: Entry, i = 0) {
 		console.log(line);
 		const timeout =
 			line === '...' ? ELLIPSIS_DELAY : line.length * TEXT_SPEED + TEXT_DELAY;
-		setTimeout(() => displayEntry(entry, i + 1), timeout);
+		setTimeout(() => displayEntry(Alpine, entry, i + 1), timeout);
 	}
 }
 
@@ -108,19 +112,25 @@ function formatLast(last: string, choices: Choices) {
 
 function unmountChoices(choices: Choices) {
 	for (const choice of Object.keys(choices)) {
-		// @ts-expect-error 7015
+		// @ts-expect-error ignore implicit any
 		delete window[choice];
 	}
 }
 
-function mountChoices(choices: Choices) {
+function mountChoices(Alpine: Alpine, choices: Choices) {
 	for (const [choice, entry] of Object.entries(choices)) {
-		// @ts-expect-error 7015
+		// @ts-expect-error ignore implicit any
 		window[choice] = () => {
+			if (choice === 'you_have_to_decide_for_yourself') {
+				clearStore();
+				// @ts-expect-error ignore missing store key
+				Alpine.store('state').value = 'alleyway';
+				window.location.assign('/alleyway/');
+			}
 			unmountChoices(choices);
 			setTimeout(() => {
 				appendStoredChoices(choice);
-				displayEntry(entry);
+				displayEntry(Alpine, entry);
 			}, CHOICE_DELAY);
 			return DIVIDER;
 		};

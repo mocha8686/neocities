@@ -1,14 +1,16 @@
 ---
 import { parseNode } from '$src/lib/script';
-// @ts-expect-error 2307
+// @ts-expect-error ignore yaml import
 import data from '$src/lib/script.yaml';
 
 const entry = parseNode(data);
 ---
 
-<div id="console-script" data-entry={JSON.stringify(entry)}></div>
+<div hidden id="console-script" data-entry={JSON.stringify(entry)}></div>
 
 <script>
+	import Alpine from "alpinejs";
+
 	import {
 		clearStore,
 		displayEntry,
@@ -16,27 +18,39 @@ const entry = parseNode(data);
 		getStoredChoices,
 		getStoredIndex,
 		resume,
+		STATE_KEY,
 	} from '$src/lib/script';
 
 	function main() {
+		// @ts-expect-error ignore missing $persist plugin key
+		Alpine.store('state', { value: Alpine.$persist('').as(STATE_KEY) });
+
+		// @ts-expect-error ignore missing store key
+		if (Alpine.store('state').value === 'alleyway') {
+			window.location.assign('/alleyway/');
+		}
+
 		const el = document.getElementById('console-script')!;
 		let entry: Entry = JSON.parse(el.dataset.entry!);
+		let i: number | undefined = undefined;
 
 		const choices = getStoredChoices();
 		if (choices.length > 0) {
 			const index = getStoredIndex();
-			const newEntry = resume(entry, choices, index);
+			const res = resume(entry, choices, index);
 
-			if (newEntry) {
+			if (res) {
+				const [newIndex, newEntry] = res;
+				i = newIndex;
 				entry = newEntry;
-			} else if (newEntry === undefined) {
+			} else if (res === undefined) {
 				clearStore();
 			} else {
 				return;
 			}
 		}
 
-		displayEntry(entry);
+		displayEntry(Alpine, entry, i);
 	}
 
 	main();

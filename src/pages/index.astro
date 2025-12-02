@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 
+import cascadingFeelings from '$src/assets/cascading_feelings.jpeg';
 import pfp from '$src/assets/mizuki.jpg';
 import Albums from '$src/components/Albums.astro';
 import BlogPreview from '$src/components/BlogPreview.astro';
@@ -10,13 +11,14 @@ import SiteButton from '$src/components/SiteButton.astro';
 import Webrings from '$src/components/Webrings.astro';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
+import { STATE_KEY } from '$src/lib/script';
 ---
 
 <MainLayout back="disable">
 	<h1>Have You Seen This Girl?</h1>
 
 	<section class="about-bio">
-		<div class="bio">
+		<div class="bio" x-data={`{ state: $persist('').as('${STATE_KEY}') }`}>
 			<Window class="quote">
 				<h2>Mizuki?</h2>
 				<blockquote lang="ja">ごめん…</blockquote>
@@ -29,6 +31,18 @@ import MainLayout from '$src/layouts/MainLayout.astro';
 				class="pfp"
 				width={200}
 				height={200}
+				x-show="$store.state.value !== 'cascading feelings'"
+			/>
+
+			<Image
+				src={cascadingFeelings}
+				alt="Akiyama Mizuki"
+				layout="constrained"
+				class="pfp"
+				width={200}
+				height={200}
+				style="display: none;"
+				x-show="$store.state.value === 'cascading feelings'"
 			/>
 		</div>
 
