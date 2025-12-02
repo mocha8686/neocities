@@ -6,7 +6,7 @@ import remarkRuby from 'remark-ruby';
 
 // https://astro.build/config
 export default defineConfig({
-	integrations: [alpinejs()],
+	integrations: [alpinejs({ entrypoint: '/src/lib/entrypoint' })],
 	trailingSlash: 'always',
 	markdown: {
 		remarkPlugins: [remarkRuby],

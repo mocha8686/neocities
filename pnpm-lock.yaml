@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@alpinejs/persist':
+        specifier: ^3.15.2
+        version: 3.15.2
       '@astrojs/alpinejs':
         specifier: ^0.4.9
         version: 0.4.9(@types/alpinejs@3.13.11)(alpinejs@3.15.0)
@@ -74,6 +77,9 @@ importers:
         version: 8.46.2(eslint@9.39.0)(typescript@5.9.2)
 
 packages:
+
+  '@alpinejs/persist@3.15.2':
+    resolution: {integrity: sha512-g+2Nj42EWmSlJIWi6KANAzHjsxWIGQ/ye7kSvpEWMyRZQJLX/B6WUEofHXCYkvkWamA00o4JwnybVOrNJpDaeQ==}
 
   '@astrojs/alpinejs@0.4.9':
     resolution: {integrity: sha512-fvKBAugn7yIngEKfdk6vL3ZlcVKtQvFXCZznG28OikGanKN5W+PkRPIdKaW/0gThRU2FyCemgzyHgyFjsH8dTA==}
@@ -2420,6 +2426,8 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
 snapshots:
+
+  '@alpinejs/persist@3.15.2': {}
 
   '@astrojs/alpinejs@0.4.9(@types/alpinejs@3.13.11)(alpinejs@3.15.0)':
     dependencies:
