@@ -11,12 +11,13 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 
 	<div
 		class="text"
-		x-data="{ body: $store.text.body, speaker: $store.text.speaker, show: $store.text.show, lines: $store.text.lines }"
-		x-show="show"
+		x-data
+		x-show="$store.text.show"
+		x-transition.opacity.duration.500ms
 	>
-		<h1 x-bind:data-text="speaker" x-text="speaker"></h1>
+		<h1 x-bind:data-text="$store.text.speaker" x-text="$store.text.speaker"></h1>
 		<div class="body">
-			<template x-for="line in lines">
+			<template x-for="line in $store.text.lines">
 				<p x-bind:data-text="line" x-text="line"></p>
 			</template>
 		</div>
