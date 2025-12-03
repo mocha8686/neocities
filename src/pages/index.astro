@@ -43,10 +43,10 @@ const PFP_SIZE = 256;
 				class="pfp"
 				width={PFP_SIZE}
 				height={PFP_SIZE}
-				x-show="$store.state.value !== 'cascading feelings' && $store.state.value !== 'with our wounded hands'"
+				x-show="$store.state.value !== 'cascading feelings' && $store.state.value !== 'alleyway' && $store.state.value !== 'with our wounded hands'"
 			/>
 
-			<template x-if="$store.state.value === 'cascading feelings'">
+			<template x-if="$store.state.value === 'cascading feelings' || $store.state.value === 'alleyway'">
 				<Image
 					src={cascadingFeelings}
 					alt="Akiyama Mizuki"
