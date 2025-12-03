@@ -3,6 +3,7 @@
 - ...
 - bg: white
 - bg: mizuki
+  delay: 250
 - "*Stammer*"
 - I...!
 - "I'm gonna cause you a lot of trouble...!\nI might end up having really bad days...!"
@@ -11,7 +12,12 @@
 - speaker: Ena
 - Then...
 - bg: black
+- bg: white
+  duration: 500
+  delay: 500
 - bg: enaCloseup
+  duration: 500
+  delay: 10
 - Let's stay together, Mizuki.
 - bg: ena
 - N25's been waiting for you to come back.
