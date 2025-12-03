@@ -77,15 +77,36 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 			speaker: '',
 			body: '',
 			i: 0,
+			interval: null,
+			currentText: null,
 
 			advance() {
+				if (this.interval) {
+					clearInterval(this.interval);
+					this.interval = null;
+					this.body = this.currentText;
+					return;
+				}
+
 				const node: Node | undefined = script[this.i++];
 				console.log(node);
 				if (!node) return;
 
 				if (typeof node === 'string') {
 					this.show = true;
-					this.body = node;
+					this.currentText = node;
+
+					const textSpeed = 100;
+
+					let i = 1;
+					this.body = node.slice(0, i++);
+					this.interval = setInterval(() => {
+						this.body = node.slice(0, i);
+						if (i++ === node.length) {
+							clearInterval(this.interval);
+							this.interval = null;
+						}
+					}, textSpeed);
 				} else {
 					if (node.speaker) {
 						this.speaker = node.speaker;
