@@ -14,7 +14,7 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		x-data
 		x-show="$store.text.show"
 		x-transition.opacity.duration.500ms
-		x-on:click="$store.text.advance()"
+		x-on:click="$store.text.advance(true)"
 		style="display: none;"
 	>
 		<h1 x-bind:data-text="$store.text.speaker" x-text="$store.text.speaker">
@@ -80,7 +80,11 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 			interval: null,
 			currentText: null,
 
-			advance() {
+			advance(isClick = false) {
+				if (isClick && !this.show) {
+					return;
+				}
+
 				if (this.interval) {
 					clearInterval(this.interval);
 					this.interval = null;
