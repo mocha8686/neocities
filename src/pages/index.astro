@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 
 import cascadingFeelings from '$src/assets/cascading_feelings.jpeg';
+import cascadingFeelingsTrained from '$src/assets/cascading_feelings_trained.jpeg';
 import pfp from '$src/assets/mizuki.jpg';
 import Albums from '$src/components/Albums.astro';
 import BlogPreview from '$src/components/BlogPreview.astro';
@@ -12,16 +13,27 @@ import Webrings from '$src/components/Webrings.astro';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
 import { STATE_KEY } from '$src/lib/script';
+
+const PFP_SIZE = 256;
 ---
 
 <MainLayout back="disable">
 	<h1>Have You Seen This Girl?</h1>
 
 	<section class="about-bio">
-		<div class="bio" x-data={`{ state: $persist('').as('${STATE_KEY}') }`}>
+		<div class="bio" x-data>
 			<Window class="quote">
 				<h2>Mizuki?</h2>
-				<blockquote lang="ja">ごめん…</blockquote>
+				<blockquote
+					lang="ja"
+					x-show="$store.state.value !== 'with our wounded hands'"
+				>
+					ごめん…
+				</blockquote>
+
+				<template x-if="$store.state.value === 'with our wounded hands'">
+					<blockquote lang="ja">一緒にいようよ、瑞稀</blockquote>
+				</template>
 			</Window>
 
 			<Image
@@ -29,21 +41,32 @@ import { STATE_KEY } from '$src/lib/script';
 				alt="Akiyama Mizuki"
 				layout="constrained"
 				class="pfp"
-				width={200}
-				height={200}
-				x-show="$store.state.value !== 'cascading feelings'"
+				width={PFP_SIZE}
+				height={PFP_SIZE}
+				x-show="$store.state.value !== 'cascading feelings' && $store.state.value !== 'with our wounded hands'"
 			/>
 
-			<Image
-				src={cascadingFeelings}
-				alt="Akiyama Mizuki"
-				layout="constrained"
-				class="pfp"
-				width={200}
-				height={200}
-				style="display: none;"
-				x-show="$store.state.value === 'cascading feelings'"
-			/>
+			<template x-if="$store.state.value === 'cascading feelings'">
+				<Image
+					src={cascadingFeelings}
+					alt="Akiyama Mizuki"
+					layout="constrained"
+					class="pfp"
+					width={PFP_SIZE}
+					height={PFP_SIZE}
+				/>
+			</template>
+
+			<template x-if="$store.state.value === 'with our wounded hands'">
+				<Image
+					src={cascadingFeelingsTrained}
+					alt="Akiyama Mizuki"
+					layout="constrained"
+					class="pfp"
+					width={PFP_SIZE}
+					height={PFP_SIZE}
+				/>
+			</template>
 		</div>
 
 		<Window class="about">
@@ -94,6 +117,10 @@ import { STATE_KEY } from '$src/lib/script';
 		justify-content: center;
 	}
 
+	.state {
+		display: contents;
+	}
+
 	.bio {
 		display: flex;
 		flex: none;
@@ -114,6 +141,8 @@ import { STATE_KEY } from '$src/lib/script';
 	}
 
 	.quote {
+		flex: auto;
+
 		blockquote {
 			margin: 0.5em 0;
 			font-style: italic;
