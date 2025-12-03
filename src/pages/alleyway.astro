@@ -94,7 +94,10 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 
 				const node: Node | undefined = script[this.i++];
 				console.log(node);
-				if (!node) return;
+				if (!node) {
+					end();
+					return;
+				}
 
 				if (typeof node === 'string') {
 					this.show = true;
@@ -164,6 +167,13 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 				return this.body.split('\n');
 			},
 		});
+
+		function end() {
+			Alpine.store('state').value = 'with our wounded hands';
+			setTimeout(() => {
+				window.location.replace('/');
+			}, 3500);
+		}
 
 		document.addEventListener('alpine:init', () =>
 			setTimeout(() => {
