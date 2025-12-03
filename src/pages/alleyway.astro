@@ -9,13 +9,16 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		<Font cssVariable="--font-rodin" preload />
 	</Fragment>
 
-	<div
+	<button
 		class="text"
 		x-data
 		x-show="$store.text.show"
 		x-transition.opacity.duration.500ms
+		x-on:click="$store.text.advance()"
+		style="display: none;"
 	>
-		<h1 x-bind:data-text="$store.text.speaker" x-text="$store.text.speaker"></h1>
+		<h1 x-bind:data-text="$store.text.speaker" x-text="$store.text.speaker">
+		</h1>
 		<div class="body">
 			<template x-for="line in $store.text.lines">
 				<p x-bind:data-text="line" x-text="line"></p>
@@ -39,26 +42,70 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 				</feMerge>
 			</filter>
 		</svg>
-	</div>
+	</button>
 
 	<script>
 		import Alpine from 'alpinejs';
 
+		import alleyway from '$src/assets/alleyway/alleyway.png';
+		import ena from '$src/assets/alleyway/ena.png';
+		import ena_closeup from '$src/assets/alleyway/ena_closeup.png';
+		import mizuki from '$src/assets/alleyway/mizuki.png';
 		// @ts-expect-error ignore yaml import
 		import script from '$src/lib/alleyway.yaml';
 
+		type Node = string | Partial<Settings>;
+		interface Settings {
+			bg: 'white' | 'black' | 'alleyway' | 'ena' | 'ena_closeup' | 'mizuki';
+			speaker: string;
+		}
+
+		const bgs = {
+			mizuki: mizuki.src,
+		};
+
 		Alpine.store('text', {
-			show: true,
-			// speaker: 'Mizuki',
-			// body: '...',
-			speaker: 'Mafuyu',
-			body: 'Thank you for your patience.\nHow does your foot feel?',
+			show: false,
+			speaker: '',
+			body: '',
+			i: 0,
+
+			advance() {
+				const node: Node | undefined = script[this.i++];
+				console.log(node);
+				if (!node) return;
+
+				if (typeof node === 'string') {
+					this.show = true;
+					this.body = node;
+				} else {
+					if (node.speaker) {
+						this.speaker = node.speaker;
+					}
+
+					if (node.bg) {
+						let bg = node.bg;
+						if (node.bg !== 'white' && node.bg !== 'black') {
+							bg = `url('/src/assets/alleyway/${node.bg}.png')`;
+						}
+						document.body.style.setProperty('--bg', bg);
+					}
+
+					this.advance();
+				}
+			},
 
 			get lines() {
 				// @ts-expect-error tsc doesn't know what this is
 				return this.body.split('\n');
 			},
 		});
+
+		document.addEventListener('alpine:init', () =>
+			setTimeout(() => {
+				Alpine.store('text').advance();
+			}, 2000),
+		);
 	</script>
 </BaseLayout>
 
@@ -66,6 +113,7 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 	:root {
 		--cl-light: #fff;
 		--cl-dark: #444566;
+		--cl-accent: oklch(60% 0.11 337);
 
 		--ff-main: var(--font-rodin);
 		--fs-main: 1.5rem;
@@ -75,6 +123,9 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 	}
 
 	body {
+		--bg: url('/src/assets/alleyway/alleyway.png');
+
+		accent-color: var(--cl-accent);
 		display: grid;
 		grid-template:
 			'clear' 1fr
@@ -87,7 +138,7 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		color: var(--cl-light);
 
 		background:
-			center/cover url('/src/assets/alleyway/alleyway.png') no-repeat,
+			center/cover var(--bg) no-repeat,
 			var(--cl-dark);
 	}
 
@@ -107,6 +158,11 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		row-gap: 0.25rem;
 
 		padding-block-start: 1.5rem;
+		border: none;
+
+		font: inherit;
+		color: inherit;
+		text-align: left;
 
 		background: linear-gradient(
 			to top,
