@@ -15,6 +15,20 @@ const quotes = defineCollection({
 	}),
 });
 
+const completedQuotes = defineCollection({
+	loader: file('src/data/completedQuotes.txt', {
+		parser: text =>
+			text
+				.trim()
+				.split('\n')
+				.map((quote, id) => ({ id, quote })),
+	}),
+	schema: z.object({
+		id: z.number(),
+		quote: z.string(),
+	}),
+});
+
 const quizResults = defineCollection({
 	loader: file('src/data/quizResults.json'),
 	schema: z.object({
@@ -55,6 +69,7 @@ const cryptopals = defineCollection({
 
 export const collections = {
 	blog,
+	completedQuotes,
 	cryptopals,
 	inspo,
 	quizResults,

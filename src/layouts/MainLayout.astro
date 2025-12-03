@@ -25,6 +25,8 @@ interface Props {
 const { back } = Astro.props;
 
 const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
+const completedQuotes = (await getCollection('completedQuotes')).map(entry => entry.data.quote);
+const secondsPerCharacter = 0.12875536480687;
 
 const optimizedBackground = await getImage({ src: background });
 const bullet = await getImage({ src: seal });
@@ -39,10 +41,16 @@ const bullet = await getImage({ src: seal });
 	</Fragment>
 
 	<div class="layout">
-		<main>
-			<Marquee class="header" gap="8em" duration="30s" as="header">
+		<main x-data>
+			<Marquee class="header" gap="8em" duration=`${secondsPerCharacter * quotes.join('').length}s` as="header" x-show="$store.state.value !== 'with our wounded hands'">
 				{quotes.map(quote => <li>{quote}</li>)}
 			</Marquee>
+			<template x-if="$store.state.value === 'with our wounded hands'">
+				<Marquee class="header" gap="8em" duration=`${secondsPerCharacter * completedQuotes.join('').length}s` as="header">
+					{completedQuotes.map(quote => <li>{quote}</li>)}
+				</Marquee>
+			</template>
+
 			<slot />
 			<ConsoleDialog />
 			{back !== 'disable' && <Back {...back} />}
