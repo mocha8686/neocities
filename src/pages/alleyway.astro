@@ -53,10 +53,18 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		import mizuki from '$src/assets/alleyway/mizuki.png';
 		// @ts-expect-error ignore yaml import
 		import script from '$src/lib/alleyway.yaml';
+		import { STATE_KEY } from '$src/lib/script';
+
+		Alpine.store('state', { value: Alpine.$persist('').as(STATE_KEY) });
+		if (Alpine.store('state').value !== 'alleyway') {
+			window.location.replace('/');
+		}
 
 		type Node = string | Partial<Settings>;
 		interface Settings {
 			bg: 'white' | 'black' | 'alleyway' | 'ena' | 'ena_closeup' | 'mizuki';
+			delay: number;
+			duration: number;
 			speaker: string;
 		}
 
@@ -84,14 +92,45 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 					}
 
 					if (node.bg) {
-						let bg = node.bg;
-						if (node.bg !== 'white' && node.bg !== 'black') {
+						this.show = false;
+
+						let bg;
+						if (node.bg === 'white' || node.bg === 'black') {
+							bg = `linear-gradient(${node.bg})`;
+						} else {
 							bg = `url('/src/assets/alleyway/${node.bg}.png')`;
 						}
-						document.body.style.setProperty('--bg', bg);
-					}
 
-					this.advance();
+						const delay = node.delay ?? 1000;
+						const duration = node.duration ?? 2000;
+
+						document.body.style.setProperty('--bg-crossfade', bg);
+						document.body.style.setProperty(
+							'--bg-crossfade-delay',
+							`${delay}ms`,
+						);
+						document.body.style.setProperty(
+							'--bg-crossfade-duration',
+							`${duration}ms`,
+						);
+						document.body.style.setProperty('--bg-crossfade-opacity', '1');
+
+						const postDelay = 1000;
+						const timeout = delay + duration + postDelay;
+
+						setTimeout(() => {
+							document.body.style.setProperty('--bg', bg);
+							document.body.style.setProperty('--bg-crossfade-delay', `0ms`);
+							document.body.style.setProperty('--bg-crossfade-duration', `0ms`);
+							document.body.style.setProperty('--bg-crossfade-opacity', '0');
+
+							setTimeout(() => {
+								this.advance();
+							}, 1);
+						}, timeout);
+					} else {
+						this.advance();
+					}
 				}
 			},
 
@@ -120,12 +159,19 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 
 		--fw-body: 600;
 		--fw-heading: 700;
+
+		--z-bg-crossfade: -1000;
+		--z-speaker-line: -500;
+		--z-text-outline: -200;
 	}
 
 	body {
-		--bg: url('/src/assets/alleyway/alleyway.png');
+		--bg: linear-gradient(black);
+		--bg-crossfade: '';
+		--bg-crossfade-delay: 1s;
+		--bg-crossfade-duration: 2s;
+		--bg-crossfade-opacity: 0;
 
-		accent-color: var(--cl-accent);
 		display: grid;
 		grid-template:
 			'clear' 1fr
@@ -137,9 +183,24 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		font-size: var(--fs-main);
 		color: var(--cl-light);
 
+		accent-color: var(--cl-accent);
 		background:
 			center/cover var(--bg) no-repeat,
 			var(--cl-dark);
+
+		&::before {
+			content: '';
+
+			position: fixed;
+			z-index: var(--z-bg-crossfade);
+			inset: 0;
+
+			opacity: var(--bg-crossfade-opacity);
+			background: center/cover var(--bg-crossfade) no-repeat;
+
+			transition: opacity var(--bg-crossfade-duration) linear
+				var(--bg-crossfade-delay);
+		}
 	}
 
 	.text {
@@ -190,7 +251,7 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 				content: '';
 
 				position: absolute;
-				z-index: -500;
+				z-index: var(--z-speaker-line);
 				inset-block-end: 0.25ex;
 				inset-inline: -0.5em 0;
 
@@ -222,7 +283,7 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 			&::before {
 				content: attr(data-text);
 				position: absolute;
-				z-index: -300;
+				z-index: var(--z-text-outline);
 				filter: url(#shadow);
 			}
 		}
