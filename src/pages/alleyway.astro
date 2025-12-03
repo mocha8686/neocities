@@ -1,10 +1,27 @@
 ---
 import { Font } from 'astro:assets';
+import { getImage } from 'astro:assets';
 
+import alleyway from '$src/assets/alleyway/alleyway.png';
+import ena from '$src/assets/alleyway/ena.png';
+import enaCloseup from '$src/assets/alleyway/ena_closeup.png';
+import mizuki from '$src/assets/alleyway/mizuki.png';
 import BaseLayout from '$src/layouts/BaseLayout.astro';
+
+const bgs = await Promise.all(
+	Object.entries({
+		alleyway,
+		ena,
+		enaCloseup,
+		mizuki,
+	}).map(async ([key, image]) => {
+		const optimized = await getImage({ src: image });
+		return [key, optimized.src];
+	}),
+).then(Object.fromEntries);
 ---
 
-<BaseLayout>
+<BaseLayout data-bgs={JSON.stringify(bgs)}>
 	<Fragment slot="head">
 		<Font cssVariable="--font-rodin" preload />
 	</Fragment>
@@ -68,12 +85,7 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 			speaker: string;
 		}
 
-		const bgs = {
-			alleyway: alleyway.src,
-			ena: ena.src,
-			ena_closeup: enaCloseup.src,
-			mizuki: mizuki.src,
-		};
+		const bgs = JSON.parse(document.body.dataset.bgs!);
 
 		Alpine.store('text', {
 			show: false,
@@ -156,7 +168,7 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 
 							setTimeout(() => {
 								this.advance();
-							}, 1);
+							}, 10);
 						}, timeout);
 					} else {
 						this.advance();
