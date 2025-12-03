@@ -30,6 +30,11 @@ const entry = parseNode(data);
 			window.location.assign('/alleyway/');
 		}
 
+		// @ts-expect-error ignore missing store key
+		if (Alpine.store('state').value === 'with our wounded hands') {
+			return;
+		}
+
 		const el = document.getElementById('console-script')!;
 		let entry: Entry = JSON.parse(el.dataset.entry!);
 		let i: number | undefined = undefined;
