@@ -49,7 +49,7 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 
 		import alleyway from '$src/assets/alleyway/alleyway.png';
 		import ena from '$src/assets/alleyway/ena.png';
-		import ena_closeup from '$src/assets/alleyway/ena_closeup.png';
+		import enaCloseup from '$src/assets/alleyway/ena_closeup.png';
 		import mizuki from '$src/assets/alleyway/mizuki.png';
 		// @ts-expect-error ignore yaml import
 		import script from '$src/lib/alleyway.yaml';
@@ -69,6 +69,9 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 		}
 
 		const bgs = {
+			alleyway: alleyway.src,
+			ena: ena.src,
+			ena_closeup: enaCloseup.src,
 			mizuki: mizuki.src,
 		};
 
@@ -126,7 +129,7 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 						if (node.bg === 'white' || node.bg === 'black') {
 							bg = `linear-gradient(${node.bg})`;
 						} else {
-							bg = `url('/src/assets/alleyway/${node.bg}.png')`;
+							bg = `url('${bgs[node.bg]}')`;
 						}
 
 						const delay = node.delay ?? 1000;
