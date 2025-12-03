@@ -4,6 +4,7 @@ import type { ImageMetadata } from 'astro';
 import { formatDate } from '$src/lib/blog';
 
 import Window from './Window.astro';
+import { getImage } from 'astro:assets';
 
 interface Props {
 	title: string;
@@ -16,11 +17,15 @@ interface Props {
 const { date, description, id, image: imageName, title } = Astro.props;
 const image: ImageMetadata = (await import(`../assets/blog/${imageName}.webp`))
 	.default;
+const optimized = await getImage({
+	src: image,
+	layout: 'constrained',
+});
 ---
 
 <Window class="post">
 	<h2>{title}</h2>
-	<div class="image-container" style={{ '--image': `url("${image.src}")` }}>
+	<div class="image-container" style={{ '--image': `url("${optimized.src}")` }}>
 	</div>
 	<time datetime={date.toISOString()}>{formatDate(date)}</time>
 	<p>{description}</p>

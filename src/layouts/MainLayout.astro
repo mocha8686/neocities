@@ -2,13 +2,16 @@
 import { Font, Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
+import background from '$src/assets/background.jpg';
 import here from '$src/assets/here.jpg';
 import Back from '$src/components/Back.astro';
 import ConsoleDialog from '$src/components/ConsoleDialog.astro';
 import Marquee from '$src/components/Marquee.astro';
+import seal from '$src/assets/icons/seal.webp';
 
 import BaseLayout from './BaseLayout.astro';
 import { STATE_KEY } from '$src/lib/script';
+import { getImage } from 'astro:assets';
 
 interface Props {
 	back?:
@@ -22,9 +25,14 @@ interface Props {
 const { back } = Astro.props;
 
 const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
+
+const optimizedBackground = await getImage({ src: background });
+const bullet = await getImage({ src: seal });
 ---
 
-<BaseLayout>
+<BaseLayout
+	style={`--background-image: url("${optimizedBackground.src}");`}
+>
 	<Fragment slot="head">
 		<Font cssVariable="--font-shippori-mincho" preload />
 		<Font cssVariable="--font-zen-old-mincho" preload />
@@ -49,7 +57,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 	</div>
 </BaseLayout>
 
-<style is:global>
+<style is:global define:vars={{ bullet: `url("${bullet.src}")` }}>
 	:root {
 		/* stylelint-disable custom-property-empty-line-before */
 
@@ -82,7 +90,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 		z-index: var(--z-bg);
 		inset: 0;
 
-		background: center / cover no-repeat url('/src/assets/background.jpg');
+		background: center / cover no-repeat var(--background-image);
 	}
 
 	:where(h1, h2, h3, h4, h5, h6) {
@@ -161,7 +169,7 @@ const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
 				aspect-ratio: 1;
 				width: 1rem;
 
-				background: center/contain no-repeat url('/src/assets/icons/seal.webp');
+				background: center/contain no-repeat var(--bullet);
 			}
 		}
 	}

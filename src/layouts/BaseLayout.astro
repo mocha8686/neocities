@@ -1,11 +1,14 @@
 ---
+import type { HTMLAttributes } from 'astro/types';
 import 'sanitize.css';
 
-interface Props {
-	title?: string;
-}
+type Props =
+	| {
+			title?: string;
+	  }
+	| HTMLAttributes<'body'>;
 
-const { title = 'have you seen her?' } = Astro.props;
+const { title = 'have you seen her?', ...props } = Astro.props;
 const description =
 	'find her find her find her find her find her find her find her find her';
 ---
@@ -29,7 +32,7 @@ const description =
 		<slot name="head" />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body {...props}>
 		<slot />
 	</body>
 </html>

@@ -6,6 +6,7 @@ import { getCollection } from 'astro:content';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
 import { formatDate } from '$src/lib/blog';
+import { getImage } from 'astro:assets';
 
 export const getStaticPaths = (async () => {
 	const posts = await getCollection('blog');
@@ -21,6 +22,10 @@ const { Content } = await render(post);
 const image: ImageMetadata = (
 	await import(`../../assets/blog/${post.data.image}.webp`)
 ).default;
+const optimized = await getImage({
+	src: image,
+	layout: 'constrained',
+});
 ---
 
 <MainLayout>
@@ -36,7 +41,7 @@ const image: ImageMetadata = (
 	<Content />
 </MainLayout>
 
-<style define:vars={{ image: `url("${image.src}")` }}>
+<style define:vars={{ image: `url("${optimized.src}")` }}>
 	header {
 		position: relative;
 

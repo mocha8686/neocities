@@ -128,7 +128,7 @@ import BaseLayout from '$src/layouts/BaseLayout.astro';
 						if (node.bg === 'white' || node.bg === 'black') {
 							bg = `linear-gradient(${node.bg})`;
 						} else {
-							bg = `url('${bgs[node.bg]}')`;
+							bg = `url("${bgs[node.bg]}")`;
 						}
 
 						const delay = node.delay ?? 1000;

@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
+import { getImage } from 'astro:assets';
 
+import leaves from '$src/assets/button/leaves.gif';
 import derp from '$src/assets/derp.webp';
 import MainLayout from '$src/layouts/MainLayout.astro';
 
@@ -14,6 +16,8 @@ setInterval(() => {
 	index = (index + 1) % words.length;
 }, ${interval});
 `;
+
+const image = await getImage({ src: leaves, quality: 'max' });
 ---
 
 <MainLayout>
@@ -25,7 +29,7 @@ setInterval(() => {
 	</div>
 </MainLayout>
 
-<style>
+<style define:vars={{ image: `url("${image.src}")` }}>
 	.button {
 		--scale: 4;
 
@@ -48,7 +52,7 @@ setInterval(() => {
 			position: absolute;
 			inset: 0;
 
-			background: center/contain url('/src/assets/button/leaves.gif');
+			background: center/contain var(--image);
 		}
 	}
 
