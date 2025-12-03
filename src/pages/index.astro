@@ -13,60 +13,60 @@ import Webrings from '$src/components/Webrings.astro';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
 import { STATE_KEY } from '$src/lib/script';
+import { getImage } from 'astro:assets';
+import type { UnresolvedImageTransform } from 'astro';
 
 const PFP_SIZE = 256;
+
+const images: Record<string, ImageMetadata> = {
+	default: pfp,
+	'cascading feelings': cascadingFeelings,
+	alleyway: cascadingFeelings,
+	'with our wounded hands': cascadingFeelingsTrained,
+};
+
+const quotes = {
+	default: 'ごめん…',
+	'with our wounded hands': '一緒にいようよ、瑞稀',
+};
+
+const pfps = await Promise.all(Object.entries(images).map(async ([key, image]) => {
+	const opts: UnresolvedImageTransform = {
+		src: image,
+		width: PFP_SIZE,
+		height: PFP_SIZE,
+	};
+	const optimized = await getImage(opts);
+
+	return [key, optimized.src];
+})).then(Object.fromEntries);
+
+const data = JSON.stringify({ pfps, quotes });
 ---
 
 <MainLayout back="disable">
 	<h1>Have You Seen This Girl?</h1>
 
 	<section class="about-bio">
-		<div class="bio" x-data>
+		<div class="bio" x-data={data}>
 			<Window class="quote">
 				<h2>Mizuki?</h2>
 				<blockquote
 					lang="ja"
-					x-show="$store.state.value !== 'with our wounded hands'"
+					x-text="quotes[$store.state.value] ?? quotes.default"
 				>
 					ごめん…
 				</blockquote>
-
-				<template x-if="$store.state.value === 'with our wounded hands'">
-					<blockquote lang="ja">一緒にいようよ、瑞稀</blockquote>
-				</template>
 			</Window>
 
-			<Image
-				src={pfp}
+			<img
+				src={pfps.default}
 				alt="Akiyama Mizuki"
-				layout="constrained"
 				class="pfp"
 				width={PFP_SIZE}
 				height={PFP_SIZE}
-				x-show="$store.state.value !== 'cascading feelings' && $store.state.value !== 'alleyway' && $store.state.value !== 'with our wounded hands'"
+				x-bind:src="pfps[$store.state.value] ?? pfps.default"
 			/>
-
-			<template x-if="$store.state.value === 'cascading feelings' || $store.state.value === 'alleyway'">
-				<Image
-					src={cascadingFeelings}
-					alt="Akiyama Mizuki"
-					layout="constrained"
-					class="pfp"
-					width={PFP_SIZE}
-					height={PFP_SIZE}
-				/>
-			</template>
-
-			<template x-if="$store.state.value === 'with our wounded hands'">
-				<Image
-					src={cascadingFeelingsTrained}
-					alt="Akiyama Mizuki"
-					layout="constrained"
-					class="pfp"
-					width={PFP_SIZE}
-					height={PFP_SIZE}
-				/>
-			</template>
 		</div>
 
 		<Window class="about">
