@@ -5,7 +5,7 @@ const TEXT_DELAY = 2000;
 const CHOICE_DELAY = 750;
 const ELLIPSIS_DELAY = 5000;
 
-const RESUME_TEXT = 'you\'re back...';
+const RESUME_TEXT = "you're back...";
 const BULLET = '♡';
 const DIVIDER = '. ₊ ⊹ .  ⟡  . ⊹ ₊ .';
 
@@ -98,7 +98,7 @@ export function displayEntry(Alpine: Alpine, entry: Entry, i = 0) {
 	} else {
 		console.log(line);
 		const timeout =
-			line === '...' ? ELLIPSIS_DELAY : line.length * TEXT_SPEED + TEXT_DELAY;
+			line === '...' ? ELLIPSIS_DELAY : line.length * TEXT_SPEED + TEXT_DELAY;timeoutlineELLIPSIS_DELAY
 		setTimeout(() => displayEntry(Alpine, entry, i + 1), timeout);
 	}
 }

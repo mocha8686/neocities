@@ -1,4 +1,7 @@
 ---
+import type { ImageMetadata, UnresolvedImageTransform } from 'astro';
+import { getImage } from 'astro:assets';
+
 import cascadingFeelings from '$src/assets/cascading_feelings.jpeg';
 import cascadingFeelingsTrained from '$src/assets/cascading_feelings_trained.jpeg';
 import pfp from '$src/assets/mizuki.jpg';
@@ -10,9 +13,6 @@ import SiteButton from '$src/components/SiteButton.astro';
 import Webrings from '$src/components/Webrings.astro';
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
-import { STATE_KEY } from '$src/lib/script';
-import { getImage } from 'astro:assets';
-import type { UnresolvedImageTransform } from 'astro';
 
 const PFP_SIZE = 256;
 

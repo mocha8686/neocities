@@ -1,12 +1,12 @@
 ---
 import type { GetStaticPaths, ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 import { render } from 'astro:content';
 import { getCollection } from 'astro:content';
 
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
 import { formatDate } from '$src/lib/blog';
-import { getImage } from 'astro:assets';
 
 export const getStaticPaths = (async () => {
 	const posts = await getCollection('blog');

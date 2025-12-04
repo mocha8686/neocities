@@ -11,7 +11,7 @@ interface OtherProps {
 	artist: string;
 }
 
-type Props = OtherProps & HTMLAttributes<'a'>
+type Props = OtherProps & HTMLAttributes<'a'>;
 
 const { image, alt, href, title, artist, ...props } = Astro.props;
 

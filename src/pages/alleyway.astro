@@ -64,10 +64,6 @@ const bgs = await Promise.all(
 	<script>
 		import Alpine from 'alpinejs';
 
-		import alleyway from '$src/assets/alleyway/alleyway.png';
-		import ena from '$src/assets/alleyway/ena.png';
-		import enaCloseup from '$src/assets/alleyway/ena_closeup.png';
-		import mizuki from '$src/assets/alleyway/mizuki.png';
 		// @ts-expect-error ignore yaml import
 		import script from '$src/lib/alleyway.yaml';
 		import { STATE_KEY } from '$src/lib/script';
@@ -191,7 +187,7 @@ const bgs = await Promise.all(
 			get lines() {
 				return this.body.split('\n');
 			},
-		}
+		};
 
 		Alpine.store('text', text);
 
