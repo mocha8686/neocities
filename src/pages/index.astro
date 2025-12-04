@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-
 import cascadingFeelings from '$src/assets/cascading_feelings.jpeg';
 import cascadingFeelingsTrained from '$src/assets/cascading_feelings_trained.jpeg';
 import pfp from '$src/assets/mizuki.jpg';
@@ -30,16 +28,19 @@ const quotes = {
 	'with our wounded hands': '一緒にいようよ、瑞稀',
 };
 
-const pfps = await Promise.all(Object.entries(images).map(async ([key, image]) => {
-	const opts: UnresolvedImageTransform = {
-		src: image,
-		width: PFP_SIZE,
-		height: PFP_SIZE,
-	};
-	const optimized = await getImage(opts);
+const pfps = await Promise.all(
+	Object.entries(images).map(async ([key, image]) => {
+		const opts: UnresolvedImageTransform = {
+			src: image,
+			width: PFP_SIZE,
+			height: PFP_SIZE,
+			layout: 'constrained',
+		};
+		const optimized = await getImage(opts);
 
-	return [key, optimized.src];
-})).then(Object.fromEntries);
+		return [key, optimized.src];
+	}),
+).then(Object.fromEntries);
 
 const data = JSON.stringify({ pfps, quotes });
 ---
@@ -82,12 +83,12 @@ const data = JSON.stringify({ pfps, quotes });
 	</section>
 
 	<section class="info">
-		<div class="info-column">
+		<div class="info-column short">
 			<NavList />
 			<Chat />
 		</div>
 
-		<div class="info-column">
+		<div class="info-column long">
 			<section class="albums">
 				<h2>Albums</h2>
 				<Albums />
@@ -123,12 +124,14 @@ const data = JSON.stringify({ pfps, quotes });
 
 	.bio {
 		display: flex;
-		flex: none;
 		flex-direction: column-reverse;
 		gap: 1rem;
 	}
 
 	.pfp {
+		aspect-ratio: 1;
+		max-width: 100%;
+		height: auto;
 		border: 2px solid var(--cl-outline);
 	}
 
@@ -158,9 +161,16 @@ const data = JSON.stringify({ pfps, quotes });
 
 	.info-column {
 		display: flex;
-		flex: auto;
 		flex-direction: column;
 		gap: 1rem;
+
+		&.short {
+			flex: 18rem;
+		}
+
+		&.long {
+			flex: 999 14rem;
+		}
 	}
 
 	.albums {
