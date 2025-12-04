@@ -2,16 +2,27 @@
 import bakenohana from '$src/assets/bakenohana.png';
 import cutiemarks from '$src/assets/cutiemarks.jpg';
 import smile from '$src/assets/smile!.jpg';
+import yokanimitorete from '$src/assets/yokanimitorete.png';
 
 import Album from './Album.astro';
 
-const albums = [
-	{
-		image: bakenohana,
-		href: 'https://youtu.be/UFRIsspP9UE',
-		title: '化けの花',
-		artist: 'NAKISO',
+const keyed = {
+	'with our wounded hands': {
+		image: yokanimitorete,
+		href: 'https://youtu.be/agbpbVVA78U?si=UE88zecOA6Lxh-rO',
+		title: '余花にみとれて',
+		artist: 'keeno',
 	},
+};
+
+const defaultAlbum = {
+	image: bakenohana,
+	href: 'https://youtu.be/UFRIsspP9UE',
+	title: '化けの花',
+	artist: 'NAKISO',
+};
+
+const albums = [
 	{
 		image: smile,
 		href: 'https://porterrobinson.co/SMILE',
@@ -25,9 +36,21 @@ const albums = [
 		artist: 'Vylet Pony',
 	},
 ];
+
+const keys = JSON.stringify(Object.keys(keyed));
 ---
 
 <nav>
+	<Album {...defaultAlbum} x-show={`!${keys}.includes($store.state.value)`} />
+
+	{
+		Object.entries(keyed).map(([key, album]) => (
+			<template x-if={`$store.state.value === '${key}'`}>
+				<Album {...album} />
+			</template>
+		))
+	}
+
 	{albums.map(info => <Album {...info} />)}
 </nav>
 
