@@ -72,7 +72,9 @@ const bgs = await Promise.all(
 		import script from '$src/lib/alleyway.yaml';
 		import { STATE_KEY } from '$src/lib/script';
 
+		// @ts-expect-error ignore unknown plugin
 		Alpine.store('state', { value: Alpine.$persist('').as(STATE_KEY) });
+		// @ts-expect-error ignore unknown store
 		if (Alpine.store('state').value !== 'alleyway') {
 			window.location.replace('/');
 		}
@@ -85,15 +87,25 @@ const bgs = await Promise.all(
 			speaker: string;
 		}
 
-		const bgs = JSON.parse(document.body.dataset.bgs!);
+		interface Text {
+			show: boolean;
+			speaker: string;
+			body: string;
+			i: number;
+			interval: ReturnType<typeof setInterval> | undefined;
+			currentText: string;
+			advance: (isClick?: boolean) => void;
+			lines: string[];
+		}
 
-		Alpine.store('text', {
+		const bgs = JSON.parse(document.body.dataset.bgs!);
+		const text: Text = {
 			show: false,
 			speaker: '',
 			body: '',
 			i: 0,
-			interval: null,
-			currentText: null,
+			interval: undefined,
+			currentText: '',
 
 			advance(isClick = false) {
 				if (isClick && !this.show) {
@@ -102,7 +114,7 @@ const bgs = await Promise.all(
 
 				if (this.interval) {
 					clearInterval(this.interval);
-					this.interval = null;
+					this.interval = undefined;
 					this.body = this.currentText;
 					return;
 				}
@@ -125,7 +137,7 @@ const bgs = await Promise.all(
 						this.body = node.slice(0, i);
 						if (i++ === node.length) {
 							clearInterval(this.interval);
-							this.interval = null;
+							this.interval = undefined;
 						}
 					}, textSpeed);
 				} else {
@@ -177,12 +189,14 @@ const bgs = await Promise.all(
 			},
 
 			get lines() {
-				// @ts-expect-error tsc doesn't know what this is
 				return this.body.split('\n');
 			},
-		});
+		}
+
+		Alpine.store('text', text);
 
 		function end() {
+			// @ts-expect-error ignore unknown store
 			Alpine.store('state').value = 'with our wounded hands';
 			setTimeout(() => {
 				window.location.replace('/');
@@ -191,6 +205,7 @@ const bgs = await Promise.all(
 
 		document.addEventListener('alpine:init', () =>
 			setTimeout(() => {
+				// @ts-expect-error ignore unknown store
 				Alpine.store('text').advance();
 			}, 2000),
 		);
