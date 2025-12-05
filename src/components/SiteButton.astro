@@ -1,8 +1,6 @@
 ---
 import { Image } from 'astro:assets';
 
-import button from '$src/assets/button.gif';
-
 const alt =
 	'An 88x31, with a mizuki on the left and flashing text on the right that reads "can you find her???".';
 const code = `<a href="https://mocha8686.neociites.org/" target="_blank" rel="noreferrer"><img src="https://mocha8686.neocities.org/button.gif" alt="${alt}"></a>`;
@@ -16,7 +14,7 @@ const fn = `() => {
 ---
 
 <div class="container">
-	<Image class="site-button" src={button} {alt} quality="max" />
+	<Image class="site-button" src="/button.gif" {alt} width={88} height={31} quality="max" />
 
 	<code>{code}</code>
 
