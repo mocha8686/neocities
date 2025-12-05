@@ -220,20 +220,17 @@ const bullet = await getImage({ src: seal });
 		}
 	}
 
-	main,
-	main > header:nth-child(2) {
-		> h1:first-of-type {
-			margin-inline: -0.5rem;
-			padding-block: 0.5rem;
+	h1 {
+		margin-inline: -0.5rem;
+		padding-block: 0.5rem;
 
-			font-size: clamp(1rem, 0rem + 5.5cqi, 2rem);
-			font-weight: normal;
-			color: var(--cl-on-accent-container);
-			text-align: center;
-			text-transform: uppercase;
+		font-size: clamp(1rem, 0rem + 5.5cqi, 2rem);
+		font-weight: normal;
+		color: var(--cl-on-accent-container);
+		text-align: center;
+		text-transform: uppercase;
 
-			background: var(--cl-accent-container);
-		}
+		background: var(--cl-accent-container);
 	}
 </style>
 
