@@ -28,7 +28,7 @@ export async function getSortedBlogPosts(): Promise<CollectionEntry<'blog'>[]> {
 	type Blog = (typeof posts)[number];
 
 	function cmp(a: Blog, b: Blog): number {
-		return a.data.date.getTime() - b.data.date.getTime();
+		return b.data.date.getTime() - a.data.date.getTime();
 	}
 
 	const sorted = posts.toSorted(cmp);
