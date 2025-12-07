@@ -8,55 +8,53 @@ This set is mainly about getting basic functionality working, like manipulating 
 
 These challenges will involve a lot of bit manipulation, so the first thing I did was to define a newtype, `Data`, to hold bytes.
 
-```zig
-// src/Data.zig
-const std = @import("std");
-const Allocator = std.mem.Allocator;
+```rust
+// src/data.rs
+#[derive(Debug, Clone)]
+pub struct Data(pub(crate) Box<[u8]>);
 
-const Self = @This();
-
-allocator: Allocator,
-    bytes: []u8,
-
-    pub fn init(allocator: Allocator, bytes: []u8) Self {
-        return Self{
-            .allocator = allocator,
-            .bytes = bytes,
-        };
+impl<T: Into<Box<[u8]>>> From<T> for Data {
+    fn from(value: T) -> Self {
+        Self(value.into())
     }
-
-pub fn copy(allocator: Allocator, buf: []const u8) !Self {
-    const bytes = try allocator.alloc(u8, buf.len);
-    errdefer allocator.free(bytes);
-
-    @memcpy(bytes, buf);
-    return Self{
-        .allocator = allocator,
-            .bytes = bytes,
-    };
 }
 
-pub fn reinit(allocator: Allocator, bytes: []u8) void {
-    self.deinit();
-    self.bytes = bytes;
+impl AsRef<[u8]> for Data {
+    fn as_ref(&self) -> &[u8] {
+        &self.0
+    }
 }
 
-pub fn len(self: Self) usize {
-    return self.bytes.len;
+impl<T: AsRef<[u8]>> PartialEq<T> for Data {
+    fn eq(&self, other: &T) -> bool {
+        &*self.0 == other.as_ref()
+    }
 }
 
-pub fn deinit(self: Self) void {
-    self.allocator.free(self.bytes);
+impl PartialEq<Data> for &str {
+    fn eq(&self, other: &Data) -> bool {
+        &*other.0 == self.as_bytes()
+    }
+}
+
+impl Display for Data {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", String::from_utf8_lossy(self))
+    }
+}
+
+impl Deref for Data {
+    type Target = Box<[u8]>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
 }
 ```
 
-If this syntax looks unfamiliar, especially the `allocator` and `bytes` fields at the top, it's becuase Zig files are structs—that means you can import the struct directly with `const Data = @import("Data.zig")`, and it will work just fine.
+The most important parts here are the `Deref` and `From<T>` impls, which allow `Data` to be constructed from anything that can turn into an array of bytes, and can allow `Data` to be used and passed around functions as a `&[u8]`, meaning we can call `.len()` or `.iter()` on it.
 
-The two static methods `init` and `copy` are for creating new `Data` instances. `init` assumes `bytes` was initialized using the provided `allocator`, while `copy` creates its own copy of `bytes`, so you can, for example, pass a static string into `Data.copy`.
-
-`len` and `deinit` are convenience methods to get the length of the buffer and deallocate the buffer, repsectively. `reinit` is another convenience method that simply replaces the current `bytes` with the new buffer passed in, deallocating the old one in the process.
-
-From now on, I'll be omitting the imports and the `const @Self = @This()` to save space.
+I'll be omitting the module declarations, but you can take a look at the full source code in [the repository](https://github.com/mocha8686/cryptopals).
 
 Now, we can move on to the real challenges.
 
@@ -72,149 +70,72 @@ Now, we can move on to the real challenges.
 >
 > So go ahead and make that happen. You'll need to use this code for the rest of the exercises.
 
-I started by creating `fromHex` and `fromBase64` methods, which both take `[]const u8`'s of their respective format. These two methods are mainly for convenience, as we'll see in a bit.
+I started with decoding and encoding hex, using a `from_hex()` and a `hex` method on `Data`.
 
-For decoding hex, we can use `std.fmt.hexToBytes`, which takes an output and input buffer. The output buffer must be at least half the size of the input buffer, since each byte is represented by two characters in hex (e.g. `169` = `0b11001001` = `0xa9`).
+For decoding hex, we can use the `hex` crate and its `hex::decode()` method, which takes input buffer and returns the decoded bytes. Note that the output buffer will be at least half the size of the input buffer, since each byte is represented by two characters in hex (e.g. `169` = `0b11001001` = `0xa9`).
 
-```zig
-// src/Data.zig
+Similarly, for encoding hex, we can just use `hex::encode()`, which takes an input `AsRef<[u8]>`, and because we implemented `AsRef<[u8]>` for `Data`, we can just pass in our `Data` object.
 
-pub fn fromHex(allocator: Allocator, input: []const u8) !Self {
-    const bytes = try allocator.alloc(u8, input.len / 2);
-    errdefer allocator.free(bytes);
-    _ = try std.fmt.hexToBytes(bytes, input);
-    return Self{
-        .allocator = allocator,
-        .bytes = bytes,
-    };
+Also note, I wrote my own `Error` and single-generic `Result` types, but those details will be omitted since they're out of scope for this writeup. Again, you can see [the error-handling details](https://github.com/mocha8686/cryptopals/blob/main/src/error.rs) in [the repository](https://github.com/mocha8686/cryptopals).
+
+```rust
+// src/data/hex.rs
+impl Data {
+    pub fn from_hex(input: impl AsRef<[u8]>) -> Result<Self> {
+        let bytes = hex::decode(input).map_err(ParseError::from)?;
+        let res = Self(bytes.into_boxed_slice());
+        Ok(res)
+    }
+
+    pub fn hex(&self) -> String {
+        hex::encode(self)
+    }
 }
 ```
 
-As for base64, the process is a bit more complex. First, we have to create a decoder struct, which involves passing in a few options such as padding. Fortunately, the standard library already has presets, and the `standard` preset is just what we need. We can get a decoder using `std.base64.standard.Decoder`. Then, we have to allocate a buffer to store the output. Thankfully, the decoder contains a method, `calcSizeForSlice`, which takes in our input base64 buffer and calculates the minimum size required to store the output. After we allocate that buffer, we can finally run `decode`, passing in our output and input buffer, before creating our struct.
+As for base64, the process is a tiny bit more complex. We'll again be using a crate, this time `base64`, but we have to specify which `base64::Engine` we want to decode/encode with. In our case, we just want the standard settings, so we can specify the `base64::engine::general_purpose::STANDARD` engine.
 
-```zig
-// src/Data.zig
-pub fn fromBase64(allocator: Allocator, input: []const u8) !Self {
-    const decoder = std.base64.standard.Decoder;
-    const size = try decoder.calcSizeForSlice(input);
+Then, we simply have to call the `encode()` and `decode()` methods on our engine.
 
-    const bytes = try allocator.alloc(u8, size);
-    errdefer allocator.free(bytes);
+```rust
+// src/data/base64.rs
+use base64::{
+    Engine,
+    engine::{GeneralPurpose, general_purpose::STANDARD},
+};
 
-    try decoder.decode(bytes, input);
+// ...other imports...
 
-    return Self{
-        .allocator = allocator,
-        .bytes = bytes,
-    };
+const ENGINE: GeneralPurpose = STANDARD;
+
+impl Data {
+    pub fn from_base64(input: impl AsRef<[u8]>) -> Result<Self> {
+        let bytes = ENGINE.decode(input).map_err(ParseError::from)?;
+        let res = Self(bytes.into_boxed_slice());
+        Ok(res)
+    }
+
+    pub fn base64(&self) -> String {
+        ENGINE.encode(self)
+    }
 }
 ```
 
-Since hex and base64 are encodings, and to prepare for future encodings/ciphers like AES, I decided to put the encoding/decoding logic into their own files.
+Now, we can finally complete the first challenge. I decided to make each challenge its own test, so here's the first challenge:
 
-The decoding part simply uses the `fromHex` and `fromBase64` methods in `Data`.
+```rust
+// src/lib.rs
+#[test]
+fn s1c1_convert_hex_to_base64() -> Result<()> {
+    let res = Data::from_hex("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d")?
+        .base64();
 
-```zig
-// src/cipher.zig
-
-pub const Base64 = @import("cipher/Base64.zig");
-pub const Hex = @import("cipher/Hex.zig");
-```
-
-```zig
-// src/cipher/Hex.zig
-
-pub fn decode(_: Self, data: *Data) !void {
-    const res = try Data.fromHex(data.allocator, data.bytes);
-    data.reinit(res.bytes);
-}
-```
-
-```zig
-// src/cipher/Base64.zig
-
-pub fn decode(_: Self, data: *Data) !void {
-    const res = try Data.fromBase64(data.allocator, data.bytes);
-    data.reinit(res.bytes);
-}
-```
-
-As for the encoding, the process is fairly similar to decoding for base64. First, we get our `std.base64.standard.Encoder`, then calculate our size with `calcSize`, and finally `encode` our input.
-
-A small difference is with `calcSize`, which, instead of an input buffer, only needs to take in the length of our data. This is because base64 has built-in padding, so the decoder needs to know if those last few characters in our base64 are padding bytes or not; whereas with our encoder, it knows that all of our input is just data.
-
-```zig
-// src/cipher/Base64.zig
-
-pub fn encode(_: Self, data: *Data) !void {
-    const allocator = data.allocator;
-
-    const encoder = std.base64.standard.Encoder;
-    const size = encoder.calcSize(data.len());
-
-    const buf = try allocator.alloc(u8, size);
-    errdefer allocator.free(buf);
-
-    _ = encoder.encode(buf, data.bytes);
-
-    data.reinit(buf);
-}
-```
-
-For hex, the process is quite different. There is a `std.fmt.bytesToHex` function, but it only works with a `comptime`-known array. Thus, we have to use `std.fmt.bufPrint` instead, which works similarly to `sprintf` in libc.
-
-First, we create a buffer twice the size of our input, then we use the format `"{x}"` to print out our bytes in lowercase hex format, storing it into our output buffer.
-
-```zig
-// src/cipher/Hex.zig
-
-pub fn encode(_: Self, data: *Data) !void {
-    const allocator = data.allocator;
-
-    const buf = try allocator.alloc(u8, data.len() * 2);
-    errdefer allocator.free(buf);
-
-    _ = try std.fmt.bufPrint(buf, "{x}", .{data.bytes});
-
-    data.reinit(buf);
-}
-```
-
-Next, I created `encode` and `decode` methods on `Data` to help with using ciphers easily. It simply takes the `cipher` as an `anytype` and calls the respective `encode` and `decode` methods. If you don't know about `anytype`, it essentially just enables [duck-typing](https://en.wikipedia.org/wiki/Duck_typing) for Zig.
-
-```zig
-// src/Data.zig
-
-pub fn decode(self: *Self, cipher: anytype) !void {
-    try cipher.decode(self);
-}
-
-pub fn encode(self: *Self, cipher: anytype) !void {
-    try cipher.encode(self);
-}
-```
-
-Now, we can finally complete the first challenge. I decided to make each challenge its own Zig test, so here's the first challenge:
-
-```zig
-// src/root.zig
-
-test "set 1 challenge 1" {
-    const allocator = std.testing.allocator;
-
-    var data = try Data.fromHex(
-        allocator,
-        "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d",
-    );
-    defer data.deinit();
-
-    const base64 = cipher.Base64{};
-    try data.encode(base64);
-
-    try std.testing.expectEqualStrings(
+    assert_eq!(
         "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t",
-        data.bytes,
+        res
     );
+
+    Ok(())
 }
 ```
 
