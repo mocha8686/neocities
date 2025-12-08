@@ -58,10 +58,12 @@ const challengeHeadings = headings.reduce<Heading[]>(
 	</header>
 
 	<main>
-		<nav x-data>
-			<h2>Challenges</h2>
-			<HeadingList headings={challengeHeadings} />
-		</nav>
+		<div class="nav-transform">
+			<nav x-data>
+				<h2>Challenges</h2>
+				<HeadingList headings={challengeHeadings} />
+			</nav>
+		</div>
 
 		<Content />
 	</main>
@@ -246,18 +248,44 @@ const challengeHeadings = headings.reduce<Heading[]>(
 			}
 		}
 
-		> nav {
-			position: sticky;
-			inset-block-start: 20%;
+		.nav-transform {
+			transform-style: preserve-3d;
+			display: contents;
+			perspective: 2000px;
 
-			grid-column: nav;
-			grid-row: span 9999;
-			align-self: start;
-			justify-self: center;
+			nav {
+				--axis: -1 -2 -0.1;
+				--rotation: -20deg;
+				--delta: -5deg;
 
-			h2 {
-				padding-inline-end: 4em;
-				border-block-end: 2px solid var(--cl-accent);
+				position: sticky;
+				inset-block-start: 20%;
+				rotate: var(--axis) var(--rotation);
+
+				grid-column: nav;
+				grid-row: span 9999;
+				align-self: start;
+				justify-self: center;
+
+				padding-inline: 2rem;
+
+				background: oklch(from var(--cl-accent-container) l c h / 0.3);
+
+				transition: rotate 150ms ease-in-out;
+
+				&:hover,
+				&:focus-visible {
+					rotate: var(--axis) calc(var(--rotation) + var(--delta));
+				}
+
+				> ol {
+					list-style: number;
+				}
+
+				h2 {
+					padding-inline-end: 4em;
+					border-block-end: 2px solid var(--cl-outline);
+				}
 			}
 		}
 
@@ -266,7 +294,7 @@ const challengeHeadings = headings.reduce<Heading[]>(
 				[full-width-start] 0 [content-start] minmax(auto, var(--content-width))
 				[content-end] auto [full-width-end];
 
-			> nav {
+			.nav-transform {
 				display: none;
 			}
 		}
