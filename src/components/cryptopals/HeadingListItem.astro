@@ -14,12 +14,13 @@ const slug = href.slice(1);
 <style>
 	a {
 		margin-block: 0.5em;
-		padding-inline-start: 0.5em;
 
 		color: var(--cl-foreground);
 		text-decoration: none;
 
-		transition: all 150ms ease;
+		transition-timing-function: ease;
+		transition-duration: 150ms;
+		transition-property: color, text-decoration;
 
 		&.active,
 		&:hover,
