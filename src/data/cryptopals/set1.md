@@ -559,7 +559,67 @@ fn hamming_distance_works() {
 
 ### Guessing the keysize
 
-To guess the keysize, we'll again use a score-maximizing function similar to `single_byte_xor`, but instead of maximizing plaintext score, we'll be trying to minimize Hamming distance.
+#### Explanation
+
+In order to guess the keysize, we have to first note that XOR is an associative, commutative involution. What that means is:
+
+- Associativity — `(a ^ b) ^ c == a ^ (b ^ c)`
+- Commutativity — `a ^ b == b ^ a`
+- Involution — `a ^ b ^ b == a`
+
+Associativity and commutativity mean we can order a long chain of XOR's however we want, and we don't need to worry about parentheses. An involution is simply a function where applying it onto an input twice will yield the input back.
+
+Now, the problem statement suggests we divide the ciphertext into chunks to find our keysize. Let's investigate how this works first.
+
+Say we have a ciphertext encrypted under the key `meow`. We know that for the `i`th byte of the ciphertext, it's equal to `plaintext[i] ^ key[i % 4]`.
+
+If we take the first two 4-byte blocks and XOR them together, we'll see something interesting happen:
+
+```
+ plaintext: ..........................
+       key: meowmeowmeowmeowmeowmeowme
+ciphertext: qwertyuiopasdfghjklzxcvbnm
+
+ciphertext[0..4] == plaintext[0..4] ^ "meow"
+ciphertext[4..8] == plaintext[4..8] ^ "meow"
+
+ciphertext[0..4] ^ ciphertext[4..8]
+== plaintext[0..4] ^ "meow" ^ plaintext[4..8] ^ "meow"
+== plaintext[0..4] ^ plaintext[4..8] ^ "meow" ^ "meow"  (commutation and association)
+== plaintext[0..4] ^ plaintext[4..8]                    (involution)
+
+
+```
+
+Notice how the key cancels out. If we were to try this using a blocksize one too big or one too small, this canceling wouldn't happen.
+
+```
+blocksize == 3
+ciphertext[0..3] = plaintext[0..3] ^ "meo"
+ciphertext[4..6] = plaintext[4..6] ^ "wme"
+
+ciphertext[0..3] ^ ciphertext[4..6]
+== plaintext[0..3] ^ "meo" ^ plaintext[3..6] ^ "wme"
+== plaintext[0..3] ^ plaintext[3..6] ^ "meo" ^ "wme"
+
+───────────────────────────────────────────────────────
+
+blocksize == 5
+ciphertext[0..5] = plaintext[0..5] ^ "meowm"
+ciphertext[5..10] = plaintext[5..10] ^ "eowme"
+
+ciphertext[0..5] ^ ciphertext[5..10]
+== plaintext[0..5] ^ "meowm" ^ plaintext[5..10] ^ "eowme"
+== plaintext[0..5] ^ plaintext[5..10] ^ "meowm" ^ "eowme"
+```
+
+If we were to count the ones for each of these ciphertext XOR's (i.e. the second step of Hamming distance), we'd find that the Hamming distance would be minimized when the `blocksize` equals the `keysize`. This is because when the keys cancel each other out, their contribution to the total number of ones becomes `0`; whereas with the `blocksize == 3` and `blocksize == 5` cases, the keys still contribute ones to the total since they didn't cancel out.
+
+Thus, we can use the Hamming distance to guess the length of the key.
+
+#### Implementation
+
+We'll again use a score-maximizing function similar to `single_byte_xor`, but instead of maximizing plaintext score, we'll be trying to minimize Hamming distance.
 
 First, like the prompt suggests, we'll try `keysize`s from 2 to 40. We can modify this later, but more values means more computation time. We want to minimize a certain function this time, so we'll use a `min_by_key()`.
 
