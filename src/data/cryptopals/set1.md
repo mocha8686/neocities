@@ -703,128 +703,63 @@ fn guess_keysize(data: &Data) -> u32 {
 
 ### Partitioning
 
-Now that we have a good guess for our `keysize`, we want to prepare the data for performing single-byte XOR. If we assume the key is `keysize` long, we know that every `keysize`th byte has been XOR'd with the same byte, so we can take those bytes and perform our `singleCharacterXOR` on them.
+Now that we have a good guess for our `keysize`, we want to prepare the data for performing single-byte XOR. If we assume the key is `keysize` long, we know that every `keysize`th byte has been XOR'd with the same byte.
 
 ```
             ┌ keysize = 4
             ├───┬───┬───┬───┬───┬───┬───┐
+     i % 4: 01230123012301230123012301
        key: meowmeowmeowmeowmeowmeowme
 ciphertext: qwertyuiopasdfghjklzxcvbnm
             │   │   │   │   │   │   │
        key: m   m   m   m   m   m   m ─► mmmmmmm
 ciphertext: q   t   o   d   j   x   n ─► qtodjxn
+     i    : 0   4   8  12  16  20  24
+     i % 4: 0   0   0   0   0   0   0
 ```
 
-We can similarly group every `(keysize + 1)`th byte, every `(keysize + 2)`th byte, and so on, until `(2 * keysize - 1)`. We're essentially creating a partition over our ciphertext using the integers mod `keysize` as indices to group our blocks.
+Now, we just need to decrypt this block of ciphertext, and we know that the key is a single byte. Fortunately, we've already made a function to do just this, so we can take those bytes and perform our `single_byte_xor()` on them.
 
-Now, to implement this algorithm in Zig. We'll create another function for it, which will return a slice of `Data`. First, we need to allocate our arrays. We want to make a partition to hold each group of each byte from `keysize`, which means we'll need `(keysize)` partitions. For each partition, we'll want at least `length / keysize` bytes, plus one more if our keysize doesn't neatly divide our length.
+We can similarly group every `(keysize + 1)`th byte, every `(keysize + 2)`th byte, and so on, until we've made `keysize` groups. We're essentially creating a partition over our ciphertext using the integers mod `keysize` as indices to group our blocks.
 
-```
-            meowmeow..............owme
-            11112222333344445555666677
-ciphertext: qwertyuiopasdfghjklzxcvbnm
-       key: meowmeowmeowmeowmeowmeowme
+Now, to implement this algorithm in Rust. We first start by getting the indices of each input byte. Then, we can use the `itertools` crate to create a grouping map by a certain key, which will be our indices mod `keysize`.
 
-       ┌──────────────────────────────┐
-       │  length   26                 │
-       │ ─────── = ── = 6 remainder 2 │
-       │ keysize    4   │           │ │
-       └────────────┼───┼───────────┼─┘
-         ┌──────────┘   │           │
-         │   ┌──────────┼───────────┘
-         │   │          └──────────┐
-         ▼   ▼                     ▼
-       first 2 buckets have length 6 + 1
-    last 4 - 2 buckets have length 6
-
-key byte │ 1234567 │ length
-─────────┼─────────┼────────
-       m │ qtodjxn │ 7
-       e │ wypfkcm │ 7
-       o │ euaglv  │ 6
-       w │ rishzb  │ 6
+```rust
+data.iter()
+    .copied()
+    .zip(0u32..)
+    .into_group_map_by(|(_, i)| i % keysize) // ignore the bytes for now
 ```
 
-So, in order to calculate the size for each partition, we'll first calculate the `lengthPerBlock` and the `remainder`, and we'll also allocate `(keysize)` arrays of `[]u8` to store our buckets.
+Now, we iterate over the entries of this map. The iterator will yield pairs `(n, vec)`, where `n` is our groups and `vec` is a subset of our original bytes. We first sort the groups by `n` to make sure they're ordered correctly from `0..keysize`, then we simply create a `Data` struct out of each group and return a vector of them.
 
-```zig
-const lengthPerBlock = data.len() / keysize;
-const remainder = data.len() % keysize;
+```rust
+prev.into_group_map_by(|(_, i)| i % keysize)
+    .into_iter()
+    .sorted_by_key(|(n, _)| *n) // ignore `vec` for now
 
-var blocks = try allocator.alloc([]u8, keysize);
-defer allocator.free(blocks);
-```
+    // each entry is actually (b, i), where `i` is our original index
+    // so, we clean that up
+    .map(|(_, vec)| vec.into_iter().map(|(b, _)| b).collect_vec()) // discard `n` and `i`
 
-Once we make space for our blocks, we'll allocate the blocks themselves. We'll keep track of the index to know whether to add that extra byte or not as well.
-
-```zig
-for (0..keysize) |n| {
-    const blockLength = lengthPerBlock + (if (n < remainder) @as(usize, 1) else @as(usize, 0));
-    blocks[n] = try allocator.alloc(u8, blockLength);
-    errdefer allocator.free(blocks[n]);
-}
-```
-
-Now, we'll want to swizzle the bytes into their respective blocks. We'll use `std.mem.window` again, using `keysize` as our window size. The `n`th byte of each window will go into the `n`th block. We'll also keep track of how many bytes we've added to each block to make sure we index into each block correctly.
-
-```zig
-var windows = std.mem.window(u8, data.bytes, keysize, keysize);
-var i: usize = 0;
-while (windows.next()) |window| {
-    for (window, 0..) |b, n| {
-        blocks[n][i] = b;
-    }
-    i += 1;
-}
-```
-
-Finally, we'll create `Data` structs out of each of the blocks.
-
-```zig
-var dataBlocks = try allocator.alloc(Data, keysize);
-errdefer allocator.free(dataBlocks);
-for (0..keysize) |n| {
-    dataBlocks[n] = Data.init(allocator, blocks[n]);
-}
-
-return dataBlocks;
+    .map(Data::from)
+    .collect_vec()
 ```
 
 Here's the `partition` function in full.
 
-```zig
-// src/attack/xor.zig
-
-fn partition(data: Data, keysize: u32) ![]Data {
-    const allocator = data.allocator;
-    const lengthPerBlock = data.len() / keysize;
-    const remainder = data.len() % keysize;
-
-    var blocks = try allocator.alloc([]u8, keysize);
-    defer allocator.free(blocks);
-
-    for (0..keysize) |n| {
-        const blockLength = lengthPerBlock + (if (n < remainder) @as(usize, 1) else @as(usize, 0));
-        blocks[n] = try allocator.alloc(u8, blockLength);
-        errdefer allocator.free(blocks[n]);
-    }
-
-    var windows = std.mem.window(u8, data.bytes, keysize, keysize);
-    var i: usize = 0;
-    while (windows.next()) |window| {
-        for (window, 0..) |b, n| {
-            blocks[n][i] = b;
-        }
-        i += 1;
-    }
-
-    var dataBlocks = try allocator.alloc(Data, keysize);
-    errdefer allocator.free(dataBlocks);
-    for (0..keysize) |n| {
-        dataBlocks[n] = Data.init(allocator, blocks[n]);
-    }
-
-    return dataBlocks;
+```rust
+// src/attack/xor.rs
+fn partition(data: &Data, keysize: u32) -> Vec<Data> {
+    data.iter()
+        .copied()
+        .zip(0u32..)
+        .into_group_map_by(|(_, i)| i % keysize)
+        .into_iter()
+        .sorted_by_key(|(n, _)| *n)
+        .map(|(_, vec)| vec.into_iter().map(|(b, _)| b).collect_vec())
+        .map(Data::from)
+        .collect_vec()
 }
 ```
 
