@@ -95,13 +95,54 @@ const { Content, headings } = await render(set);
 			}
 
 			+ blockquote {
-				padding-inline-start: 1em;
-				padding-inline-end: 0.5em;
-				border-inline-start: 0.4em solid var(--cl-outline);
+				--border-color: var(--cl-accent);
+				--border-width: 1px;
+				--bevel-size: 12px;
+
+				position: relative;
+
+				border: 1px solid var(--border-color);
+				border-inline-start-width: 6px;
 
 				font-style: italic;
 
 				background: var(--cl-container);
+
+				&::before {
+					--border: var(--bevel-size) solid var(--border-color);
+					--transparent: var(--bevel-size) solid transparent;
+
+					content: '';
+
+					position: absolute;
+					inset-block-end: 0;
+					inset-inline-end: 0;
+
+					border-block-start: var(--transparent);
+					border-block-end: var(--border);
+					border-inline-start: var(--transparent);
+					border-inline-end: var(--border);
+				}
+
+				&::after {
+					--border: calc(var(--bevel-size) + 1px) solid var(--cl-background);
+					--transparent: calc(var(--bevel-size) + 1px) solid transparent;
+
+					content: '';
+
+					position: absolute;
+					inset-block-end: calc(var(--border-width) * -1 - 1px);
+					inset-inline-end: calc(var(--border-width) * -1 - 1px);
+
+					border-block-start: var(--transparent);
+					border-block-end: var(--border);
+					border-inline-start: var(--transparent);
+					border-inline-end: var(--border);
+				}
+
+				> * {
+					margin-inline: 1rem;
+				}
 
 				li {
 					line-height: 1.5;

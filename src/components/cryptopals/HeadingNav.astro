@@ -119,8 +119,9 @@ const challengeHeadings = headings.reduce<Heading[]>(
 			--delta: -5deg;
 			--clip: 16px;
 			--background-color: oklch(from var(--cl-accent-container) l c h / 0.3);
-			--border-width: 1px;
 
+			--border-color: var(--cl-accent);
+			--border-width: 1px;
 			--bevel-size: 16px;
 
 			position: sticky;
@@ -132,7 +133,7 @@ const challengeHeadings = headings.reduce<Heading[]>(
 			align-self: start;
 			justify-self: center;
 
-			border: var(--border-width) solid var(--cl-accent);
+			border: var(--border-width) solid var(--border-color);
 			border-inline-start-width: 8px;
 
 			background-color: var(--background-color);
@@ -140,7 +141,7 @@ const challengeHeadings = headings.reduce<Heading[]>(
 			transition: rotate 150ms ease-in-out;
 
 			&::before {
-				--border: var(--bevel-size) solid var(--cl-accent);
+				--border: var(--bevel-size) solid var(--border-color);
 				--transparent: var(--bevel-size) solid transparent;
 
 				content: '';
