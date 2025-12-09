@@ -4,11 +4,9 @@ import yaml from '@rollup/plugin-yaml';
 import { defineConfig, fontProviders } from 'astro/config';
 import remarkRuby from 'remark-ruby';
 
-import icon from 'astro-icon';
-
 // https://astro.build/config
 export default defineConfig({
-    integrations: [alpinejs({ entrypoint: '/src/lib/entrypoint' }), icon()],
+    integrations: [alpinejs({ entrypoint: '/src/lib/entrypoint' })],
     trailingSlash: 'always',
     markdown: {
         remarkPlugins: [remarkRuby],
