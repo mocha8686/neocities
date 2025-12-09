@@ -463,26 +463,21 @@ fn s1c4_detect_single_character_xor() -> Result<()> {
 >
 > Encrypt a bunch of stuff using your repeating-key XOR function. Encrypt your mail. Encrypt your password file. Your .sig file. Get a feel for it. I promise, we aren't wasting your time with this.
 
-Luckily, we've already implemented repeating-key XOR, so all we have to do is write the test.
+Luckily (definitely not planned), we've already implemented repeating-key XOR, so all we have to do is write the test.
 
-```zig
-// src/cipher/XOR.zig
+```rust
+// src/data/xor.rs
+fn s1c5_implement_repeating_key_xor() {
+    let data = Data::from(
+        "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
+            .as_bytes(),
+    );
+    let key = Data::from("ICE".as_bytes());
 
-test "set 1 challenge 5" {
-    const std = @import("std");
-    const allocator = std.testing.allocator;
-
-    var data = try Data.copy(allocator, "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal");
-    defer data.deinit();
-
-    try data.xor("ICE");
-
-    const hex = @import("Hex.zig"){};
-    try data.encode(hex);
-
-    try std.testing.expectEqualStrings(
+    let res = data ^ key;
+    assert_eq!(
         "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f",
-        data.bytes,
+        res.hex()
     );
 }
 ```
