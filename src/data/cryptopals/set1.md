@@ -864,101 +864,101 @@ fn s1c6_break_repeating_key_xor() -> Result<()> {
 
 [ECB mode](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#ECB), or electronic codebook, is a method of encrypting an arbitrary-length block of data (although, probably the most insecure—you'll see why in the next set). It simply splits our data into 16-byte blocks, encodes them using AES-128, then concatenates them together.
 
-The algorithm itself is quite complicated, involving abstract algebra and Galois fields, so like the problem statement suggests, we're just going to use a library. (Though, I do plan on studying abstract algebra in the near future, so keep an eye out for that!)
+The AES algorithm itself is quite complicated, involving abstract algebra and Galois fields, so like the problem statement suggests, we're just going to use a library. (Though, I do plan on studying abstract algebra in the near future, so keep an eye out for that!)
 
-In our case, we'll use the Zig standard library, which has functions for AES. Like `base64`, we need to create an `encoder` and `decoder`. We use the `std.crypto.core.aes.Aes128` type and we can use `Aes128.initDec(key)` and `Aes128.initEnc(key)` to create our `decoder` and `encoder`, respectively.
+In our case, we'll use the `aes` crate, which provides the `Aes128` struct. First, I decided to create a `Cipher` trait to abstract the interface, since we'll be creating more ciphers in the future.
 
-We'll focus on decoding, since the process for encoding is pretty much the same. Once we have our `decoder`, we can iterate over our bytes and call `decoder.decrypt`, passing in an output and input buffer. The function expects both the output and input to be fixed 16-byte arrays, so we can double-index into our slices with comptime-known bounds to coalesce our slices into arrays.
+```rust
+// src/cipher.rs
+pub trait Cipher {
+    fn decode(&mut self, data: &Data) -> Result<Data>;
+    fn encode(&mut self, data: &Data) -> Result<Data>;
+}
+```
 
-```zig
-const blocksize = 16;
+Now, we'll create a wrapper around `Aes128`. We'll have to implement ECB mode ourselves, since `Aes128` only operates on 16-byte blocks.
 
-if (data.length % blocksize != 0) {
-    return error.InvalidSize;
+```rust
+// src/cipher/aes_ecb.rs
+pub struct AesEcb {
+    cipher: Aes128,
 }
 
-const decoder = std.crypto.core.aes.Aes128.initDec(self.key);
-var res = try allocator.alloc(u8, data.len());
+impl AesEcb {
+    pub fn new(key: impl AsRef<[u8]>) -> Result<Self> {
+        let key = key.as_ref();
+        let cipher = Aes128::new_from_slice(key)?;
 
-var windows = std.mem.window(u8, data.bytes, blocksize, blocksize);
-var i: u32 = 0;
-while (windows.next()) |block| {
-    decoder.decrypt(res[i * blocksize .. (i + 1) * blocksize][0..blocksize], block[0..blocksize]);
-    i += 1;
+        Ok(Self::init(cipher))
+    }
+
+    #[must_use]
+    pub fn init(cipher: Aes128) -> Self {
+        Self { cipher }
+    }
 }
+```
 
-data.reinit(res);
+We'll focus on decoding, since the process for encoding is pretty much the same. We'll want to first check that our data can be split into 16-byte blocks. We'll learn how to handle an uneven length in Set 2, but for now, we'll just panic if not.
+
+```rust
+// src/cipher/aes_ecb.rs
+fn decode(&mut self, data: &Data) -> Result<Data> {
+    if (data.len() % 16 != 0) {
+        todo!("AES-ECB not implemented for `Data` of non-16-multiple lengths");
+    }
+
+    // ...
+}
 ```
 
 We'll see how we can encode arbitrary-length `Data` in the next set.
 
-Note how I indexed into `res`. The first slice simply calculates the same sliding window as `std.mem.window`, but manually. The second slice basically tells the compiler that this slice is `blocksize` bytes long.
+First, we split our data into 16-byte chunks. Then, we collect each chunk into a fixed-size array using `Itertools::collect_array()`. We do also have to conver that array into a `GenericArray`, since that's what the `aes` crate uses—specifically, `aes` is part of the [RustCrypto ecosystem](https://github.com/RustCrypto/).
 
-I also created a new cipher like we did for `Hex`, `Base64`, and `XOR`.
+After we create our `GenericArray`s, we can `flat_map` over them, decrypting each one sequentially. Here's the code.
 
-```zig
-// src/cipher/AesEcb.zig
-const Self = @This();
-
-key: [16]u8,
-
-pub fn decode(self: Self, data: *Data) !void {
-    const allocator = data.allocator;
-    const blocksize = 16;
-
-    const decoder = std.crypto.core.aes.Aes128.initDec(self.key);
-    var res = try allocator.alloc(u8, data.len());
-
-    var windows = std.mem.window(u8, data.bytes, blocksize, blocksize);
-    var i: u32 = 0;
-    while (windows.next()) |block| {
-        decoder.decrypt(res[i * blocksize .. (i + 1) * blocksize][0..blocksize], block[0..blocksize]);
-        i += 1;
+```rust
+// src/cipher/aes_ecb.rs
+fn decode(&mut self, data: &Data) -> Result<Data> {
+    if (data.len() % 16 != 0) {
+        todo!("AES-ECB not implemented for `Data` of non-16-multiple lengths");
     }
 
-    data.reinit(res);
-    try data.unpad();
-}
+    let bytes = data
+        .chunks(16)
+        .filter_map(itertools::Itertools::collect_array::<16>)
+        .map(GenericArray::from)
+        .flat_map(|mut block| {
+            self.cipher.decrypt_block_mut(&mut block);
+            block
+        })
+        .collect_vec();
 
-pub fn encode(self: Self, data: *Data) !void {
-    const allocator = data.allocator;
-    const blocksize = 16;
-
-    try data.pad(blocksize);
-
-    const encoder = std.crypto.core.aes.Aes128.initEnc(self.key);
-    var res = try allocator.alloc(u8, data.len());
-
-    var windows = std.mem.window(u8, data.bytes, blocksize, blocksize);
-    var i: u32 = 0;
-    while (windows.next()) |block| {
-        encoder.encrypt(res[i * blocksize .. (i + 1) * blocksize][0..blocksize], block[0..blocksize]);
-        i += 1;
-    }
-
-    data.reinit(res);
+    Ok(Data::from(bytes))
 }
 ```
 
+(Note that the code in the repository has additional error handling; the premise is the same as above, though.)
+
+Encoding uses the same algorithm, except with `encrypt_block_mut` instead of `decrypt_block_mut`.
+
 Now for the test.
 
-```zig
-test "set 1 challenge 7" {
-    const allocator = std.testing.allocator;
+```rust
+// src/cipher/aes_ecb.rs
+#[test]
+fn s1c7_aes_in_ecb_mode() -> Result<()> {
+    let text = include_str!("../../data/7.txt").replace('\n', "");
+    let data = Data::from_base64(&text)?;
+    let mut cipher = AesEcb::new("YELLOW SUBMARINE")?;
+    let res = cipher.decode(&data)?;
 
-    const text = @embedFile("../data/7.txt");
-    const size = std.mem.replacementSize(u8, text, "\n", "");
-    const buf = try allocator.alloc(u8, size);
-    defer allocator.free(buf);
-    _ = std.mem.replace(u8, text, "\n", "", buf);
+    // note: this plaintext has additional padding at the end
+    // we'll learn how it works in S2C9
+    assert_eq!(include_str!("../../data/funky.txt"), res.to_string());
 
-    var data = try Data.fromBase64(allocator, buf);
-    defer data.deinit();
-
-    const AES = Self{ .key = "YELLOW SUBMARINE".* };
-    try data.decode(AES);
-
-    try std.testing.expectEqualStrings(@embedFile("../data/funky.txt"), data.bytes);
+    Ok(())
 }
 ```
 
