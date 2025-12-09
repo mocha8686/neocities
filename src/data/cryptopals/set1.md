@@ -155,68 +155,79 @@ fn s1c1_convert_hex_to_base64() -> Result<()> {
 >
 > `746865206b696420646f6e277420706c6179`
 
-The process for fixed XOR is fairly simple. I decided to mutate `self` to save on extra allocations. A more functional approach would be to instead return a new `Data` object, but I decided against it since I'm working with Zig, which I've found to lend itself much more to mutating state than pure functions.
+The process for fixed XOR is fairly simple. We first check that both buffers are of equal length, then we iterate over both buffers, performing an XOR on each pair of bytes. We finally collect the bytes into a `Box<[u8]>`, then construct and return a new piece of `Data`.
 
-We first check that both buffers are of equal length, then we iterate over both buffers, performing an XOR-assign on our own bytes.
+```rust
+// src/data/xor.rs
+impl Data {
+    pub fn xor(&self, other: &Self) -> Self {
+        if self.len() != other.len {
+            todo!("XOR not implemented for `Data` of unequal lengths");
+        }
 
-```zig
-// src/Data.zig
-
-pub fn xor(self: *Self, other: []const u8) !void {
-    if (self.len() != other.len) {
-        return error.Unimplemented;
-    }
-
-    for (other, 0..) |byte, i| {
-        self.bytes[i] ^= byte;
+        let len = self.len();
+        let bytes = self
+            .iter()
+            .zip(other.iter())
+            .map(|(a, b)| a ^ b)
+            .collect();
+        Self(bytes)
     }
 }
 ```
 
-I also created a (very simple) cipher for it, which takes a fixed key. We'll see this pattern used in later sets. Note that `encode` is the same as `decode` since XOR is an [involution](https://en.wikipedia.org/wiki/Involution_(mathematics)). In fact, `encode` just calls `decode`, since they do the same thing.
+We will come back to this code later to implement XOR for `Data` of differing lengths.
 
-```zig
-key: []const u8,
+I also created `BitXor` impls for `Data`, which allows you to use the `^` operator to XOR data. Though, the implementation is a bit annoying, since you have to implement `BitXor` for each permutation of reference pairs (i.e. `Data ^ Data, Data ^ &Data, &Data ^ Data, &Data ^ &Data`).
 
-pub fn decode(self: Self, data: *Data) !void {
-    try data.xor(self.key);
+```rust
+// src/data/xor.rs
+impl BitXor for &Data { // &Data ^ &Data
+    type Output = Data;
+
+    fn bitxor(self, rhs: Self) -> Self::Output {
+        self.xor(rhs)
+    }
 }
 
-pub fn encode(self: Self, data: *Data) !void {
-    try self.decode(data);
+impl BitXor for Data { // Data ^ Data
+    type Output = Data;
+
+    fn bitxor(self, rhs: Self) -> Self::Output {
+        self.xor(&rhs)
+    }
+}
+
+impl BitXor<Data> for &Data { // &Data ^ Data
+    type Output = Data;
+
+    fn bitxor(self, rhs: Data) -> Self::Output {
+        self.xor(&rhs)
+    }
+}
+
+impl BitXor<&Data> for Data { // Data ^ &Data
+    type Output = Data;
+
+    fn bitxor(self, rhs: &Data) -> Self::Output {
+        self.xor(rhs)
+    }
 }
 ```
 
 Again, here's the test for challenge 2.
 
-```zig
-// src/cipher/XOR.zig
+```rust
+// src/data/xor.rs
+#[test]
+fn s1c2_fixed_xor() -> Result<()> {
+    let lhs = Data::from_hex("1c0111001f010100061a024b53535009181c")?;
+    let rhs = Data::from_hex("686974207468652062756c6c277320657965")?;
 
-test "set 1 challenge 2" {
-    const std = @import("std");
-    const allocator = std.testing.allocator;
+    let res = lhs ^ rhs;
+    assert_eq!("746865206b696420646f6e277420706c6179", res.hex());
 
-    var lhs = try Data.fromHex(
-        allocator,
-        "1c0111001f010100061a024b53535009181c",
-    );
-    defer lhs.deinit();
-
-    const rhs = try Data.fromHex(
-        allocator,
-        "686974207468652062756c6c277320657965",
-    );
-    defer rhs.deinit();
-
-    try lhs.xor(rhs.bytes);
-
-    const hex = @import("Hex.zig"){};
-    try lhs.encode(hex);
-
-    try std.testing.expectEqualStrings(
-        "746865206b696420646f6e277420706c6179",
-        lhs.bytes,
-    );
+    Ok(())
 }
 ```
 
