@@ -59,10 +59,6 @@ const { Content, headings } = await render(set);
 			grid-column: content;
 		}
 
-		> :nth-child(2) {
-			counter-reset: challenge;
-		}
-
 		h2,
 		h3,
 		h4,
@@ -92,6 +88,10 @@ const { Content, headings } = await render(set);
 				text-align: center;
 
 				background: var(--cl-accent);
+			}
+
+			&:first-of-type {
+				counter-reset: challenge;
 			}
 
 			+ blockquote {
@@ -163,5 +163,4 @@ const { Content, headings } = await render(set);
 			}
 		}
 	}
-
 </style>
