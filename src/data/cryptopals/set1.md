@@ -382,7 +382,7 @@ pub fn single_byte_xor(data: &Data) -> (u8, Data) {
 Finally, it's time to test our function. We'll load our encrypted text into a `Data`, then we'll run `singleCharacterXOR` on it.
 
 ```rust
-// src/attack/xor.zig
+// src/attack/xor.rs
 #[test]
 fn s1c3_single_byte_xor_cipher() -> Result<()> {
     let data =
@@ -808,7 +808,7 @@ fn unpartition(partitions: Vec<Data>) -> Data {
 Now that we have all the components of our `repeating_key_xor()` function, we can finally construct it in full. Here it is:
 
 ```rust
-// src/attack/xor.zig
+// src/attack/xor.rs
 pub fn repeating_key_xor(data: &Data) -> (Data, Data) {
     let keysize = guess_keysize(data);
     let partitions = partition(data, keysize);
@@ -828,7 +828,7 @@ pub fn repeating_key_xor(data: &Data) -> (Data, Data) {
 And here's the test:
 
 ```rust
-// src/attack/xor.rust
+// src/attack/xor.rs
 #[test]
 fn s1c6_break_repeating_key_xor() -> Result<()> {
     let text = include_str!("../../data/6.txt").replace('\n', "");
