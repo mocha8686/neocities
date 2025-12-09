@@ -104,14 +104,25 @@ import BaseLayout from './BaseLayout.astro';
 	kbd,
 	samp {
 		font-family: var(--ff-code);
-		font-size: 0.9rem;
+		font-size: 1.1rem;
 		color: var(--cl-accent);
-		text-shadow: 0 0 6px var(--cl-accent);
 	}
 
 	p {
 		font-size: 1.15rem;
 		text-wrap: pretty;
+	}
+
+	code,
+	kbd,
+	samp,
+	a,
+	h1 {
+		--radius: 18px;
+
+		text-shadow:
+			0 0 var(--radius) var(--cl-accent),
+			0 0 var(--radius) var(--cl-accent);
 	}
 
 	.astro-code {
@@ -123,6 +134,7 @@ import BaseLayout from './BaseLayout.astro';
 		samp {
 			font-size: 1rem;
 			color: inherit;
+			text-shadow: none;
 		}
 	}
 

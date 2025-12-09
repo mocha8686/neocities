@@ -17,6 +17,7 @@ const slug = href.slice(1);
 
 		color: var(--cl-foreground);
 		text-decoration: none;
+		text-shadow: none;
 
 		transition-timing-function: ease;
 		transition-duration: 150ms;
@@ -25,8 +26,11 @@ const slug = href.slice(1);
 		&.active,
 		&:hover,
 		&:focus-visible {
+			--radius: 10px;
+
 			color: var(--cl-accent);
 			text-decoration: underline;
+			text-shadow: 0 0 var(--radius) var(--cl-accent);
 		}
 	}
 </style>
