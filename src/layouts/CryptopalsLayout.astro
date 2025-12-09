@@ -1,12 +1,16 @@
 ---
 import { Font } from 'astro:assets';
+import { getImage } from 'astro:assets';
 
+import right from '$src/assets/icons/arrow-right.svg';
 import Back from '$src/components/Back.astro';
 
 import BaseLayout from './BaseLayout.astro';
+
+const arrow = await getImage({ src: right });
 ---
 
-<BaseLayout>
+<BaseLayout style={`--arrow: url("${arrow.src}")`}>
 	<Fragment slot="head">
 		<Font cssVariable="--font-rajdhani" preload />
 		<Font cssVariable="--font-kode-mono" preload />
@@ -164,5 +168,53 @@ import BaseLayout from './BaseLayout.astro';
 
 	.astro-code[data-language='plaintext'] {
 		line-height: 1.1;
+	}
+
+	details {
+		--transition-duration: 150ms;
+		--size: 24px;
+
+		&::details-content {
+			overflow-y: clip;
+			display: block;
+			height: 0;
+			transition:
+				height var(--transition-duration) ease-out,
+				content-visibility var(--transition-duration) allow-discrete;
+		}
+
+		> summary {
+			display: block;
+
+			&::before {
+				content: '';
+
+				display: inline-block;
+
+				aspect-ratio: 1;
+				width: var(--size);
+
+				color: var(--cl-accent);
+				vertical-align: middle;
+
+				background-color: currentColor;
+
+				transition: rotate var(--transition-duration) ease-out;
+
+				mask-image: var(--arrow);
+				mask-repeat: no-repeat;
+				mask-size: 100% 100%;
+			}
+		}
+	}
+
+	details[open] {
+		&::details-content {
+			height: auto;
+		}
+
+		> summary::before {
+			rotate: 90deg;
+		}
 	}
 </style>

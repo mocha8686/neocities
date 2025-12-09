@@ -1,5 +1,4 @@
 ---
-import { Icon } from 'astro-icon/components';
 import type { Heading } from './Heading';
 import HeadingListItem from './HeadingListItem.astro';
 
@@ -36,7 +35,6 @@ function formatSlugs(children: Heading[]): string {
 						x-bind:open={`$store.heading.active === '${slug(heading)}' || ${formatSlugs(children)}.includes($store.heading.active)`}
 					>
 						<summary>
-							<Icon class="dropdown-icon" name="iconoir:nav-arrow-right" />
 							<HeadingListItem {...heading} />
 						</summary>
 
@@ -51,6 +49,11 @@ function formatSlugs(children: Heading[]): string {
 <style>
 	summary {
 		margin-inline-start: -0.9em;
+
+		&::before {
+			--size: 16px;
+			--transition-duration: 250ms;
+		}
 	}
 
 	li {
