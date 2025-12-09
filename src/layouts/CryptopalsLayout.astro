@@ -35,23 +35,28 @@ const arrow = await getImage({ src: right });
 		--ff-accent: var(--font-rajdhani);
 		--ff-code: var(--font-kode-mono);
 
+		--cl-yellow: oklch(92% 0.19 91);
+		--cl-green: oklch(86% 0.21 131);
+		--cl-teal: oklch(76% 0.19 153);
+
 		--astro-code-foreground: oklch(
 			from var(--cl-foreground) calc(l * 0.8) calc(c * 0.7) h
 		);
 		--astro-code-background: var(--cl-background);
 
-		--astro-code-token-parameter: var(--cl-foreground);
-		--astro-code-token-string: var(--cl-foreground);
+		--astro-code-token-string: var(--cl-yellow);
 		--astro-code-token-string-expression: var(--astro-code-token-string);
 
-		--astro-code-token-punctuation: var(--astro-code-foreground);
+		--astro-code-token-parameter: var(--cl-yellow);
+
+		--astro-code-token-punctuation: var(--cl-green);
+		--astro-code-token-constant: var(--cl-green);
 
 		--astro-code-token-link: var(--cl-accent);
 		--astro-code-token-function: var(--cl-accent);
 
-		--astro-code-token-comment: oklch(76% 0.19 153);
-		--astro-code-token-keyword: oklch(86% 0.21 131);
-		--astro-code-token-constant: oklch(92% 0.19 91);
+		--astro-code-token-comment: var(--cl-teal);
+		--astro-code-token-keyword: var(--cl-foreground);
 		/* stylelint-enable custom-property-empty-line-before */
 
 		color-scheme: only dark;
