@@ -559,125 +559,85 @@ fn hamming_distance_works() {
 
 ### Guessing the keysize
 
-To guess the keysize, we'll again use a score-maximizing function similar to `singleCharacterXOR`, but instead, we'll be trying to minimize Hamming distance.
+To guess the keysize, we'll again use a score-maximizing function similar to `single_byte_xor`, but instead of maximizing plaintext score, we'll be trying to minimize Hamming distance.
 
-First, we have to divide our input into equal-sized blocks, one size for each `keysize` we're trying to guess. We will take the problem text's suggestion and try key lengths from 2 to 40. Of course, we can modify this later, but more values means more computation time.
+First, like the prompt suggests, we'll try `keysize`s from 2 to 40. We can modify this later, but more values means more computation time. We want to minimize a certain function this time, so we'll use a `min_by_key()`.
 
-- Associativity — `(a ^ b) ^ c == a ^ (b ^ c)`
-- Commutativity — `a ^ b == b ^ a`
-- Involution — `a ^ b ^ b == a`
-
-Associativity and commutativity mean we can order a long chain of XOR's however we want, and we don't need to worry about parentheses. An involution is simply a function where applying it onto an input twice will yield the input back.
-
-Now, the problem statement suggests we divide the ciphertext into chunks to find our keysize. Let's investigate how this works first.
-
-Say we have a ciphertext encrypted under the key `meow`. We know that for the `i`th byte of the ciphertext, it's equal to `plaintext[i] ^ key[i % 4]`.
-
-If we take the first two 4-byte blocks and XOR them together, we'll see something interesting happen:
-
-```
- plaintext: ..........................
-       key: meowmeowmeowmeowmeowmeowme
-ciphertext: qwertyuiopasdfghjklzxcvbnm
-
-ciphertext[0..4] == plaintext[0..4] ^ "meow"
-ciphertext[4..8] == plaintext[4..8] ^ "meow"
-
-ciphertext[0..4] ^ ciphertext[4..8]
-== plaintext[0..4] ^ "meow" ^ plaintext[4..8] ^ "meow"
-== plaintext[0..4] ^ plaintext[4..8] ^ "meow" ^ "meow"  (commutation and association)
-== plaintext[0..4] ^ plaintext[4..8]                    (involution)
-
-```zig
-for (2..41) |keysize| {
-    var windows = std.mem.window(u8, bytes, keysize, keysize);
-
-    while (windows.next()) |current| {
-        // ...
-    }
-}
+```rust
+const MAX_KEYSIZE: u32 = 40;
+let Some(res) = (2u32..=MAX_KEYSIZE).min_by_key(|keysize| {
+    // ...
+}) else {
+    unreachable!()
+};
 ```
 
-We'll store the `previous` block per iteration to compare to our `current` block, and use the two to add to a running `sizeScore`. Here's a little snippet from the code:
+Now, we want to divide our input into equal-sized blocks, one size for each `keysize` we're trying to guess. We'll loop over `(2..=40)`, taking each integer as our `keysize`. We can divide our data into blocks using `&[u8]::chunks_exact()`, which will create an iterator over each of our blocks.
 
-```zig
-for (2..41) |keysize| {
-    var sizeScore: u32 = 0;
-
-    var windows = std.mem.window(u8, data.bytes, keysize, keysize);
-    var prev: ?[]const u8 = null;
-
-    while (windows.next()) |current| {
-        if (prev) |previous| {
-            // ...
-        }
-        prev = current;
-    }
-}
+```rust
+data.chunks_exact(*keysize as usize);
 ```
 
-Inside the loop, we'll construct `Data` structs from previous and current to get our hamming distance, which we'll add to sizeScore. We also want to keep track of our total iterations, since we want to average the Hamming distances.
+Now, we'll use `Iterator::fold()` to combine all our blocks into a `score` (and a `count` to track the number of blocks; we'll see why later). We'll store the `previous` block per iteration to compare to our current block, and use the two to add to a running score. Here's a little snippet from the code:
 
-We'll also make sure that our two blocks are the same length, which won't be the case if we reach the last block and our total data length isn't divisible by our `keysize`.
-
-```zig
-var sizeScore: u32 = 0;
-var n: u32 = 0;
-
-// ...
-
-while (windows.next()) |current| {
-    if (prev) |previous| {
-        if (previous.len != current.len) break;
-        sizeScore += hammingDistance(previous, current);
-        n += 1;
-    }
-    prev = current;
-}
+```rust
+let (score, count, _) = data.chunks_exact(*keysize as usize)
+    //     ┌──────── initial score
+    //     │  ┌───── initial count
+    //     │  │  ┌── initial data        ┌─ current chunk
+    //     ▼  ▼  ▼                       ▼
+    .fold((0, 0, None), |(acc, n, prev), chunk| {
+        //                    ┌── default, if `prev` is None
+        //                    ▼
+        let res = prev.map_or(0, |prev: &[u8]| {
+            let prev = Data::from(prev);
+            let chunk = Data::from(chunk);
+            prev.hamming_distance(&chunk)
+                .expect("chunks should be equally sized")
+        });
+    //       ┌───────────────── add this block's distance to running score
+    //       │        ┌──────── increment number of blocks
+    //       │        │     ┌── use this chunk for the next iterations's `prev`
+    //       ▼        ▼     ▼
+        (acc + res, n + 1, Some(chunk))
+    });
 ```
 
-At the end, we'll multiply `sizeScore` by `100`, since we're going to divide it by `n` to average it out over the number of blocks. We're also going to divide it by `keysize` to get the Hamming distance of each set of blocks per block per keysize, or essentially, the average Hamming distance per byte with a certain `keysize`.
+At the end, we'll multiply `score` by `100`, since we're going to divide it by `count` and `keysize` to average it out over the number of blocks. Essentially, we're calculating the average Hamming distance per byte (since each of our `count` blocks has `keysize` bytes).
 
-```zig
-sizeScore *= 100;
-sizeScore /= n * @as(u32, @intCast(keysize));
+```rust
+let Some(res) = (2u32..=MAX_KEYSIZE).min_by_key(|keysize| {
+    let (score, count, _) = // ...
+    score * 100 / count / *keysize
+}) else {
+    unreachable!()
+};
 ```
 
-Then, we simply find the `keysize` that yields the smallest normalized Hamming distance across each block, and return that. Here's the full code for this process:
+Here's the full code for the process:
 
-```zig
-// src/attack/xor.zig
+```rust
+// src/attack/xor.rs
+fn guess_keysize(data: &Data) -> u32 {
+    const MAX_KEYSIZE: u32 = 40;
+    let Some(res) = (2u32..=MAX_KEYSIZE).min_by_key(|keysize| {
+        let (score, count, _) =
+            data.chunks_exact(*keysize as usize)
+                .fold((0, 0, None), |(acc, n, prev), chunk| {
+                    let res = prev.map_or(0, |prev: &[u8]| {
+                        let prev = Data::from(prev);
+                        let chunk = Data::from(chunk);
+                        prev.hamming_distance(&chunk)
+                            .expect("chunks should be equally sized")
+                    });
+                    (acc + res, n + 1, Some(chunk))
+                });
+        score * 100 / count / *keysize
+    }) else {
+        unreachable!()
+    };
 
-fn guessKeysize(bytes: []const u8) u32 {
-    var bestScore: u32 = std.math.maxInt(i32);
-    var bestKeysize: u32 = 0;
-
-    for (2..41) |keysize| {
-        var sizeScore: u32 = 0;
-        var n: u32 = 0;
-
-        var windows = std.mem.window(u8, bytes, keysize, keysize);
-        var prev: ?[]const u8 = null;
-
-        while (windows.next()) |current| {
-            if (prev) |previous| {
-                if (previous.len != current.len) break;
-                sizeScore += hammingDistance(previous, current);
-                n += 1;
-            }
-            prev = current;
-        }
-
-        sizeScore *= 100;
-        sizeScore /= n * @as(u32, @intCast(keysize));
-
-        if (sizeScore < bestScore) {
-            bestScore = sizeScore;
-            bestKeysize = @as(u32, @intCast(keysize));
-        }
-    }
-
-    return bestKeysize;
+    res
 }
 ```
 
