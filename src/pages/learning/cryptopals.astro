@@ -15,9 +15,21 @@ const sets = (await getCollection('cryptopals')).toSorted(
 		These are my writeups for the
 		<a href="https://cryptopals.com/">cryptopals crypto challenges</a>, written
 		in
-		<a href="https://ziglang.org/">Zig</a>. I've redone these challenges over
+		<a href="https://rust-lang.org/">Rust</a>. I've redone these challenges over
 		and over again since I didn't want to refactor the code, once in Rust and
 		now twice in Zig.
+	</p>
+
+	<p>
+		Originally, I posted solutions using Zig, but my first attempt fell to the
+		whims of time, and when I went to pick it back up, Zig 0.15 released and
+		much of my code became deprecated, so I elected to start over. Then, my
+		second attempt with 0.15 was put to a halt due to mysterious segfaults when
+		I tried to import a file, so at that point, I decided to take a break from
+		Zig until it's reached its release.
+	</p>
+
+	<p>
 		<a href="https://github.com/mocha8686/cryptopals/">The repository</a>
 		is also available on GitHub.
 	</p>
@@ -47,7 +59,7 @@ const sets = (await getCollection('cryptopals')).toSorted(
 	}
 
 	.sets {
-		--min-card-size: 12rem;
+		--min-card-size: 14rem;
 
 		display: grid;
 		grid-auto-rows: auto 1fr auto;
