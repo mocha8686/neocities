@@ -972,9 +972,9 @@ fn s1c7_aes_in_ecb_mode() -> Result<()> {
 > 
 > Remember that the problem with ECB is that it is stateless and deterministic; the same 16 byte plaintext block will always produce the same 16 byte ciphertext.
 
-This is another pure challenge, except this time, we don't even need any of our library.
+This is another pure challenge, though I will put some of the functionality into a library function to use in later challenges.
 
-The challenge is hinting for us to take a look at 16-byte blocks again. Basically, given a long enough plaintext, there will eventually be two blocks that have the same plaintext. Even though we may not be able to directly break AES yet on a single block, we can look at the relationship between blocks and extract information from there.
+This challenge is hinting for us to take a look at 16-byte blocks again. Basically, given a long enough plaintext, there will eventually be two blocks that have the same plaintext. Even though we may not be able to directly break AES-ECB on a single block (yet), we can look at the relationship between blocks and extract information from there.
 
 ```
 blocksize = 4
@@ -999,50 +999,44 @@ ciphertext │ tjkh │ zbvx │ dfgk │ tjkh │ zbvx │ dfgk │
 
 So, we're going to find the line in the input file with the maximum number of repeated blocks.
 
-For each file, we'll create 16-byte windows and store them into an `ArrayList` as we go over them. If any of the new chunks we see is equal to any chunk inside the `ArrayList`, we'll know we've hit a duplicate block, and we can record that.
-
-We can look for the line with the largest score, and we'll know that's the one that was encryped with AES-128-ECB.
+For each line, we'll split it into 16-byte chunks and group them up into a count map. We'll subtract one from each count, and if there's any duplicates, those counts will be nonzero. We can then simply sum up our counts to get an ECB score.
 
 Here's the code.
 
-```zig
-// src/cipher/AesEcb.zig
+```rust
+// src/cipher/aes_ecb.rs
+pub fn score(bytes: &[u8]) -> u32 {
+    bytes
+        .chunks_exact(16)
+        .counts()
+        .into_values()
+        .map(|v| v.saturating_sub(1) as u32)
+        .sum()
+}
+```
 
-test "set 1 challenge 8" {
-    const allocator = std.testing.allocator;
-    const Chunks = std.ArrayList([]const u8);
+Now, to get an ECB score, we can simply use `aes_ecb::score()`.
 
-    const text = @embedFile("../data/8.txt");
+We can look for the line with the largest score, and we'll know that's the one that was encryped with AES-128-ECB.
 
-    var lines = std.mem.splitScalar(u8, text, '\n');
-    var bestGuess: ?[]const u8 = null;
-    var bestScore: u32 = std.math.minInt(u32);
+```rust
+// src/cipher/aes_ecb.rs
+fn s1c8_detect_aes_in_ecb_mode() -> Result<()> {
+    let text = include_str!("../../data/8.txt");
+    let res = text
+        .split('\n')
+        .map(Data::from_hex)
+        .collect::<crate::Result<Vec<_>>>()?
+        .into_iter()
+        .max_by_key(|d| score(d))
+        .unwrap();
 
-    while (lines.next()) |str| {
-        var windows = std.mem.window(u8, str, 16, 16);
-        var chunks = try Chunks.initCapacity(allocator, (str.len / 16) + 1);
-        defer chunks.deinit(allocator);
-        var score: u32 = 0;
-
-        while (windows.next()) |current| {
-            for (chunks.items) |target| {
-                if (std.mem.eql(u8, current, target)) {
-                    score += 1;
-                }
-            }
-            try chunks.append(allocator, current);
-        }
-
-        if (score > bestScore) {
-            bestGuess = str;
-            bestScore = score;
-        }
-    }
-
-    try std.testing.expectEqualStrings(
+    assert_eq!(
         "<ANSWER>",
-        bestGuess.?,
+        res.hex()
     );
+
+    Ok(())
 }
 ```
 
