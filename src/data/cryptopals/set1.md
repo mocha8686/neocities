@@ -268,16 +268,18 @@ And here's the implementation:
 
 ```rust
 // src/data/xor.rs
-pub fn xor(&self, other: &Self) -> Self {
-    let len = self.len().max(other.len());
-    let bytes = self
-        .iter()
-        .cycle()
-        .zip(other.iter().cycle())
-        .take(len)
-        .map(|(a, b)| a ^ b)
-        .collect();
-    Self(bytes)
+impl Data {
+    pub fn xor(&self, other: &Self) -> Self {
+        let len = self.len().max(other.len());
+        let bytes = self
+            .iter()
+            .cycle()
+            .zip(other.iter().cycle())
+            .take(len)
+            .map(|(a, b)| a ^ b)
+            .collect();
+        Self(bytes)
+    }
 }
 ```
 
@@ -509,23 +511,34 @@ Let's begin.
 
 To guess the keysize, we're going to look for patterns in the data. If we assume our encrypted text comes from a repeating-key XOR of length `n`, we can intuit that there might be patterns between chunks of length `n`, and in fact, there are. If we take the Hamming distance between two blocks that match the key length, it will tend to be smaller.
 
-The phrase "number of differing bits" may seem familiar. In fact, this is one way to intuit the XOR function. We can simply count the number of `1`'s in the binary representation of the resulting XOR between two bytes Zig has a builtin called `@popCount` that does exactly this. For example,
+The phrase "number of differing bits" may seem familiar. In fact, this is one way to intuit the XOR function, the number of differing bits.
 
-```zig
-@popCount(0b01101000) == 3
+```
+       !!  !!!
+    a 01001011
+    b 00101100
+a ^ b 01100111
 ```
 
-We can repeat this procedure for an entire block, summing all of the `@popCounts`, to get our Hamming distance.
+We can count the number of `1`'s in the binary representation of the resulting XOR between two bytes to get the Hamming distance between two bytes. Rust has a function `u8::count_ones()` that does exactly this. For example,
 
-```zig
-// src/hammingDistance.zig
+```rust
+0b01101000.count_ones() == 3
+```
 
-pub fn hammingDistance(lhs: []const u8, rhs: []const u8) u32 {
-    var res: u32 = 0;
-    for (lhs, rhs) |a, b| {
-        res += @popCount(a ^ b);
+We can repeat this procedure for an entire block, summing all of the counts, to get our Hamming distance.
+
+```rust
+// src/data/hamming_distance.rs
+impl Data {
+    pub fn hamming_distance(&self, other: &Self) -> Option<u32> {
+        if self.len() == other.len() {
+            let res = (self ^ other).iter().map(|b| b.count_ones()).sum();
+            Some(res)
+        } else {
+            None
+        }
     }
-    return res;
 }
 ```
 
@@ -533,22 +546,14 @@ This function assumes that both of the inputs are of equal lengths; otherwise, t
 
 I also wrote a test, taken from the problem statement.
 
-```zig
-// src/hammingDistance.zig
-
-test "hamming distance" {
-    const std = @import("std");
-    try std.testing.expectEqual(37, hammingDistance("wokka wokka!!!", "this is a test"));
-}
-```
-
-Finally, I also a conveniece method to `Data`.
-
-```zig
-// src/Data.zig
-
-pub fn hammingDistance(self: Self, other: []const u8) u32 {
-    return @import("hammingDistance.zig").hammingDistance(self.bytes, other);
+```rust
+// src/data/hamming_distance.rs
+#[test]
+fn hamming_distance_works() {
+    let lhs = Data::from(b"this is a test".as_slice());
+    let rhs = Data::from(b"wokka wokka!!!".as_slice());
+    let res = lhs.hamming_distance(&rhs);
+    assert_eq!(Some(37), res);
 }
 ```
 
@@ -558,7 +563,30 @@ To guess the keysize, we'll again use a score-maximizing function similar to `si
 
 First, we have to divide our input into equal-sized blocks, one size for each `keysize` we're trying to guess. We will take the problem text's suggestion and try key lengths from 2 to 40. Of course, we can modify this later, but more values means more computation time.
 
-We'll loop over `(2..=40)`, taking each integer as our `keysize`. We can divide our data into blocks using `std.mem.window` with `size == advance == keysize`, which will iterate over our blocks.
+- Associativity — `(a ^ b) ^ c == a ^ (b ^ c)`
+- Commutativity — `a ^ b == b ^ a`
+- Involution — `a ^ b ^ b == a`
+
+Associativity and commutativity mean we can order a long chain of XOR's however we want, and we don't need to worry about parentheses. An involution is simply a function where applying it onto an input twice will yield the input back.
+
+Now, the problem statement suggests we divide the ciphertext into chunks to find our keysize. Let's investigate how this works first.
+
+Say we have a ciphertext encrypted under the key `meow`. We know that for the `i`th byte of the ciphertext, it's equal to `plaintext[i] ^ key[i % 4]`.
+
+If we take the first two 4-byte blocks and XOR them together, we'll see something interesting happen:
+
+```
+ plaintext: ..........................
+       key: meowmeowmeowmeowmeowmeowme
+ciphertext: qwertyuiopasdfghjklzxcvbnm
+
+ciphertext[0..4] == plaintext[0..4] ^ "meow"
+ciphertext[4..8] == plaintext[4..8] ^ "meow"
+
+ciphertext[0..4] ^ ciphertext[4..8]
+== plaintext[0..4] ^ "meow" ^ plaintext[4..8] ^ "meow"
+== plaintext[0..4] ^ plaintext[4..8] ^ "meow" ^ "meow"  (commutation and association)
+== plaintext[0..4] ^ plaintext[4..8]                    (involution)
 
 ```zig
 for (2..41) |keysize| {
