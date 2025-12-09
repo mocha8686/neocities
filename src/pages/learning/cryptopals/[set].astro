@@ -39,21 +39,22 @@ const { Content, headings } = await render(set);
 	}
 
 	main {
-		--content-width: 75ch;
+		--content-width: 90ch;
 		--nav-width: 12rem;
-		--gap: 2rem;
+		--gap: 4rem;
+		--margin: 2rem;
 
 		position: relative;
 
 		container-type: inline-size;
 		display: grid;
 		grid-template-columns:
-			[full-width-start] 0 [content-start] minmax(auto, var(--content-width))
+			[full-width-start] var(--margin) [content-start] minmax(auto, var(--content-width))
 			[content-end] auto [full-width-end] var(--gap) [nav-start] minmax(
 				min(var(--nav-width), 100%),
 				1fr
 			)
-			[nav-end];
+			[nav-end] var(--margin);
 
 		line-height: 1.8;
 
