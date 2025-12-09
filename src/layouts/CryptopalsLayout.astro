@@ -17,6 +17,7 @@ const arrow = await getImage({ src: right });
 	</Fragment>
 
 	<slot />
+
 	<Back />
 </BaseLayout>
 
@@ -132,8 +133,46 @@ const arrow = await getImage({ src: right });
 	}
 
 	.astro-code {
+		--border-color: var(--cl-accent);
+		--border-width: 2px;
+		--bar-width: 8px;
+		--bevel-size: 32px;
+		--background-color: var(--cl-container);
+
+		--bevel-start: calc((var(--bevel-size) - var(--border-width)) * sqrt(2) / 2);
+		--bevel-end: calc(var(--bevel-start) + var(--border-width));
+
+		position: relative;
+
 		padding: 0.5em 2ch;
+		border: var(--border-width) solid transparent;
+		border-inline-start-width: var(--bar-width);
+
+		background:
+			top left / 100% var(--border-width)
+				linear-gradient(180deg, var(--border-color), var(--border-color))
+				border-box,
+			top left / var(--bar-width) 100%
+				linear-gradient(180deg, var(--border-color), var(--border-color))
+				border-box,
+			bottom left / calc(100% - var(--bevel-size)) var(--border-width)
+				linear-gradient(0deg, var(--border-color), var(--border-color))
+				border-box,
+			top right / var(--border-width) calc(100% - var(--bevel-size))
+				linear-gradient(90deg, var(--border-color), var(--border-color))
+				border-box,
+			bottom right / var(--bevel-size) var(--bevel-size)
+				linear-gradient(
+					135deg,
+					transparent var(--bevel-start),
+					var(--border-color) var(--bevel-start),
+					var(--border-color) var(--bevel-end),
+					var(--cl-background) var(--bevel-end)
+				)
+				border-box,
+			transparent;
 		background-color: var(--cl-container) !important;
+		background-repeat: no-repeat;
 
 		code,
 		kbd,
