@@ -70,6 +70,7 @@ const { Content, headings } = await render(set);
 		> h2 {
 			display: flex;
 			grid-column: full-width;
+
 			margin-block-start: 2.5em;
 			border-block-end: 2px solid var(--cl-accent);
 
@@ -171,6 +172,10 @@ const { Content, headings } = await render(set);
 			border-inline-start: 0.4em solid var(--cl-accent);
 			background: var(--cl-container);
 
+			&::details-content {
+				margin-inline-end: 2em;
+			}
+
 			summary {
 				padding-block: 0.5em;
 				font-size: 1.25rem;
@@ -193,10 +198,6 @@ const { Content, headings } = await render(set);
 					mask-repeat: no-repeat;
 					mask-size: 100% 100%;
 				}
-			}
-
-			&::details-content {
-				margin-inline-end: 2em;
 			}
 		}
 
