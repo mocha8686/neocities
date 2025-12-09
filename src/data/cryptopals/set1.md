@@ -776,23 +776,30 @@ let (key_bytes, partitions): (Vec<u8>, Vec<Data>) = partitions
 
 ### Unpartitioning
 
-Finally, we want to reverse our partitioning to reconstruct the original plaintext. We create a new buffer with a size equal to our original ciphertext. Then, we take the first bytes from each decrypted block and pack them together, then we do the same with the second bytes, the third bytes, and so on.
+Finally, we want to reverse our partitioning to reconstruct the original plaintext. We'll reconstruct our original indices using a bit of math.
 
-```zig
-// src/attack/xor.zig
+First, we recover the original `keysize` by getting the number of partitions. Then, for each of our partitions, we'll get their index `i`, which will be our offset, and then for each byte in our data, we'll get its index within the data `n`. Finally, we can reconstruct its original position using `n * keysize + i`.
 
-fn unpartition(allocator: std.mem.Allocator, blocks: []Data, keysize: u32, len: usize) ![]u8 {
-    var buf = try allocator.alloc(u8, len);
-    errdefer allocator.free(buf);
+We can then sort each of the bytes by the original index to reconstruct our data.
 
-    for (blocks, 0..) |block, i| {
-        defer block.deinit();
-        for (block.bytes, 0..) |b, n| {
-            buf[keysize * n + i] = b;
-        }
-    }
-
-    return buf;
+```rust
+// src/attack/xor.rs
+fn unpartition(partitions: Vec<Data>) -> Data {
+    let keysize = partitions.len(); // get the keysize
+    let bytes = partitions
+        .into_iter()
+        .enumerate() // get partition index `i`
+        .flat_map(|(i, data)| {
+            data.iter()
+                .copied()
+                .enumerate() // get byte index `n`
+                .map(|(n, b)| (n * keysize + i, b)) // calculate original index
+                .collect_vec()
+        })
+        .sorted_by_key(|(i, _)| *i) // sort by original index
+        .map(|(_, b)| b) // discard index
+        .collect_vec();
+    Data::from(bytes)
 }
 ```
 
