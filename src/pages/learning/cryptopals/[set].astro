@@ -35,21 +35,29 @@ const { Content, headings } = await render(set);
 
 <style is:global>
 	:root {
+		--margin: 2rem;
+
 		scroll-behavior: smooth;
+	}
+
+	header {
+		margin-inline-start: var(--margin);
 	}
 
 	main {
 		--content-width: 90ch;
 		--nav-width: 12rem;
 		--gap: 4rem;
-		--margin: 2rem;
 
 		position: relative;
 
 		container-type: inline-size;
 		display: grid;
 		grid-template-columns:
-			[full-width-start] var(--margin) [content-start] minmax(auto, var(--content-width))
+			[full-width-start] var(--margin) [content-start] minmax(
+				auto,
+				var(--content-width)
+			)
 			[content-end] auto [full-width-end] var(--gap) [nav-start] minmax(
 				min(var(--nav-width), 100%),
 				1fr
@@ -57,15 +65,24 @@ const { Content, headings } = await render(set);
 			[nav-end] var(--margin);
 
 		line-height: 1.8;
+	}
 
-		@media screen and (width <= 1000px) {
+	@media screen and (width <= 1150px) {
+		header {
+			margin-inline-start: 0;
+		}
+
+		main {
 			grid-template-columns:
-				[full-width-start] 0 [content-start] minmax(auto, var(--content-width))
+				[full-width-start] 0 [content-start] minmax(
+					min(var(--content-width), 100%),
+					auto
+				)
 				[content-end] auto [full-width-end];
+		}
 
-			.nav-transform {
-				display: none;
-			}
+		.nav-transform {
+			display: none !important;
 		}
 	}
 
@@ -95,6 +112,7 @@ const { Content, headings } = await render(set);
 
 				display: block;
 				flex: 0 3.4ex;
+				align-self: end;
 
 				aspect-ratio: 1;
 				margin-inline-end: 0.5em;
@@ -117,6 +135,7 @@ const { Content, headings } = await render(set);
 
 				position: relative;
 
+				margin-inline: clamp(0rem, -0.8rem + 4.5cqi, 2rem);
 				border: 1px solid var(--border-color);
 				border-inline-start-width: 6px;
 
@@ -207,5 +226,4 @@ const { Content, headings } = await render(set);
 			}
 		}
 	}
-
 </style>
