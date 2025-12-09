@@ -413,46 +413,29 @@ This one's more of a "pure" coding challenge than the others, in the sense that 
 
 This challenge is pretty simple. We have to iterate over the lines of a text file, parse them as hex strings, and perform single-character XOR on them to decrypt them as best we can. Then, we have to find the one line that's actually encrypted via single-character XOR, and output that.
 
-We can use the builtin `@embedFile` to load the contents of the file into memory as a string, then we can create an iterator with `std.mem.splitScalar`, passing in our text and our delimiter (in our case, `\n`).
+We can use the builtin macro `include_str!()` to load the contents of the file into memory as a string, then we can split the string into lines with `String::split_ascii_whitespace()`.
 
-This algorithm is going to be pretty similar to `singleCharacterXOR`; we iterate over each line, try to decrypt it, then score it like we did inside our brute forcer. The hardest part is keeping track of those "best guesses."
+This algorithm is going to be pretty similar to `singleCharacterXOR`; we iterate over each line, convert it into a `Data` struct, try to decrypt it, then find the one with the max score, just like we did inside our brute forcer.
 
 Here's the code:
 
-```zig
-// src/attack/xor.zig
+```rust
+// src/attack/xor.rs
+fn s1c4_detect_single_character_xor() -> Result<()> {
+    let text = include_str!("../../data/4.txt");
+    let (key, data) = text
+        .split_ascii_whitespace()
+        .map(Data::from_hex)
+        .collect::<crate::Result<Vec<_>>>()?
+        .into_iter()
+        .map(|data| single_byte_xor(&data))
+        .max_by_key(|(_, data)| score(data))
+        .unwrap();
 
-test "set 1 challenge 4" {
-    const allocator = std.testing.allocator;
+    assert_eq!('<KEY>', key.into());
+    assert_eq!("<PLAINTEXT>", data);
 
-    const text = @embedFile("../data/4.txt");
-    var iter = std.mem.splitScalar(u8, text, '\n');
-
-    var bestGuess: ?Data = null;
-    var bestScore: i32 = std.math.minInt(i32);
-    var bestKey: u8 = undefined;
-
-    defer bestGuess.?.deinit();
-
-    while (iter.next()) |str| {
-        var guess = try Data.fromHex(allocator, str);
-        errdefer guess.deinit();
-        const key = try singleCharacterXOR(&guess);
-        const guessScore = score(guess);
-        if (guessScore > bestScore) {
-            if (bestGuess) |g| {
-                g.deinit();
-            }
-            bestGuess = guess;
-            bestScore = guessScore;
-            bestKey = key;
-        } else {
-            guess.deinit();
-        }
-    }
-
-    try std.testing.expectEqual('<KEY>', bestKey);
-    try std.testing.expectEqualStrings("<PLAINTEXT>", bestGuess.?.bytes);
+    Ok(())
 }
 ```
 
