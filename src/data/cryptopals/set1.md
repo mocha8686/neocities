@@ -765,19 +765,13 @@ fn partition(data: &Data, keysize: u32) -> Vec<Data> {
 
 ### Decrypting
 
-Now that we have our data partitioned, the decryption is simple. We simply have to call `singleCharacterXOR` on each of our blocks. We'll also keep track of the key bytes returned to construct the full key.
+Now that we have our data partitioned, the decryption is simple. We simply have to call `single_byte_xor` on each of our blocks. We'll also keep track of the key bytes returned to construct the full key.
 
-```zig
-const keysize = try guessKeysize(data.*);
-var key = try allocator.alloc(u8, keysize);
-errdefer allocator.free(key);
-
-var blocks = try partition(data.*, keysize);
-defer allocator.free(blocks);
-
-for (0..keysize) |n| {
-    key[n] = try singleCharacterXOR(&blocks[n]);
-}
+```rust
+let (key_bytes, partitions): (Vec<u8>, Vec<Data>) = partitions
+    .into_iter()
+    .map(|data| single_byte_xor(&data))
+    .collect();
 ```
 
 ### Unpartitioning
