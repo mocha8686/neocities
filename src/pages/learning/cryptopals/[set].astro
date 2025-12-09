@@ -27,7 +27,9 @@ const { Content, headings } = await render(set);
 	<main>
 		<HeadingNav {headings} />
 
-		<Content />
+		<div class="content">
+			<Content />
+		</div>
 	</main>
 </CryptopalsLayout>
 
@@ -55,16 +57,26 @@ const { Content, headings } = await render(set);
 
 		line-height: 1.8;
 
-		> * {
-			grid-column: content;
+		@media screen and (width <= 1000px) {
+			grid-template-columns:
+				[full-width-start] 0 [content-start] minmax(auto, var(--content-width))
+				[content-end] auto [full-width-end];
+
+			.nav-transform {
+				display: none;
+			}
 		}
+	}
+
+	.content {
+		grid-column: content;
 
 		h2,
 		h3,
 		h4,
 		h5,
 		h6 {
-			scroll-margin-block-start: 1em;
+			scroll-margin-block-start: 1.5em;
 		}
 
 		> h2 {
@@ -145,23 +157,12 @@ const { Content, headings } = await render(set);
 
 				> * {
 					margin-inline: 1rem;
-				}
-
-				li {
 					line-height: 1.5;
-
-					& + & {
-						margin-block-start: 0.5em;
-					}
 				}
 			}
 		}
 
 		> p {
-			& + & {
-				margin-block-start: 0;
-			}
-
 			@container (width < 800px) {
 				line-height: 1.6;
 			}
@@ -199,16 +200,11 @@ const { Content, headings } = await render(set);
 					mask-size: 100% 100%;
 				}
 			}
-		}
 
-		@media screen and (width <= 1000px) {
-			grid-template-columns:
-				[full-width-start] 0 [content-start] minmax(auto, var(--content-width))
-				[content-end] auto [full-width-end];
-
-			.nav-transform {
-				display: none;
+			> :last-child {
+				padding-block-end: 2em;
 			}
 		}
 	}
+
 </style>
