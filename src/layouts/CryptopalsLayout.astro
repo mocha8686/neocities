@@ -76,6 +76,7 @@ const arrow = await getImage({ src: right });
 
 	:where(h1, h2, h3, h4, h5, h6) {
 		font-family: var(--ff-accent);
+		color: var(--cl-accent);
 		text-transform: uppercase;
 	}
 
@@ -105,6 +106,18 @@ const arrow = await getImage({ src: right });
 		@media (prefers-reduced-motion: reduce) {
 			animation: none;
 		}
+	}
+
+	h1 {
+		font-size: 3rem;
+	}
+
+	h2 {
+		font-size: 2rem;
+	}
+
+	h3 {
+		font-size: 1.8rem;
 	}
 
 	@keyframes blink {
