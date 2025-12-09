@@ -39,17 +39,10 @@ export default defineConfig({
             // cryptopals
             {
                 provider: fontProviders.bunny(),
-                name: 'Fira Code',
-                cssVariable: '--font-fira-code',
+                name: 'Kode Mono',
+                cssVariable: '--font-kode-mono',
                 weights: [400],
                 fallbacks: ['monospace'],
-            },
-            {
-                provider: fontProviders.bunny(),
-                name: 'Blinker',
-                cssVariable: '--font-blinker',
-                weights: [300, 600],
-                fallbacks: ['Ubuntu', 'sans-serif'],
             },
             {
                 provider: fontProviders.bunny(),

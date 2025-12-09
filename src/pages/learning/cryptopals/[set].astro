@@ -164,34 +164,4 @@ const { Content, headings } = await render(set);
 		}
 	}
 
-	.astro-code {
-		padding: 0.5em 2ch;
-		background-color: var(--cl-container) !important;
-	}
-
-	.astro-code,
-	.astro-code span {
-		font-family: var(--ff-code);
-	}
-
-	pre.astro-code {
-		counter-reset: code-line;
-	}
-
-	.astro-code:not([data-language='plaintext']) .line {
-		&::before {
-			content: counter(code-line);
-			counter-increment: code-line;
-			margin-inline-end: 2ch;
-			opacity: 0.5;
-		}
-
-		&:nth-child(-n + 9)::before {
-			content: ' ' counter(code-line);
-		}
-	}
-
-	.astro-code[data-language='plaintext'] {
-		line-height: 1.1;
-	}
 </style>

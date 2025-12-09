@@ -8,9 +8,8 @@ import BaseLayout from './BaseLayout.astro';
 
 <BaseLayout>
 	<Fragment slot="head">
-		<Font cssVariable="--font-blinker" preload />
 		<Font cssVariable="--font-rajdhani" preload />
-		<Font cssVariable="--font-fira-code" preload />
+		<Font cssVariable="--font-kode-mono" preload />
 	</Fragment>
 
 	<slot />
@@ -27,7 +26,7 @@ import BaseLayout from './BaseLayout.astro';
 
 		--ff-main: var(--font-rajdhani);
 		--ff-accent: var(--font-rajdhani);
-		--ff-code: var(--font-fira-code);
+		--ff-code: var(--font-kode-mono);
 
 		--astro-code-foreground: oklch(
 			from var(--cl-foreground) calc(l * 0.8) calc(c * 0.7) h
@@ -107,9 +106,18 @@ import BaseLayout from './BaseLayout.astro';
 		font-family: var(--ff-code);
 		font-size: 0.9rem;
 		color: var(--cl-accent);
+		text-shadow: 0 0 6px var(--cl-accent);
+	}
+
+	p {
+		font-size: 1.15rem;
+		text-wrap: pretty;
 	}
 
 	.astro-code {
+		padding: 0.5em 2ch;
+		background-color: var(--cl-container) !important;
+
 		code,
 		kbd,
 		samp {
@@ -118,8 +126,29 @@ import BaseLayout from './BaseLayout.astro';
 		}
 	}
 
-	p {
-		font-size: 1.15rem;
-		text-wrap: pretty;
+	.astro-code,
+	.astro-code span {
+		font-family: var(--ff-code);
+	}
+
+	pre.astro-code {
+		counter-reset: code-line;
+	}
+
+	.astro-code:not([data-language='plaintext']) .line {
+		&::before {
+			content: counter(code-line);
+			counter-increment: code-line;
+			margin-inline-end: 2ch;
+			opacity: 0.5;
+		}
+
+		&:nth-child(-n + 9)::before {
+			content: ' ' counter(code-line);
+		}
+	}
+
+	.astro-code[data-language='plaintext'] {
+		line-height: 1.1;
 	}
 </style>
