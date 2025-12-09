@@ -245,26 +245,60 @@ fn s1c2_fixed_xor() -> Result<()> {
 
 In preparation for this challenge and future challenges, I decided to first implement repeating-key XOR, which is essentially an XOR, but with wrapping back around to the first character once the end of the shorter string is reached.
 
-Since we're mutating `self`, if our buffer is larger or of equal length to the other buffer, we can use the same buffer. However, if it's smaller, we will need to reallocate a larger buffer to accomodate the new data.
+To do this, we first get the length of the longer string, which we'll call `len`. We can use the `Iterator::cycle()` method to make an iterator infintely cycle, so we can cycle both iterators and zip them up together to create an infinite iterator.
 
-```zig
-// src/Data.zig
+Then, we simply call `Iterator::take()` to take the first `n` bytes, or in our case, the first `len` bytes, operate our XOR on those bytes, and collect them all up into a `Data`.
 
-pub fn xor(self: *Self, other: []const u8) !void {
-    if (self.len() >= other.len) {
-        const size = self.len();
-        for (0..size) |i| {
-            const l = other.len;
-            self.bytes[i] ^= other[i % l];
-        }
-    } else {
-        const size = other.len;
-        const buf = try self.allocator.alloc(u8, size);
-        const l = self.len();
-        for (0..size) |i| {
-            buf[i] = self.bytes[i % l] ^ other[i];
-        }
-        self.reinit(buf);
+```
+lhs = abcd
+rhs = vxt
+
+len = max(lhs.len(), rhs.len()) == 4
+
+                        01234567890123456789...
+          lhs.cycle() │ abcdabcdabcdabcdabcd...
+          rhs.cycle() │ vxtvxtvxtvxtvxtvxtvx...
+                      │
+                      │ 0123
+lhs.cycle().take(len) │ abcd
+rhs.cycle().take(len) │ vxtv
+```
+
+And here's the implementation:
+
+```rust
+// src/data/xor.rs
+pub fn xor(&self, other: &Self) -> Self {
+    let len = self.len().max(other.len());
+    let bytes = self
+        .iter()
+        .cycle()
+        .zip(other.iter().cycle())
+        .take(len)
+        .map(|(a, b)| a ^ b)
+        .collect();
+    Self(bytes)
+}
+```
+
+I also implemented `BitXor<u8>` for `Data` and `&Data` to be able to easily XOR a piece of `Data` against a single byte, which we'll be doing lots of later.
+
+```rust
+// src/data/xor.rs
+impl BitXor<u8> for &Data {
+    type Output = Data;
+
+    fn bitxor(self, rhs: u8) -> Self::Output {
+        let bytes = self.iter().map(|b| b ^ rhs).collect();
+        Data(bytes)
+    }
+}
+
+impl BitXor<u8> for Data {
+    type Output = Data;
+
+    fn bitxor(self, rhs: u8) -> Self::Output {
+        (&self).bitxor(rhs)
     }
 }
 ```
@@ -273,108 +307,90 @@ Now, to "score" a piece of plaintext. Like the problem text suggests, we'll use 
 
 The code is fairly simple; we simply loop over each byte, look it up in a frequency dictionary, then sum the scores. If we don't find a byte in the letter dictionary, we apply a small penalty. Another neat little trick is giving spaces a very high score, since they are by far the most common "character" in English texts.
 
-In Zig, we can generate a `StaticStringMap` at `comptime`, which basically means the frequency dictionary will be baked into the program data. The process is a little convoluted, but it's not too bad.
+In Rust, we can use the `phf` crate to generate a static frequency map at compile time. `phf` actually stands for "perfect hash function," which is a hashing function specialized for a certain set of data to never generate collisions. You can read more about them [in the crate docs](https://docs.rs/phf/latest/phf/) and [on Wikipedia](https://en.wikipedia.org/wiki/Perfect_hash_function).
 
-```zig
-// src/attack/score.zig
+The numbers simply come from [the Wikipedia page on Character frequency](https://en.wikipedia.org/wiki/Letter_frequency), after normalizing the percents to integers by multiplying by `10_000`.
 
-const Frequencies = StaticStringMap(i32);
+```rust
+// src/attack/score.rs
+use phf::phf_map;
 
-const FrequencyKV = struct { []const u8, i32 };
-const frequencies: []const FrequencyKV = &.{
-    .{ " ", 20000 },
-    .{ "e", 12700 },
-    .{ "t", 9100 },
-    .{ "a", 8200 },
-    .{ "o", 7500 },
-    .{ "i", 7000 },
-    .{ "n", 6700 },
-    .{ "s", 6300 },
-    .{ "h", 6100 },
-    .{ "r", 6000 },
-    .{ "d", 4000 },
-    .{ "l", 4000 },
-    .{ "c", 2000 },
-    .{ "u", 2000 },
-    .{ "m", 2000 },
-    .{ "w", 2000 },
-    .{ "f", 2000 },
-    .{ "g", 2000 },
-    .{ "y", 2000 },
-    .{ "p", 1000 },
-    .{ "b", 1000 },
-    .{ "v", 980 },
-    .{ "k", 770 },
-    .{ "j", 160 },
-    .{ "x", 150 },
-    .{ "q", 120 },
-    .{ "z", 74 },
+static FREQUENCIES: phf::Map<u8, i32> = phf_map! {
+    b' ' => 20000,
+    b'e' => 12700,
+    b't' =>  9100,
+    b'a' =>  8200,
+    b'o' =>  7500,
+    b'i' =>  7000,
+    b'n' =>  6700,
+    b's' =>  6300,
+    b'h' =>  6100,
+    b'r' =>  6000,
+    b'd' =>  4300,
+    b'l' =>  4000,
+    b'c' =>  2800,
+    b'u' =>  2800,
+    b'm' =>  2400,
+    b'w' =>  2400,
+    b'f' =>  2200,
+    b'g' =>  2000,
+    b'y' =>  2000,
+    b'p' =>  1900,
+    b'b' =>  1500,
+    b'v' =>   980,
+    b'k' =>   770,
+    b'j' =>   160,
+    b'x' =>   150,
+    b'q' =>   120,
+    b'z' =>    74,
 };
-const map = Frequencies.initComptime(frequencies);
 ```
 
-Now, we just have to write a function that loops over the input `bytes` and tells us its score. We also make sure that our lookup is case-insensitive.
+Now, we just have to write a function that loops over the input `bytes` and tells us its score. We also want to make sure that our lookup is case-insensitive.
 
-```zig
-// src/attack/score.zig
-
-pub fn score(bytes: []const u8) i32 {
-    var res: i32 = 0;
-    for (bytes) |b| {
-        res += map.get(&.{std.ascii.toLower(b)}) orelse -1000;
-    }
-    return res;
+```rust
+// src/attack/score.rs
+pub fn score(bytes: &[u8]) -> i32 {
+    bytes
+        .iter()
+        .map(u8::to_ascii_lowercase)
+        .map(|b| FREQUENCIES.get(&b).unwrap_or(&-1000))
+        .sum()
 }
 ```
 
-Now, we can start guessing our single-byte key. We simply loop over each `(0..=255)` as our target byte, perform an XOR on it with our data, and get the resulting score. Whichever buffer whose byte key yields the highest score is the one we finally XOR on our `Data`.
+Note that if `score()` doesn't find the byte in our dictionary, it returns a default of `-1000` to penalize bad plaintexts; yet it's not so much that other less common but still prevalent characters such as punctuation get the correct plaintext marked as bad.
 
-We also return our key byte to report later as well.
+Now, we can start guessing our single-byte key. We loop over each `(0u8..=255)` as our target byte, perform an XOR on it with our data, and get the resulting score. Whichever data yields the highest plaintext score is the one we return, along with its associated key byte.
 
-```zig
-// src/attack/xor.zig
+```rust
+// src/attack/xor.rs
+pub fn single_byte_xor(data: &Data) -> (u8, Data) {
+    let Some(res) = (u8::MIN..=u8::MAX)
+        .map(|b| (b, data ^ b))
+        .max_by_key(|(_, data)| score(data))
+    else {
+        unreachable!()
+    };
 
-pub fn singleCharacterXOR(data: *Data) !u8 {
-    var bestScore: i32 = std.math.minInt(i32);
-    var bestChar: u8 = 0;
-
-    for (0..std.math.maxInt(u8)) |n| {
-        const c: u8 = @intCast(n);
-
-        try data.xor(&.{c});
-
-        const guessScore = score(data.bytes);
-        if (guessScore > bestScore) {
-            bestScore = guessScore;
-            bestChar = c;
-        }
-
-        try data.xor(&.{c});
-    }
-
-    try data.xor(&.{bestChar});
-    return bestChar;
+    res
 }
 ```
 
 Finally, it's time to test our function. We'll load our encrypted text into a `Data`, then we'll run `singleCharacterXOR` on it.
 
-```zig
+```rust
 // src/attack/xor.zig
+#[test]
+fn s1c3_single_byte_xor_cipher() -> Result<()> {
+    let data =
+        Data::from_hex("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")?;
+    let (key, res) = single_byte_xor(&data);
 
-test "set 1 challenge 3" {
-    const allocator = std.testing.allocator;
+    assert_eq!('<KEY>', key.into());
+    assert_eq!("<PLAINTEXT>", res.to_string());
 
-    var data = try Data.fromHex(
-        allocator,
-        "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736",
-    );
-    defer data.deinit();
-
-    const byte = try singleCharacterXOR(&data);
-
-    try std.testing.expectEqual('<KEY>', byte);
-    try std.testing.expectEqualStrings("<PLAINTEXT>", data.bytes);
+    Ok(())
 }
 ```
 
