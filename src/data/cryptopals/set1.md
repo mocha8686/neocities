@@ -805,56 +805,40 @@ fn unpartition(partitions: Vec<Data>) -> Data {
 
 ### The full picture
 
-Now that we have all the components of our `repeatingKeyXOR` function, we can finally construct the function in full. Here it is:
+Now that we have all the components of our `repeating_key_xor()` function, we can finally construct it in full. Here it is:
 
-```zig
+```rust
 // src/attack/xor.zig
+pub fn repeating_key_xor(data: &Data) -> (Data, Data) {
+    let keysize = guess_keysize(data);
+    let partitions = partition(data, keysize);
 
-pub fn repeatingKeyXOR(data: *Data) !Data {
-    const allocator = data.allocator;
+    let (key_bytes, partitions): (Vec<u8>, Vec<Data>) = partitions
+        .into_iter()
+        .map(|data| single_byte_xor(&data))
+        .collect();
 
-    const keysize = guessKeysize(data.bytes);
-    var key = try allocator.alloc(u8, keysize);
-    errdefer allocator.free(key);
+    let key = Data::from(key_bytes);
+    let data = unpartition(partitions);
 
-    var blocks = try partition(data.*, keysize);
-    defer allocator.free(blocks);
-
-    for (0..keysize) |n| {
-        key[n] = try singleCharacterXOR(&blocks[n]);
-    }
-
-    const buf = try unpartition(allocator, blocks, keysize, data.len());
-    data.reinit(buf);
-    return Data.init(allocator, key);
+    (key, data)
 }
 ```
 
 And here's the test:
 
-```zig
-// src/attack/xor.zig
+```rust
+// src/attack/xor.rust
+#[test]
+fn s1c6_break_repeating_key_xor() -> Result<()> {
+    let text = include_str!("../../data/6.txt").replace('\n', "");
+    let data = Data::from_base64(&text)?;
+    let (key, res) = repeating_key_xor(&data);
 
-test "set 1 challenge 6" {
-    const allocator = std.testing.allocator;
+    assert_eq!("<KEY>", key.to_string());
+    assert_eq!(include_str!("../../data/funky.txt"), res.to_string());
 
-    const text = @embedFile("../data/6.txt");
-    const size = std.mem.replacementSize(u8, text, "\n", "");
-    const buf = try allocator.alloc(u8, size);
-    defer allocator.free(buf);
-    _ = std.mem.replace(u8, text, "\n", "", buf);
-
-    var data = try Data.fromBase64(allocator, buf);
-    defer data.deinit();
-
-    const key = try repeatingKeyXOR(&data);
-    defer key.deinit();
-
-    try std.testing.expectEqualStrings("<KEY>", key.bytes);
-    try std.testing.expectEqualStrings(
-        @embedFile("../data/funky.txt"),
-        data.bytes,
-    );
+    Ok(())
 }
 ```
 
@@ -862,7 +846,7 @@ test "set 1 challenge 6" {
 <summary>Answers</summary>
 
 - `<KEY>` – `Terminator X: Bring the noise`
-- [funky.txt](/funky.txt)
+- [`funky.txt`](/funky.txt)
 </details>
 
 ## AES in ECB mode
