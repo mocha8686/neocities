@@ -1,0 +1,192 @@
+---
+import type { MarkdownHeading } from 'astro';
+import type { Heading } from '$src/components/cryptopals/Heading';
+import HeadingList from './HeadingList.astro';
+
+interface Props {
+	headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+
+const challengeHeadings = headings.reduce<Heading[]>(
+	(acc: Heading[], heading) => {
+		function getArrayAtDepth(arr: Heading[], depth: number): Heading[] {
+			const heading = arr.at(-1);
+
+			if (!heading || heading.depth === depth) return arr;
+
+			if (!heading.children) {
+				if (heading.depth !== depth - 1) {
+					throw new Error(
+						`Invalid heading nesting (found h${depth} under h${heading.depth})`,
+					);
+				}
+
+				heading.children = [];
+				return heading.children;
+			} else {
+				return getArrayAtDepth(heading.children, depth);
+			}
+		}
+
+		const arr = getArrayAtDepth(acc, heading.depth);
+		arr.push({
+			href: `#${heading.slug}`,
+			text: heading.text,
+			depth: heading.depth,
+		});
+		return acc;
+	},
+	[],
+);
+---
+
+<div class="nav-transform">
+	<nav x-data>
+		<h2>Challenges</h2>
+		<HeadingList headings={challengeHeadings} />
+	</nav>
+</div>
+
+<script>
+	import Alpine from 'alpinejs';
+
+	type StateEntry = {
+		value: string;
+		isActive: boolean;
+	};
+	const initial: StateEntry[] = [];
+
+	const state = {
+		entries: initial,
+
+		get active(): string | undefined {
+			return this.entries.at(-1)?.value;
+		},
+
+		set active(value: string) {
+			this.entries.push({ value, isActive: true });
+			this.prune();
+		},
+
+		inactive(value: string) {
+			const entry = this.entries.find(s => s.value === value);
+			if (entry) {
+				entry.isActive = false;
+				this.prune();
+			}
+		},
+
+		prune() {
+			const arr = this.entries.filter(s => s.isActive && s.value.length > 0);
+			if (arr.length > 0) {
+				this.entries = arr;
+			}
+		},
+	};
+	type Heading = typeof state;
+
+	Alpine.store('heading', state);
+
+	const callback = (entries: IntersectionObserverEntry[]) => {
+		for (const entry of entries) {
+			const heading: Heading = Alpine.store('heading');
+			if (entry.isIntersecting) {
+				heading.active = entry.target.id;
+			} else {
+				heading.inactive(entry.target.id);
+			}
+		}
+	};
+
+	const observer = new IntersectionObserver(callback);
+	const headings = document.querySelectorAll('h2, h3, h4, h5, h6');
+	for (const heading of headings) {
+		observer.observe(heading);
+	}
+</script>
+
+<style>
+	.nav-transform {
+		transform-style: preserve-3d;
+		display: contents;
+		perspective: 2000px;
+
+		nav {
+			--axis: -1 -2 -0.1;
+			--rotation: -20deg;
+			--delta: -5deg;
+			--clip: 16px;
+			--background-color: oklch(from var(--cl-accent-container) l c h / 0.3);
+			--border-width: 1px;
+
+			--bevel-size: 16px;
+
+			position: sticky;
+			inset-block-start: 20%;
+			rotate: var(--axis) var(--rotation);
+
+			grid-column: nav;
+			grid-row: span 9999;
+			align-self: start;
+			justify-self: center;
+
+			border: var(--border-width) solid var(--cl-accent);
+			border-inline-start-width: 8px;
+
+			background-color: var(--background-color);
+
+			transition: rotate 150ms ease-in-out;
+
+			&::before {
+				--border: var(--bevel-size) solid var(--cl-accent);
+				--transparent: var(--bevel-size) solid transparent;
+
+				content: '';
+
+				position: absolute;
+				inset-block-end: 0;
+				inset-inline-end: 0;
+
+				border-block-start: var(--transparent);
+				border-block-end: var(--border);
+				border-inline-start: var(--transparent);
+				border-inline-end: var(--border);
+			}
+
+			&::after {
+				--border: calc(var(--bevel-size) + 1px) solid var(--cl-background);
+				--transparent: calc(var(--bevel-size) + 1px) solid transparent;
+
+				content: '';
+
+				position: absolute;
+				inset-block-end: calc(var(--border-width) * -1 - 1px);
+				inset-inline-end: calc(var(--border-width) * -1 - 1px);
+
+				border-block-start: var(--transparent);
+				border-block-end: var(--border);
+				border-inline-start: var(--transparent);
+				border-inline-end: var(--border);
+			}
+
+			&:hover,
+			&:focus-visible {
+				rotate: var(--axis) calc(var(--rotation) + var(--delta));
+			}
+
+			> ol {
+				padding-inline: 2em;
+				list-style: number;
+			}
+
+			h2 {
+				margin: 0;
+				padding-inline-start: 0.75em;
+				color: var(--cl-accent);
+				background: var(--background-color);
+			}
+		}
+	}
+</style>

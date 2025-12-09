@@ -3,9 +3,8 @@ import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import { getCollection } from 'astro:content';
 
-import type { Heading } from '$src/components/cryptopals/Heading';
-import HeadingList from '$src/components/cryptopals/HeadingList.astro';
 import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
+import HeadingNav from '$src/components/cryptopals/HeadingNav.astro';
 
 export const getStaticPaths = (async () => {
 	const sets = await getCollection('cryptopals');
@@ -17,38 +16,6 @@ export const getStaticPaths = (async () => {
 
 const { set } = Astro.props;
 const { Content, headings } = await render(set);
-
-const challengeHeadings = headings.reduce<Heading[]>(
-	(acc: Heading[], heading) => {
-		function getArrayAtDepth(arr: Heading[], depth: number): Heading[] {
-			const heading = arr.at(-1);
-
-			if (!heading || heading.depth === depth) return arr;
-
-			if (!heading.children) {
-				if (heading.depth !== depth - 1) {
-					throw new Error(
-						`Invalid heading nesting (found h${depth} under h${heading.depth})`,
-					);
-				}
-
-				heading.children = [];
-				return heading.children;
-			} else {
-				return getArrayAtDepth(heading.children, depth);
-			}
-		}
-
-		const arr = getArrayAtDepth(acc, heading.depth);
-		arr.push({
-			href: `#${heading.slug}`,
-			text: heading.text,
-			depth: heading.depth,
-		});
-		return acc;
-	},
-	[],
-);
 ---
 
 <CryptopalsLayout>
@@ -58,74 +25,11 @@ const challengeHeadings = headings.reduce<Heading[]>(
 	</header>
 
 	<main>
-		<div class="nav-transform">
-			<nav x-data>
-				<h2>Challenges</h2>
-				<HeadingList headings={challengeHeadings} />
-			</nav>
-		</div>
+		<HeadingNav {headings} />
 
 		<Content />
 	</main>
 </CryptopalsLayout>
-
-<script>
-	import Alpine from 'alpinejs';
-
-	type StateEntry = {
-		value: string;
-		isActive: boolean;
-	};
-	const initial: StateEntry[] = [];
-
-	const state = {
-		entries: initial,
-
-		get active(): string | undefined {
-			return this.entries.at(-1)?.value;
-		},
-
-		set active(value: string) {
-			this.entries.push({ value, isActive: true });
-			this.prune();
-		},
-
-		inactive(value: string) {
-			const entry = this.entries.find(s => s.value === value);
-			if (entry) {
-				entry.isActive = false;
-				this.prune();
-			}
-		},
-
-		prune() {
-			const arr = this.entries.filter(s => s.isActive && s.value.length > 0);
-			if (arr.length > 0) {
-				this.entries = arr;
-			}
-		},
-	};
-	type Heading = typeof state;
-
-	Alpine.store('heading', state);
-
-	const callback = (entries: IntersectionObserverEntry[]) => {
-		for (const entry of entries) {
-			const heading: Heading = Alpine.store('heading');
-			if (entry.isIntersecting) {
-				heading.active = entry.target.id;
-			} else {
-				heading.inactive(entry.target.id);
-			}
-		}
-	};
-
-	const observer = new IntersectionObserver(callback);
-	const headings = document.querySelectorAll('h2, h3, h4, h5, h6');
-	for (const heading of headings) {
-		observer.observe(heading);
-	}
-</script>
 
 <style is:global>
 	:root {
@@ -171,28 +75,29 @@ const challengeHeadings = headings.reduce<Heading[]>(
 			display: flex;
 			grid-column: full-width;
 			margin-block-start: 2.5em;
-			border-block-end: 2px solid var(--cl-accent-container);
+			border-block-end: 2px solid var(--cl-accent);
 
 			&::before {
 				content: counter(challenge);
 				counter-increment: challenge;
 
 				display: block;
-				flex: 0 3.2ex;
+				flex: 0 3.4ex;
 
 				aspect-ratio: 1;
 				margin-inline-end: 0.5em;
 				padding: 0 1ch;
 
-				color: var(--cl-on-accent-container);
+				color: var(--cl-on-accent);
+				text-align: center;
 
-				background: var(--cl-accent-container);
+				background: var(--cl-accent);
 			}
 
 			+ blockquote {
 				padding-inline-start: 1em;
 				padding-inline-end: 0.5em;
-				border-inline-start: 0.4em solid var(--cl-accent);
+				border-inline-start: 0.4em solid var(--cl-outline);
 
 				font-style: italic;
 
@@ -244,47 +149,6 @@ const challengeHeadings = headings.reduce<Heading[]>(
 					mask-image: url('/src/assets/icons/info.svg');
 					mask-repeat: no-repeat;
 					mask-size: 100% 100%;
-				}
-			}
-		}
-
-		.nav-transform {
-			transform-style: preserve-3d;
-			display: contents;
-			perspective: 2000px;
-
-			nav {
-				--axis: -1 -2 -0.1;
-				--rotation: -20deg;
-				--delta: -5deg;
-
-				position: sticky;
-				inset-block-start: 20%;
-				rotate: var(--axis) var(--rotation);
-
-				grid-column: nav;
-				grid-row: span 9999;
-				align-self: start;
-				justify-self: center;
-
-				padding-inline: 2rem;
-
-				background: oklch(from var(--cl-accent-container) l c h / 0.3);
-
-				transition: rotate 150ms ease-in-out;
-
-				&:hover,
-				&:focus-visible {
-					rotate: var(--axis) calc(var(--rotation) + var(--delta));
-				}
-
-				> ol {
-					list-style: number;
-				}
-
-				h2 {
-					padding-inline-end: 4em;
-					border-block-end: 2px solid var(--cl-outline);
 				}
 			}
 		}

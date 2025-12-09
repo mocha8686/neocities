@@ -54,6 +54,10 @@ function formatSlugs(children: Heading[]): string {
 	}
 
 	li {
+		&::marker {
+			color: var(--cl-accent);
+		}
+
 		> a,
 		> details summary {
 			display: block;
@@ -73,6 +77,7 @@ function formatSlugs(children: Heading[]): string {
 		}
 
 		.dropdown-icon {
+			color: var(--cl-accent);
 			transition: rotate var(--transition-duration) ease-out;
 		}
 	}

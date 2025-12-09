@@ -13,7 +13,7 @@ export default defineConfig({
     markdown: {
         remarkPlugins: [remarkRuby],
         shikiConfig: {
-            theme: 'houston',
+            theme: 'css-variables',
         },
     },
     vite: {

@@ -9,6 +9,7 @@ import BaseLayout from './BaseLayout.astro';
 <BaseLayout>
 	<Fragment slot="head">
 		<Font cssVariable="--font-blinker" preload />
+		<Font cssVariable="--font-rajdhani" preload />
 		<Font cssVariable="--font-fira-code" preload />
 	</Fragment>
 
@@ -19,14 +20,32 @@ import BaseLayout from './BaseLayout.astro';
 <style is:global>
 	:root {
 		/* stylelint-disable custom-property-empty-line-before */
-		--cl-light: oklch(90% 0.01 250);
-		--cl-dark: oklch(10% 0.01 0);
-		--cl-accent: oklch(80% 0.23 150);
+		--cl-light: oklch(89% 0.13 201);
+		--cl-dark: oklch(0% 0 0);
+		--cl-accent: oklch(67% 0.2 27);
+		--cl-outline: oklch(38% 0.1 24);
 
-		--ff-main: var(--font-blinker);
-		--ff-accent: var(--font-blinker);
+		--ff-main: var(--font-rajdhani);
+		--ff-accent: var(--font-rajdhani);
 		--ff-code: var(--font-fira-code);
 
+		--astro-code-foreground: oklch(
+			from var(--cl-foreground) calc(l * 0.8) calc(c * 0.7) h
+		);
+		--astro-code-background: var(--cl-background);
+
+		--astro-code-token-parameter: var(--cl-foreground);
+		--astro-code-token-string: var(--cl-foreground);
+		--astro-code-token-string-expression: var(--astro-code-token-string);
+
+		--astro-code-token-punctuation: var(--astro-code-foreground);
+
+		--astro-code-token-link: var(--cl-accent);
+		--astro-code-token-function: var(--cl-accent);
+
+		--astro-code-token-comment: oklch(76% 0.19 153);
+		--astro-code-token-keyword: oklch(86% 0.21 131);
+		--astro-code-token-constant: oklch(92% 0.19 91);
 		/* stylelint-enable custom-property-empty-line-before */
 
 		color-scheme: only dark;
@@ -46,6 +65,7 @@ import BaseLayout from './BaseLayout.astro';
 
 	:where(h1, h2, h3, h4, h5, h6) {
 		font-family: var(--ff-accent);
+		text-transform: uppercase;
 	}
 
 	a {
@@ -99,6 +119,7 @@ import BaseLayout from './BaseLayout.astro';
 	}
 
 	p {
+		font-size: 1.15rem;
 		text-wrap: pretty;
 	}
 </style>
