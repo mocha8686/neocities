@@ -1,11 +1,67 @@
 ---
+import { getCollection } from 'astro:content';
+
 import MathLayout from '$src/layouts/MathLayout.astro';
+
+const units = (await getCollection('groupTheory')).toSorted(
+	(a, b) => a.data.number - b.data.number,
+);
 ---
 
 <MathLayout>
-	<h1>hi</h1>
-	<p>hello</p>
-	<p style="color: blue;">blue</p>
-	<p style="color: green;">green</p>
-	<p style="color: red;">red</p>
+	<h1>Group Theory</h1>
+
+	<p>
+		These pages are all about the field of mathematics known as <a
+			href="https://en.wikipedia.org/wiki/Group_theory/">group theory</a
+		>. If you're not very well-versed in math, don't worry! There's valuable
+		information to learn here if you're interested, and I'll try to elaborate on
+		the little details where I can, and I'll link to external resources if
+		there's too much to explain.
+	</p>
+
+	<p>
+		Group theory is all about studying symmetries: for example, all the ways you
+		can rotate or flip a square so that it stays the same. You can rotate a
+		square 90 degrees clockwise, or you can flip it vertically, and it'll still
+		look the same.
+	</p>
+
+	<p>
+		A great textbook for group theory (and the one I'm using!) is
+		<a href="https://danaernst.com/IBL-AbstractAlgebra/">
+			Dana Ernst's <em>An Inquiry-Based Approach to Abstract Algebra</em>
+		</a>. It's a great book with many examples and hands-on problems and proofs,
+		so if you want more detail, go ahead and check it out.
+	</p>
+
+	<p>Let's get into it!</p>
+
+	<hr />
+
+	<ol>
+		{
+			units.map(unit => (
+				<li>
+					<a href={`${unit.id}/`}>{unit.data.title}</a>
+				</li>
+			))
+		}
+	</ol>
 </MathLayout>
+
+<style>
+	@counter-style units {
+		prefix: 'Unit ';
+		system: extends decimal;
+	}
+
+	ol {
+		padding-inline-start: 4em;
+		list-style: units;
+	}
+
+	::marker {
+		font-weight: bold;
+	}
+</style>
