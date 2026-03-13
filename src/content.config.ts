@@ -67,10 +67,19 @@ const cryptopals = defineCollection({
 	}),
 });
 
+const groupTheory = defineCollection({
+	loader: glob({ base: 'src/data/group_theory', pattern: '**/*.md' }),
+	schema: z.object({
+		title: z.string(),
+		number: z.number(),
+	}),
+});
+
 export const collections = {
 	blog,
 	completedQuotes,
 	cryptopals,
+	groupTheory,
 	inspo,
 	quizResults,
 	quotes,
