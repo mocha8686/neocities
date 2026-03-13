@@ -1,6 +1,9 @@
 ---
 import bakenohana from '$src/assets/bakenohana.png';
+import conflictDLC from '$src/assets/CONFLICT-DLC.jpg';
 import cutiemarks from '$src/assets/cutiemarks.jpg';
+import floraManiia from '$src/assets/flora-maniia.jpg';
+import iLoveMyComputer from '$src/assets/i-love-my-computer.jpg';
 import smile from '$src/assets/smile!.jpg';
 import yokanimitorete from '$src/assets/yokanimitorete.png';
 
@@ -35,6 +38,24 @@ const albums = [
 		title: 'CUTIEMARKS',
 		artist: 'Vylet Pony',
 	},
+	{
+		image: conflictDLC,
+		href: 'https://youwillloveeachother.bandcamp.com/album/conflict-dlc',
+		title: 'CONFLICT DLC',
+		artist: 'HEALTH',
+	},
+	{
+		image: floraManiia,
+		href: 'https://temachii.bandcamp.com/album/flora-maniia',
+		title: 'flora maniia',
+		artist: 'Temachii',
+	},
+	{
+		image: iLoveMyComputer,
+		href: 'https://ninajirachi.bandcamp.com/album/i-love-my-computer',
+		title: 'I Love My Computer',
+		artist: 'Ninajirachi',
+	},
 ];
 
 const keys = JSON.stringify(Object.keys(keyed));
@@ -56,9 +77,10 @@ const keys = JSON.stringify(Object.keys(keyed));
 
 <style>
 	nav {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1em;
+		display: grid;
+		grid-auto-rows: 1fr max-content max-content;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 6rem), auto));
+		column-gap: 1em;
 		justify-content: end;
 	}
 </style>
