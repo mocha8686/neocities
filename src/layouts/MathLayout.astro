@@ -1,0 +1,78 @@
+---
+import 'katex/dist/katex-swap.min.css';
+
+import { getImage } from 'astro:assets';
+
+import drywall from '$src/assets/drywall.jpg';
+import Back from '$src/components/Back.astro';
+
+import BaseLayout from './BaseLayout.astro';
+
+const optimizedDrywall = await getImage({ src: drywall });
+---
+
+<BaseLayout style={`--drywall: url("${optimizedDrywall.src}")`}>
+	<main>
+		<slot />
+
+		<Back />
+	</main>
+</BaseLayout>
+
+<style is:global>
+	:root {
+		/* stylelint-disable custom-property-empty-line-before */
+		--cl-light: oklch(95% 0.01 115 / 100%);
+		--cl-dark: oklch(0% 0 0);
+		--cl-accent: blue;
+
+		--cl-outline: oklch(38% 0.1 24);
+		--cl-container: oklch(38% 0.1 24 / 0.4);
+
+		--ff-main: Tahoma, Verdana, Geneva, Arial, Helvetica, sans-serif;
+		--ff-accent: var(--ff-main);
+
+		--z-bg: -1000;
+		/* stylelint-enable custom-property-empty-line-before */
+	}
+
+	body {
+		min-height: 100lvh;
+
+		font-family: var(--ff-main);
+		color: var(--cl-dark);
+
+		color-scheme: only dark;
+		accent-color: var(--cl-accent);
+		background: var(--drywall), var(--cl-light);
+
+		&::before {
+			--background-opacity: 80%;
+
+			--background-overlay: oklch(from white l c h / var(--background-opacity));
+
+			content: '';
+
+			position: absolute;
+			z-index: var(--z-bg);
+			inset: 0;
+
+			background:
+				linear-gradient(var(--background-overlay), var(--background-overlay)),
+				center/cover repeat-y var(--drywall);
+		}
+	}
+
+	main {
+		margin: 2rem clamp(1rem, 8vw - 0.75rem, 6rem);
+		padding: 0.5rem 1rem;
+		border: 1rem outset silver;
+
+		background-color: var(--cl-light);
+		box-shadow: 0px 5px 25px -10px var(--cl-dark);
+	}
+
+	a {
+		color: var(--cl-accent);
+	}
+</style>
