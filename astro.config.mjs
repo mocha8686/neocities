@@ -2,6 +2,8 @@
 import alpinejs from '@astrojs/alpinejs';
 import yaml from '@rollup/plugin-yaml';
 import { defineConfig, fontProviders } from 'astro/config';
+import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
 import remarkRuby from 'remark-ruby';
 
 // https://astro.build/config
@@ -9,7 +11,8 @@ export default defineConfig({
 	integrations: [alpinejs({ entrypoint: '/src/lib/entrypoint' })],
 	trailingSlash: 'always',
 	markdown: {
-		remarkPlugins: [remarkRuby],
+		remarkPlugins: [remarkRuby, remarkMath],
+		rehypePlugins: [rehypeKatex],
 		shikiConfig: {
 			theme: 'css-variables',
 		},
