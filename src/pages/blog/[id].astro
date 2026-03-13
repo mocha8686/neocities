@@ -109,4 +109,15 @@ const optimized = await getImage({
 			text-align: center;
 		}
 	}
+
+	ol, ul {
+		&:has(input[type="checkbox"]) {
+			list-style: none;
+		}
+	}
+
+	:disabled {
+		cursor: auto;
+		accent-color: var(--cl-accent);
+	}
 </style>
