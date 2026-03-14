@@ -4,6 +4,7 @@ import { render } from 'astro:content';
 import { getCollection } from 'astro:content';
 
 import MathLayout from '$src/layouts/MathLayout.astro';
+import { getPrevAndNext } from '$src/lib/groupTheory';
 
 export const getStaticPaths = (async () => {
 	const units = await getCollection('groupTheory');
@@ -15,9 +16,40 @@ export const getStaticPaths = (async () => {
 
 const { unit } = Astro.props;
 const { Content } = await render(unit);
+
+const [prev, next] = await getPrevAndNext(unit.data.number);
 ---
 
 <MathLayout>
-<h1>Unit {unit.data.number}. {unit.data.title}</h1>
-<Content />
+	<h1>Unit {unit.data.number}. {unit.data.title}</h1>
+
+	<Content />
+
+	<hr />
+	<nav>
+		{
+			prev && (
+				<a class="prev" href={`../${prev.id}/`}>
+					Unit {prev.data.number}. {prev.data.title}
+				</a>
+			)
+		}
+		{
+			next && (
+				<a class="next" href={`../${next.id}/`}>
+					Unit {next.data.number}. {next.data.title}
+				</a>
+			)
+		}
+	</nav>
 </MathLayout>
+
+<style>
+	.prev::before {
+		content: '« ';
+	}
+
+	.next::after {
+		content: ' »';
+	}
+</style>
