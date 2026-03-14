@@ -3,15 +3,15 @@ import 'katex/dist/katex-swap.min.css';
 
 import { getImage } from 'astro:assets';
 
-import drywall from '$src/assets/drywall.jpg';
+import sky from '$src/assets/sky.jpg';
 import Back from '$src/components/Back.astro';
 
 import BaseLayout from './BaseLayout.astro';
 
-const optimizedDrywall = await getImage({ src: drywall });
+const optimizedSky = await getImage({ src: sky });
 ---
 
-<BaseLayout style={`--drywall: url("${optimizedDrywall.src}")`}>
+<BaseLayout style={`--background-image: url("${optimizedSky.src}")`}>
 	<main>
 		<slot />
 
@@ -23,7 +23,7 @@ const optimizedDrywall = await getImage({ src: drywall });
 	:root {
 		/* stylelint-disable custom-property-empty-line-before */
 		--cl-light: oklch(95% 0.01 115);
-		--cl-dark: oklch(40% 0.00 90);
+		--cl-dark: oklch(40% 0 90);
 		--cl-accent: blue;
 
 		--cl-outline: oklch(38% 0.1 24);
@@ -44,22 +44,19 @@ const optimizedDrywall = await getImage({ src: drywall });
 
 		color-scheme: only dark;
 		accent-color: var(--cl-accent);
-		background: var(--drywall), var(--cl-light);
+		background: var(--cl-light);
 
 		&::before {
-			--background-opacity: 80%;
-
-			--background-overlay: oklch(from white l c h / var(--background-opacity));
-
 			content: '';
 
-			position: absolute;
+			position: fixed;
 			z-index: var(--z-bg);
 			inset: 0;
 
-			background:
-				linear-gradient(var(--background-overlay), var(--background-overlay)),
-				center/cover repeat-y var(--drywall);
+			background: no-repeat top/100% auto var(--background-image);
+
+			animation: parallax linear;
+			animation-timeline: scroll();
 		}
 	}
 
@@ -74,5 +71,11 @@ const optimizedDrywall = await getImage({ src: drywall });
 
 	a {
 		color: var(--cl-accent);
+	}
+
+	@keyframes parallax {
+		to {
+			background-position-y: bottom;
+		}
 	}
 </style>
