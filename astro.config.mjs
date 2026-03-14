@@ -5,13 +5,16 @@ import { defineConfig, fontProviders } from 'astro/config';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import remarkRuby from 'remark-ruby';
+import remarkDirective from 'remark-directive';
+
+import remarkColors from './src/lib/remarkColors';
 
 // https://astro.build/config
 export default defineConfig({
 	integrations: [alpinejs({ entrypoint: '/src/lib/entrypoint' })],
 	trailingSlash: 'always',
 	markdown: {
-		remarkPlugins: [remarkRuby, remarkMath],
+		remarkPlugins: [remarkRuby, remarkMath, remarkDirective, remarkColors],
 		rehypePlugins: [rehypeKatex],
 		shikiConfig: {
 			theme: 'css-variables',
