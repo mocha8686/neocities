@@ -76,5 +76,13 @@ export default defineConfig({
 			},
 			fallbacks: ['Helvetica', 'Calibri', 'sans-serif'],
 		},
+
+		// math
+		{
+			provider: fontProviders.bunny(),
+			name: 'Indie Flower',
+			cssVariable: '--font-indie-flower',
+			fallbacks: ['Tahoma', 'Verdana', 'Geneva', 'Arial', 'Helvetica', 'sans-serif'],
+		},
 	],
 });
