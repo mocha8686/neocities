@@ -1,6 +1,8 @@
 ---
 title: Introduction
 number: 1
+date: 2026/3/16
+description: A short intro to theorems and proofs in higher-level mathematics.
 ---
 
 If you're already familiar with proofs and theorems, feel free to skip this unit and [move on to the next one](../groups/).

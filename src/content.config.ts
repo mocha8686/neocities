@@ -1,5 +1,6 @@
 import { file, glob } from 'astro/loaders';
-import { defineCollection, z } from 'astro:content';
+import { z } from 'astro/zod';
+import { defineCollection } from 'astro:content';
 
 const quotes = defineCollection({
 	loader: file('src/data/quotes.txt', {
@@ -63,6 +64,7 @@ const cryptopals = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		number: z.number(),
+		date: z.coerce.date(),
 		description: z.string(),
 	}),
 });
@@ -72,6 +74,8 @@ const groupTheory = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		number: z.number(),
+		date: z.coerce.date(),
+		description: z.string(),
 	}),
 });
 

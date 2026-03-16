@@ -1,3 +1,4 @@
+import type { RSSFeedItem } from '@astrojs/rss';
 import { type CollectionEntry, getCollection } from 'astro:content';
 export type Unit = CollectionEntry<'groupTheory'>;
 export type MaybeUnit = Unit | undefined;
@@ -11,3 +12,12 @@ export async function getPrevAndNext(
 	return [prev, next];
 }
 
+export async function generateRSSItems(): Promise<RSSFeedItem[]> {
+	const units = await getCollection('groupTheory');
+	return units.map(unit => ({
+		title: unit.data.title,
+		pubDate: unit.data.date,
+		description: unit.data.description,
+		link: `/learning/group-theory/${unit.id}/`,
+	}));
+}

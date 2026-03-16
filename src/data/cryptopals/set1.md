@@ -2,6 +2,7 @@
 title: Basics
 number: 1
 description: The qualifying set—do you have what it takes?
+date: 2025/12/9
 ---
 
 This set is mainly about getting basic functionality working, like manipulating byte arrays and parsing hex/base64.

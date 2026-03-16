@@ -1,3 +1,4 @@
+import type { RSSFeedItem } from '@astrojs/rss';
 import { type CollectionEntry, getCollection } from 'astro:content';
 
 export function formatDate(date: Date): string {
@@ -39,4 +40,14 @@ export async function getLatestBlogPost(): Promise<CollectionEntry<'blog'>> {
 	const posts = await getSortedBlogPosts();
 	const mostRecent = posts.at(0)!;
 	return mostRecent;
+}
+
+export async function generateRSSItems(): Promise<RSSFeedItem[]> {
+	const posts = await getCollection('blog');
+	return posts.map(post => ({
+		title: post.data.title,
+		description: post.data.description,
+		pubDate: post.data.date,
+		link: `/blog/${post.id}`,
+	}));
 }
