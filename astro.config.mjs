@@ -3,9 +3,9 @@ import alpinejs from '@astrojs/alpinejs';
 import yaml from '@rollup/plugin-yaml';
 import { defineConfig, fontProviders } from 'astro/config';
 import rehypeKatex from 'rehype-katex';
+import remarkDirective from 'remark-directive';
 import remarkMath from 'remark-math';
 import remarkRuby from 'remark-ruby';
-import remarkDirective from 'remark-directive';
 
 import remarkColors from './src/lib/remarkColors';
 
@@ -82,7 +82,14 @@ export default defineConfig({
 			provider: fontProviders.bunny(),
 			name: 'Indie Flower',
 			cssVariable: '--font-indie-flower',
-			fallbacks: ['Tahoma', 'Verdana', 'Geneva', 'Arial', 'Helvetica', 'sans-serif'],
+			fallbacks: [
+				'Tahoma',
+				'Verdana',
+				'Geneva',
+				'Arial',
+				'Helvetica',
+				'sans-serif',
+			],
 		},
 	],
 });
