@@ -11,6 +11,7 @@ import remarkColors from './src/lib/remarkColors';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://mocha8686.neocities.org',
 	integrations: [alpinejs({ entrypoint: '/src/lib/entrypoint' })],
 	trailingSlash: 'always',
 	markdown: {
