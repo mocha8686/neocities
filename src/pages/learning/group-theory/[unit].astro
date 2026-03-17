@@ -53,3 +53,16 @@ const [prev, next] = await getPrevAndNext(unit.data.number);
 		content: ' »';
 	}
 </style>
+
+<style is:global>
+	img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+		object-fit: contain;
+	}
+
+	p:has(> img:first-child:last-child) {
+		margin-inline: 6rem;
+	}
+</style>
