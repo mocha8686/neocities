@@ -38,13 +38,17 @@ const optimizedSky = await getImage({ src: sky });
 		--ff-accent: var(--ff-main);
 
 		--fs-main: 18px;
+		--fs-math: 16px;
 
 		--z-bg: -1000;
 		/* stylelint-enable custom-property-empty-line-before */
 	}
 
 	body {
-		min-height: 100lvh;
+		display: grid;
+		grid-template-columns:
+			1fr [content-start] minmax(auto, 100ch)
+			[content-end] 1fr;
 
 		font-family: var(--ff-main);
 		font-size: var(--fs-main);
@@ -66,9 +70,15 @@ const optimizedSky = await getImage({ src: sky });
 			animation: parallax linear;
 			animation-timeline: scroll();
 		}
+
+		> * {
+			grid-column: content;
+		}
 	}
 
 	main {
+		container-type: inline-size;
+
 		margin: 2rem clamp(1rem, 8vw - 0.75rem, 6rem);
 		padding: 0.5rem 1rem;
 		border: 1rem outset silver;
@@ -79,6 +89,15 @@ const optimizedSky = await getImage({ src: sky });
 
 	a {
 		color: var(--cl-accent);
+	}
+
+	.katex,
+	.katex-display {
+		font-size: var(--fs-math);
+	}
+
+	code {
+		font-size: var(--fs-math);
 	}
 
 	@keyframes parallax {
