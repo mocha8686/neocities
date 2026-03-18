@@ -1,7 +1,7 @@
 ### animanga
 
-- the mimosa confessions 「ミモザの{告白}^(こくはく)」
-- land of the lustrous 「{宝石}^(ほうせき)の{国}^(くに)」
+- the mimosa confessions 「ミモザの:ruby[告白(こくはく)]」
+- land of the lustrous 「:ruby[宝石(ほうせき)]の:ruby[国(くに)]」
 - steins;gate
 - laid-back camp 「ゆるキャン△」
 
@@ -13,34 +13,34 @@
 - minecraft
 - ffxiv – DRG/WHM, trying to unlock AST
 - judgment
-- like a dragon 「{龍}^(りゅう)が{如}^(ごと)く」– finished 6, getting through judgment
+- like a dragon 「:ruby[龍(りゅう)]が:ruby[如(ごと)]く」– finished 6, getting through judgment
 - monster hunter world
     1. charge blade
     2. sword and shield
     3. lance
     4. hammer
     5. greatsword
-- tekken – reina main
+- tekken 8 – reina main :P
 - exapunks
 
 ### characters
 - project sekai
-    - mizuki akiyama 「{暁山}^(あきやま){瑞稀}^(みずき)」
-    - an shiraishi 「{白石}^(しらいし){杏}^(あん)」
-    - emu otori 「{鳳}^(おおとり)えむ」
-    - ichika hoshino「{星野}^(ほしの){一歌}^(いちか)」
-    - minori hanasato 「{花里}^(はなさと)みのり」
-- ushio tsukinoki 「{槻ノ木}^(つきのき){汐}^(うしお)」 – the mimosa confessions
+    - mizuki akiyama 「:ruby[暁山(あきやま)]:ruby[瑞稀(みずき)]」
+    - an shiraishi 「:ruby[白石(しらいし)]:ruby[杏(あん)]」
+    - emu otori 「:ruby[鳳(おおとり)]えむ」
+    - ichika hoshino「:ruby[星野(ほしの)]:ruby[一歌(いちか)]」
+    - minori hanasato 「:ruby[花里(はなさと)]みのり」
+- ushio tsukinoki 「:ruby[槻ノ木(つきのき)]:ruby[汐(うしお)]」 – the mimosa confessions
 - starlight glimmer – my little pony
 - land of the lustrous
     - phosphophyllite
     - diamond
     - cinnabar
-- takayuki yagami 「{八神}^(やがみ){隆之}^(たかゆき)」 – judgment
-- kazuma kiryu 「{桐生}^(きりゅう){一馬}^(かずま)」 – like a dragon/yakuza
+- takayuki yagami 「:ruby[八神(やがみ)]:ruby[隆之(たかゆき)]」 – judgment
+- kazuma kiryu 「:ruby[桐生(きりゅう)]:ruby[一馬(かずま)]」 – like a dragon/yakuza
 - pomni – the amazing digital circus
 - firefly – honkai star rail
-- chiaki nanami 「{七海}^(ななみ){千秋}^(ちあき)」 – danganropa 2: goodbye despair
+- chiaki nanami 「:ruby[七海(ななみ)]:ruby[千秋(ちあき)]」 – danganropa 2: goodbye despair
 
 ### music
 

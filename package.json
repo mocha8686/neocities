@@ -22,7 +22,7 @@
     "rehype-katex": "^7.0.1",
     "remark-directive": "^4.0.0",
     "remark-math": "^6.0.0",
-    "remark-ruby": "^0.4.0",
+    "remark-ruby-directive": "^0.3.0",
     "sanitize.css": "^13.0.0",
     "sharp": "^0.34.5",
     "unist-util-visit": "^5.1.0"
