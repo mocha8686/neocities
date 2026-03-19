@@ -103,12 +103,10 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 			flex: auto;
 			padding: 0.1em 2.5em;
 			font-size: 0.9rem;
+		}
 
-			&:not(.active) {
-				& ~ & {
-					border-inline-start: 1px solid var(--cl-outline);
-				}
-			}
+		button:not(.active) ~ button {
+			border-inline-start: 1px solid var(--cl-outline);
 		}
 	}
 
