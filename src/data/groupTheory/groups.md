@@ -10,6 +10,7 @@ description: An introduction to groups, a collection of symmetries with a certai
 :blue[Group theory], broadly speaking, is the study of *symmetries*. For example, think of all the different ways you can flip and rotate a square and still have it look the same. You can :green[rotate] it :red[90], :red[180], or :red[270] degrees clockwise, or you can :green[flip] it across the :red[vertical], :red[horizontal], or the two :red[diagonal] axes. We also include the act of doing nothing, which obviously keeps the square the same. (You'll learn why later on.)
 
 ![A 4x2 grid of squares. The top row contains the square's rotational symmetries of 0, 90, 180, and 270 degree clockwise rotations, and the bottom row consists of flips over the vertical, horizontal, northeast to southwest, and northwest to southeast axes.](./whiteboard/square_symmetries.png)
+*Figure 1. Rotational and reflectional symmetries of a square.*
 
 ## Why would I learn this stuff?
 

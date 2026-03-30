@@ -45,11 +45,6 @@ const optimizedSky = await getImage({ src: sky });
 	}
 
 	body {
-		display: grid;
-		grid-template-columns:
-			1fr [content-start] minmax(auto, 100ch)
-			[content-end] 1fr;
-
 		font-family: var(--ff-main);
 		font-size: var(--fs-main);
 		color: var(--cl-dark);
@@ -65,7 +60,7 @@ const optimizedSky = await getImage({ src: sky });
 			z-index: var(--z-bg);
 			inset: 0;
 
-			background: no-repeat top/100% auto var(--background-image);
+			background: repeat-y top/100% auto var(--background-image);
 
 			animation: parallax linear;
 			animation-timeline: scroll();
@@ -77,7 +72,15 @@ const optimizedSky = await getImage({ src: sky });
 	}
 
 	main {
+		--column-gap: 2rem;
+
 		container-type: inline-size;
+		display: grid;
+		grid-template-columns:
+			[full-width-start] 0 [content-start] minmax(min(80ch, 100%), 1fr)
+			[content-end] var(
+				--column-gap
+			) [breakout-start] 1fr [right-end] 0 [full-width-end];
 
 		margin: 2rem clamp(1rem, 8vw - 0.75rem, 6rem);
 		padding: 0.5rem 1rem;
@@ -85,6 +88,43 @@ const optimizedSky = await getImage({ src: sky });
 
 		background-color: var(--cl-light);
 		box-shadow: 0px 5px 25px -10px var(--cl-dark);
+
+		> * {
+			grid-column: content;
+		}
+
+		> hr {
+			grid-column: full-width;
+			width: 100%;
+		}
+
+		img {
+			display: block;
+
+			max-width: 100%;
+			height: auto;
+			border: 2px solid silver;
+
+			object-fit: contain;
+			box-shadow: 0 4px 8px -3px rgb(0 0 0 / 50%);
+		}
+
+		p:has(> img:first-child:last-child),
+		p:has(> img:first-child):has(> em:last-child) {
+			margin-inline: clamp(0rem, 30cqi - 4.5rem, 6rem);
+
+			> em {
+				display: block;
+				margin-block-start: 0.5em;
+				line-height: 1.2;
+				text-align: center;
+			}
+
+			@container (width > calc(80ch + 8rem + 10rem)) {
+				grid-column: breakout;
+				margin-inline: calc(20cqi - 10.75rem);
+			}
+		}
 	}
 
 	a {
