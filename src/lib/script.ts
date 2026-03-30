@@ -98,7 +98,7 @@ export function displayEntry(Alpine: Alpine, entry: Entry, i = 0) {
 	} else {
 		console.log(line);
 		const timeout =
-			line === '...' ? ELLIPSIS_DELAY : line.length * TEXT_SPEED + TEXT_DELAY;timeoutlineELLIPSIS_DELAY
+			line === '...' ? ELLIPSIS_DELAY : line.length * TEXT_SPEED + TEXT_DELAY;
 		setTimeout(() => displayEntry(Alpine, entry, i + 1), timeout);
 	}
 }
