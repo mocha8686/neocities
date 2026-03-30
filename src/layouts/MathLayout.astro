@@ -78,9 +78,8 @@ const optimizedSky = await getImage({ src: sky });
 		display: grid;
 		grid-template-columns:
 			[full-width-start] 0 [content-start] minmax(min(80ch, 100%), 1fr)
-			[content-end] var(
-				--column-gap
-			) [breakout-start] 1fr [right-end] 0 [full-width-end];
+			[content-end] var(--column-gap)
+			[breakout-start] 1fr [right-end] 0 [full-width-end];
 
 		margin: 2rem clamp(1rem, 8vw - 0.75rem, 6rem);
 		padding: 0.5rem 1rem;

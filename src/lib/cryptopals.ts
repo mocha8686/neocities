@@ -1,5 +1,5 @@
-import type { RSSFeedItem } from "@astrojs/rss";
-import { getCollection } from "astro:content";
+import type { RSSFeedItem } from '@astrojs/rss';
+import { getCollection } from 'astro:content';
 
 export async function generateRSSItems(): Promise<RSSFeedItem[]> {
 	const sets = await getCollection('cryptopals');

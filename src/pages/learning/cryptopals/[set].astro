@@ -3,8 +3,8 @@ import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import { getCollection } from 'astro:content';
 
-import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
 import HeadingNav from '$src/components/cryptopals/HeadingNav.astro';
+import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
 
 export const getStaticPaths = (async () => {
 	const sets = await getCollection('cryptopals');

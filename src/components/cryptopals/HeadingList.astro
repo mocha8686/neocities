@@ -74,9 +74,11 @@ function formatSlugs(children: Heading[]): string {
 
 		&::details-content {
 			overflow-y: clip;
-			height: 0;
 			display: block;
-			transition: height var(--transition-duration) ease-out, content-visibility var(--transition-duration) allow-discrete;
+			height: 0;
+			transition:
+				height var(--transition-duration) ease-out,
+				content-visibility var(--transition-duration) allow-discrete;
 		}
 
 		.dropdown-icon {
