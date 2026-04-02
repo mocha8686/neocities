@@ -4,6 +4,7 @@ import 'katex/dist/katex-swap.min.css';
 import Font from 'astro/components/Font.astro';
 import { getImage } from 'astro:assets';
 
+import Gear from '$src/assets/gear.svg';
 import sky from '$src/assets/sky.jpg';
 import Back from '$src/components/Back.astro';
 
@@ -18,11 +19,62 @@ const optimizedSky = await getImage({ src: sky });
 	</Fragment>
 
 	<main>
-		<slot />
+		<div class="layout">
+			<slot />
 
-		<Back />
+			<Back />
+		</div>
 	</main>
+
+	<button class="open-settings" command="show-modal" commandfor="options">
+		<Gear />
+		Settings
+	</button>
+
+	<dialog
+		id="options"
+		closedby="any"
+		x-data={'{ mathUsePlainFont: $persist(false) }'}
+	>
+		<h2>Options</h2>
+
+		<label>
+			<input class="plain-font" type="checkbox" x-model:value="mathUsePlainFont" />
+			Use plain font
+		</label>
+
+		<div class="button-row">
+			<button command="close" commandfor="options">Close</button>
+		</div>
+	</dialog>
 </BaseLayout>
+
+<style>
+	button {
+		cursor: pointer;
+		font: inherit;
+	}
+
+	dialog {
+		min-width: min(100%, 24rem);
+
+		h2 {
+			margin-block: 0.5em 1em;
+		}
+	}
+
+	.open-settings {
+		position: absolute;
+		inset-block-start: 0;
+		inset-inline-end: 0;
+	}
+
+	.button-row {
+		display: flex;
+		justify-content: end;
+		margin-block-start: 2em;
+	}
+</style>
 
 <style is:global>
 	:root {
@@ -35,6 +87,7 @@ const optimizedSky = await getImage({ src: sky });
 		--cl-container: oklch(38% 0.1 24 / 0.4);
 
 		--ff-main: var(--font-indie-flower);
+		--ff-plain: Tahoma, Helvetica, Arial, sans-serif;
 		--ff-accent: var(--ff-main);
 
 		--fs-main: 18px;
@@ -66,22 +119,28 @@ const optimizedSky = await getImage({ src: sky });
 			animation-timeline: scroll();
 		}
 
+		&:has(.plain-font:checked) {
+			font-family: var(--ff-plain);
+		}
+
 		> * {
 			grid-column: content;
 		}
 	}
 
 	main {
+		container-type: inline-size;
+	}
+
+	.layout {
 		--column-gap: 2rem;
 
-		container-type: inline-size;
 		display: grid;
 		grid-template-columns:
-			[full-width-start] 0 [content-start] minmax(min(80ch, 100%), 1fr)
-			[content-end] var(--column-gap)
-			[breakout-start] 1fr [right-end] 0 [full-width-end];
+			[full-width-start] 1fr [content-start] minmax(auto, 80ch)
+			[content-end] 1fr [full-width-end];
 
-		margin: 2rem clamp(1rem, 8vw - 0.75rem, 6rem);
+		margin: 4rem clamp(1rem, 8vw - 0.75rem, 6rem);
 		padding: 0.5rem 1rem;
 		border: 1rem outset silver;
 
@@ -92,9 +151,19 @@ const optimizedSky = await getImage({ src: sky });
 			grid-column: content;
 		}
 
+		> * + * {
+			margin-block-start: 0;
+		}
+
+		> p {
+			line-height: 1.45;
+			letter-spacing: 0.3px;
+		}
+
 		> hr {
 			grid-column: full-width;
 			width: 100%;
+			margin-block-end: 2em;
 		}
 
 		img {
@@ -110,7 +179,8 @@ const optimizedSky = await getImage({ src: sky });
 
 		p:has(> img:first-child:last-child),
 		p:has(> img:first-child):has(> em:last-child) {
-			margin-inline: clamp(0rem, 30cqi - 4.5rem, 6rem);
+			margin-block: 2em 3em;
+			margin-inline: clamp(0rem, 30cqi - 6.5rem, 6rem);
 
 			> em {
 				display: block;
@@ -118,11 +188,21 @@ const optimizedSky = await getImage({ src: sky });
 				line-height: 1.2;
 				text-align: center;
 			}
+		}
 
-			@container (width > calc(80ch + 8rem + 10rem)) {
-				grid-column: breakout;
-				grid-row: span 2;
-				margin-inline: calc(20cqi - 10.75rem);
+		@container (width >= calc(80ch + 20rem)) {
+			&:has(img) {
+				grid-template-columns:
+					[full-width-start] 1fr [content-start] minmax(auto, 80ch)
+					[content-end] var(--column-gap) [float-start] minmax(auto, 30rem)
+					[float-end] 1fr [full-width-end];
+			}
+
+			p:has(> img:first-child:last-child),
+			p:has(> img:first-child):has(> em:last-child) {
+				grid-column: float;
+				grid-row: span 3;
+				margin-inline: clamp(0rem, calc(20cqi - 8rem), 4rem);
 			}
 		}
 	}
