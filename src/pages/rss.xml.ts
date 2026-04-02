@@ -17,7 +17,6 @@ export const GET = (async ({ site }) => {
 		description:
 			'Updates from all across my personal site, from blog posts to public learning.',
 		site,
-		stylesheet: '/pretty-feed-v3.xsl',
 		items: await getRSSItems(),
 	});
 }) satisfies APIRoute;
