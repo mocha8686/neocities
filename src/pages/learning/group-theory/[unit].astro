@@ -1,13 +1,12 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
-import { getCollection } from 'astro:content';
 
 import MathLayout from '$src/layouts/MathLayout.astro';
-import { getPrevAndNext } from '$src/lib/groupTheory';
+import { getPrevAndNext, getPublishedUnits } from '$src/lib/groupTheory';
 
 export const getStaticPaths = (async () => {
-	const units = await getCollection('groupTheory');
+	const units = await getPublishedUnits();
 	return units.map(unit => ({
 		params: { unit: unit.id },
 		props: { unit },

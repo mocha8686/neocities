@@ -1,9 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
-
 import MathLayout from '$src/layouts/MathLayout.astro';
+import { getPublishedUnits } from '$src/lib/groupTheory';
 
-const units = (await getCollection('groupTheory')).toSorted(
+const units = (await getPublishedUnits()).toSorted(
 	(a, b) => a.data.number - b.data.number,
 );
 ---

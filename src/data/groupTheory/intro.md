@@ -5,7 +5,7 @@ date: 2026/3/16
 description: A short intro to theorems and proofs in higher-level mathematics.
 ---
 
-If you're already familiar with proofs and theorems, feel free to skip this unit and [move on to the next one](../groups/).
+If you're already familiar with proofs and theorems, feel free to skip this unit and [move on to the next one](../groups/). (Note: Still WIP!)
 
 ## What in the world is a theorem?
 

@@ -76,6 +76,7 @@ const groupTheory = defineCollection({
 		number: z.number(),
 		date: z.coerce.date(),
 		description: z.string(),
+		draft: z.boolean().optional().default(false),
 	}),
 });
 

@@ -21,3 +21,8 @@ export async function generateRSSItems(): Promise<RSSFeedItem[]> {
 		link: `/learning/group-theory/${unit.id}/`,
 	}));
 }
+
+export async function getPublishedUnits(): Promise<CollectionEntry<'groupTheory'>[]> {
+	const units = await getCollection('groupTheory');
+	return import.meta.env.PROD && units.filter(unit => !unit.data.draft) || units;
+}
