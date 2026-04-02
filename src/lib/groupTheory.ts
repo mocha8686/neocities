@@ -13,7 +13,7 @@ export async function getPrevAndNext(
 }
 
 export async function generateRSSItems(): Promise<RSSFeedItem[]> {
-	const units = await getCollection('groupTheory');
+	const units = await getPublishedUnits();
 	return units.map(unit => ({
 		title: unit.data.title,
 		pubDate: unit.data.date,
