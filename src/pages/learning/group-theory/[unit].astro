@@ -1,13 +1,13 @@
 ---
-import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
 
 import MathLayout from '$src/layouts/MathLayout.astro';
 import { getPrevAndNext, getPublishedUnits } from '$src/lib/groupTheory';
 
 export const getStaticPaths = (async () => {
 	const units = await getPublishedUnits();
-	return units.map(unit => ({
+	return units.map((unit) => ({
 		params: { unit: unit.id },
 		props: { unit },
 	}));
@@ -26,29 +26,25 @@ const [prev, next] = await getPrevAndNext(unit.data.number);
 
 	<hr />
 	<nav>
-		{
-			prev && (
+		{prev && (
 				<a class="prev" href={`../${prev.id}/`}>
 					Unit {prev.data.number}. {prev.data.title}
 				</a>
-			)
-		}
-		{
-			next && (
+			)}
+		{next && (
 				<a class="next" href={`../${next.id}/`}>
 					Unit {next.data.number}. {next.data.title}
 				</a>
-			)
-		}
+			)}
 	</nav>
 </MathLayout>
 
 <style>
 	.prev::before {
-		content: '« ';
+		content: "« ";
 	}
 
 	.next::after {
-		content: ' »';
+		content: " »";
 	}
 </style>

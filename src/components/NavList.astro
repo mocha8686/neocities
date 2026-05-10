@@ -14,15 +14,13 @@ const props = (newTab: boolean) =>
 
 <nav>
 	<ul>
-		{
-			links.map(({ name, href, newTab = false }) => (
+		{links.map(({ name, href, newTab = false }) => (
 				<li>
 					<a {href} {...props(newTab)}>
 						{name}
 					</a>
 				</li>
-			))
-		}
+			))}
 	</ul>
 </nav>
 

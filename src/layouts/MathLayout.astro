@@ -1,8 +1,8 @@
 ---
 import 'katex/dist/katex-swap.min.css';
 
-import Font from 'astro/components/Font.astro';
 import { getImage } from 'astro:assets';
+import Font from 'astro/components/Font.astro';
 
 import Gear from '$src/assets/gear.svg';
 import sky from '$src/assets/sky.jpg';
@@ -26,7 +26,12 @@ const optimizedSky = await getImage({ src: sky });
 		</div>
 	</main>
 
-	<button class="open-settings" command="show-modal" commandfor="options">
+	<button
+		type="button"
+		class="open-settings"
+		command="show-modal"
+		commandfor="options"
+	>
 		<Gear />
 		Settings
 	</button>
@@ -39,20 +44,24 @@ const optimizedSky = await getImage({ src: sky });
 		<h2>Options</h2>
 
 		<label>
-			<input class="plain-font" type="checkbox" x-model:value="mathUsePlainFont" />
+			<input
+				class="plain-font"
+				type="checkbox"
+				x-model:value="mathUsePlainFont"
+			/>
 			Use plain font
 		</label>
 
 		<div class="button-row">
-			<button command="close" commandfor="options">Close</button>
+			<button type="button" command="close" commandfor="options">Close</button>
 		</div>
 	</dialog>
 </BaseLayout>
 
 <style>
 	button {
-		cursor: pointer;
 		font: inherit;
+		cursor: pointer;
 	}
 
 	dialog {
@@ -101,19 +110,19 @@ const optimizedSky = await getImage({ src: sky });
 		font-family: var(--ff-main);
 		font-size: var(--fs-main);
 		color: var(--cl-dark);
+		accent-color: var(--cl-accent);
 
 		color-scheme: only dark;
-		accent-color: var(--cl-accent);
 		background: var(--cl-light);
 
 		&::before {
-			content: '';
+			content: "";
 
 			position: fixed;
 			z-index: var(--z-bg);
 			inset: 0;
 
-			background: repeat-y top/100% auto var(--background-image);
+			background: repeat-y top / 100% auto var(--background-image);
 
 			animation: parallax linear;
 			animation-timeline: scroll();
@@ -139,12 +148,12 @@ const optimizedSky = await getImage({ src: sky });
 		grid-template-columns:
 			[full-width-start] 1fr [content-start] minmax(auto, 80ch)
 			[content-end] 1fr [full-width-end];
+		padding: 0.5rem 1rem;
 
 		margin: 4rem clamp(1rem, 8vw - 0.75rem, 6rem);
-		padding: 0.5rem 1rem;
-		border: 1rem outset silver;
 
 		background-color: var(--cl-light);
+		border: 1rem outset silver;
 		box-shadow: 0px 5px 25px -10px var(--cl-dark);
 
 		> * {
@@ -171,9 +180,9 @@ const optimizedSky = await getImage({ src: sky });
 
 			max-width: 100%;
 			height: auto;
-			border: 2px solid silver;
 
 			object-fit: contain;
+			border: 2px solid silver;
 			box-shadow: 0 4px 10px -4px rgb(0 0 0 / 30%);
 		}
 
@@ -200,8 +209,8 @@ const optimizedSky = await getImage({ src: sky });
 
 			p:has(> img:first-child:last-child),
 			p:has(> img:first-child):has(> em:last-child) {
-				grid-column: float;
 				grid-row: span 3;
+				grid-column: float;
 				margin-inline: clamp(0rem, calc(20cqi - 8rem), 4rem);
 			}
 		}

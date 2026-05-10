@@ -6,10 +6,7 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"includes": [
-			"**",
-			"!!**/dist"
-		]
+		"includes": ["**", "!!**/dist"]
 	},
 	"formatter": {
 		"enabled": true,
@@ -34,10 +31,16 @@
 			"!**/.idea/"
 		]
 	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "single"
+		}
+	},
 	"html": {
 		"formatter": {
 			"enabled": true,
-			"indentScriptAndStyle": true
+			"indentScriptAndStyle": true,
+			"selfCloseVoidElements": "always"
 		},
 		"experimentalFullSupportEnabled": true
 	},

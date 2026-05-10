@@ -92,13 +92,12 @@ webring website: https://webring.bucketfish.me
 	.prev::after,
 	.next::before,
 	.middle::before {
-		content: '';
-
 		position: absolute;
 		inset-block-end: -4px;
 		inset-inline: 0;
 
 		height: 2px;
+		content: "";
 
 		background: linear-gradient(
 			to right,
@@ -112,10 +111,10 @@ webring website: https://webring.bucketfish.me
 	}
 
 	.prev::before {
-		content: '⥼ ';
+		content: "⥼ ";
 	}
 
 	.next::after {
-		content: ' ⥽';
+		content: " ⥽";
 	}
 </style>

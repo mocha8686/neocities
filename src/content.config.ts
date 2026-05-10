@@ -1,10 +1,10 @@
+import { defineCollection } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { defineCollection } from 'astro:content';
 
 const quotes = defineCollection({
 	loader: file('src/data/quotes.txt', {
-		parser: text =>
+		parser: (text) =>
 			text
 				.trim()
 				.split('\n')
@@ -18,7 +18,7 @@ const quotes = defineCollection({
 
 const completedQuotes = defineCollection({
 	loader: file('src/data/completedQuotes.txt', {
-		parser: text =>
+		parser: (text) =>
 			text
 				.trim()
 				.split('\n')

@@ -19,11 +19,11 @@ const posts = await getSortedBlogPosts();
 		--min-card-size: 14rem;
 
 		display: grid;
-		grid-auto-rows: auto 8rem auto auto auto;
 		grid-template-columns: repeat(
-			auto-fill,
-			minmax(min(100%, var(--min-card-size)), auto)
-		);
+				auto-fill,
+				minmax(min(100%, var(--min-card-size)), auto)
+			);
+		grid-auto-rows: auto 8rem auto auto auto;
 		gap: 1rem;
 	}
 </style>

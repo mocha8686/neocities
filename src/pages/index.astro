@@ -1,6 +1,6 @@
 ---
-import type { ImageMetadata, UnresolvedImageTransform } from 'astro';
 import { getImage } from 'astro:assets';
+import type { ImageMetadata, UnresolvedImageTransform } from 'astro';
 
 import cascadingFeelings from '$src/assets/cascading_feelings.jpeg';
 import cascadingFeelingsTrained from '$src/assets/cascading_feelings_trained.jpeg';
@@ -129,9 +129,9 @@ const data = JSON.stringify({ pfps, quotes });
 	}
 
 	.pfp {
-		aspect-ratio: 1;
 		max-width: 100%;
 		height: auto;
+		aspect-ratio: 1;
 		border: 2px solid var(--cl-outline);
 	}
 

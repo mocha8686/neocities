@@ -7,13 +7,13 @@ import { visit } from 'unist-util-visit';
 
 export default function remarkColors() {
 	return (tree: Node) => {
-		visit(tree, function (node) {
+		visit(tree, (node) => {
 			if (
 				node.type === 'containerDirective' ||
 				node.type === 'leafDirective' ||
 				node.type === 'textDirective'
 			) {
-				let color;
+				let color: 'red' | 'green' | 'blue' | undefined;
 				switch (node.name) {
 					case 'red':
 						color = 'red';
@@ -28,7 +28,8 @@ export default function remarkColors() {
 						return;
 				}
 
-				const data = node.data || (node.data = {});
+				node.data ||= {};
+				const data = node.data;
 				const tagName = node.type === 'textDirective' ? 'span' : 'div';
 				const attributes = {
 					style: `color: ${color};`,

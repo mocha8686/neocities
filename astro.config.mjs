@@ -21,9 +21,7 @@ export default defineConfig({
 			remarkDirective,
 			remarkColors,
 		],
-		rehypePlugins: [
-			rehypeKatex,
-		],
+		rehypePlugins: [rehypeKatex],
 		shikiConfig: {
 			theme: 'css-variables',
 		},

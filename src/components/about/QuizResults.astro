@@ -6,8 +6,7 @@ const results = await getCollection('quizResults');
 ---
 
 <ul>
-	{
-		results.map(({ data: { link, id, image } }) => (
+	{results.map(({ data: { link, id, image } }) => (
 			<li>
 				<a href={link}>
 					<Image
@@ -19,14 +18,13 @@ const results = await getCollection('quizResults');
 					/>
 				</a>
 			</li>
-		))
-	}
+		))}
 </ul>
 
 <style>
 	ul {
-		margin: 0;
 		padding: 0;
+		margin: 0;
 	}
 
 	li {
@@ -40,8 +38,8 @@ const results = await getCollection('quizResults');
 	img {
 		max-width: 100%;
 		height: auto;
-		margin: 0;
 		padding: 0;
+		margin: 0;
 
 		object-fit: contain;
 	}

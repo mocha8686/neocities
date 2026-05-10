@@ -1,6 +1,5 @@
 ---
-import { Font } from 'astro:assets';
-import { getImage } from 'astro:assets';
+import { Font, getImage } from 'astro:assets';
 
 import right from '$src/assets/icons/arrow-right.svg';
 import Back from '$src/components/Back.astro';
@@ -90,16 +89,15 @@ const arrow = await getImage({ src: right });
 	}
 
 	h1::before {
-		content: '$ ';
+		content: "$ ";
 	}
 
 	h1::after {
-		content: '|';
-
 		display: inline-block;
 
 		font-size: 1.5em;
 		vertical-align: middle;
+		content: "|";
 
 		animation: 1.5s cubic-bezier(0, 1, 0, 1) infinite forwards blink;
 
@@ -160,6 +158,53 @@ const arrow = await getImage({ src: right });
 			0 0 var(--radius) var(--cl-accent);
 	}
 
+	details {
+		--transition-duration: 150ms;
+		--size: 24px;
+
+		&::details-content {
+			display: block;
+			height: 0;
+			overflow-y: clip;
+			transition:
+				height var(--transition-duration) ease-out,
+				content-visibility var(--transition-duration) allow-discrete;
+		}
+
+		> summary {
+			display: block;
+
+			&::before {
+				display: inline-block;
+				width: var(--size);
+
+				aspect-ratio: 1;
+				vertical-align: middle;
+
+				color: var(--cl-accent);
+				content: "";
+
+				background-color: currentColor;
+
+				mask-image: var(--arrow);
+				mask-repeat: no-repeat;
+				mask-size: 100% 100%;
+
+				transition: rotate var(--transition-duration) ease-out;
+			}
+		}
+	}
+
+	details[open] {
+		&::details-content {
+			height: auto;
+		}
+
+		> summary::before {
+			rotate: 90deg;
+		}
+	}
+
 	.astro-code {
 		--border-color: var(--cl-accent);
 		--border-width: 2px;
@@ -168,42 +213,44 @@ const arrow = await getImage({ src: right });
 		--background-color: var(--cl-container);
 
 		--bevel-start: calc(
-			(var(--bevel-size) - var(--border-width)) * sqrt(2) / 2
+			(var(--bevel-size) - var(--border-width)) *
+			sqrt(2) /
+			2
 		);
 		--bevel-end: calc(var(--bevel-start) + var(--border-width));
 
 		position: relative;
+		padding: 0.5em 2ch;
 
 		margin-block: 2rem;
-		padding: 0.5em 2ch;
-		border: var(--border-width) solid transparent;
-		border-inline-start-width: var(--bar-width);
 
 		background:
 			top left / 100% var(--border-width)
-				linear-gradient(180deg, var(--border-color), var(--border-color))
-				border-box,
+			linear-gradient(180deg, var(--border-color), var(--border-color))
+			border-box,
 			top left / var(--bar-width) 100%
-				linear-gradient(180deg, var(--border-color), var(--border-color))
-				border-box,
+			linear-gradient(180deg, var(--border-color), var(--border-color))
+			border-box,
 			bottom left / calc(100% - var(--bevel-size)) var(--border-width)
-				linear-gradient(0deg, var(--border-color), var(--border-color))
-				border-box,
+			linear-gradient(0deg, var(--border-color), var(--border-color)) border-box,
 			top right / var(--border-width) calc(100% - var(--bevel-size))
-				linear-gradient(90deg, var(--border-color), var(--border-color))
-				border-box,
+			linear-gradient(90deg, var(--border-color), var(--border-color))
+			border-box,
 			bottom right / var(--bevel-size) var(--bevel-size)
-				linear-gradient(
-					135deg,
-					transparent var(--bevel-start),
-					var(--border-color) var(--bevel-start),
-					var(--border-color) var(--bevel-end),
-					var(--cl-background) var(--bevel-end)
-				)
-				border-box,
+			linear-gradient(
+				135deg,
+				transparent var(--bevel-start),
+				var(--border-color) var(--bevel-start),
+				var(--border-color) var(--bevel-end),
+				var(--cl-background) var(--bevel-end)
+			)
+			border-box,
 			transparent;
+		/* biome-ignore lint/complexity/noImportantStyles: overriding astro builtin */
 		background-color: var(--cl-container) !important;
 		background-repeat: no-repeat;
+		border: var(--border-width) solid transparent;
+		border-inline-start-width: var(--bar-width);
 
 		code,
 		kbd,
@@ -223,68 +270,20 @@ const arrow = await getImage({ src: right });
 		counter-reset: code-line;
 	}
 
-	.astro-code:not([data-language='plaintext']) .line {
+	.astro-code:not([data-language="plaintext"]) .line {
 		&::before {
+			margin-inline-end: 2ch;
 			content: counter(code-line);
 			counter-increment: code-line;
-			margin-inline-end: 2ch;
 			opacity: 0.5;
 		}
 
 		&:nth-child(-n + 9)::before {
-			content: ' ' counter(code-line);
+			content: " " counter(code-line);
 		}
 	}
 
-	.astro-code[data-language='plaintext'] {
+	.astro-code[data-language="plaintext"] {
 		line-height: 1.1;
-	}
-
-	details {
-		--transition-duration: 150ms;
-		--size: 24px;
-
-		&::details-content {
-			overflow-y: clip;
-			display: block;
-			height: 0;
-			transition:
-				height var(--transition-duration) ease-out,
-				content-visibility var(--transition-duration) allow-discrete;
-		}
-
-		> summary {
-			display: block;
-
-			&::before {
-				content: '';
-
-				display: inline-block;
-
-				aspect-ratio: 1;
-				width: var(--size);
-
-				color: var(--cl-accent);
-				vertical-align: middle;
-
-				background-color: currentColor;
-
-				transition: rotate var(--transition-duration) ease-out;
-
-				mask-image: var(--arrow);
-				mask-repeat: no-repeat;
-				mask-size: 100% 100%;
-			}
-		}
-	}
-
-	details[open] {
-		&::details-content {
-			height: auto;
-		}
-
-		> summary::before {
-			rotate: 90deg;
-		}
 	}
 </style>

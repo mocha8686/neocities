@@ -73,7 +73,7 @@ const challengeHeadings = headings.reduce<Heading[]>(
 		},
 
 		inactive(value: string) {
-			const entry = this.entries.find(s => s.value === value);
+			const entry = this.entries.find((s) => s.value === value);
 			if (entry) {
 				entry.isActive = false;
 				this.prune();
@@ -81,7 +81,7 @@ const challengeHeadings = headings.reduce<Heading[]>(
 		},
 
 		prune() {
-			const arr = this.entries.filter(s => s.isActive && s.value.length > 0);
+			const arr = this.entries.filter((s) => s.isActive && s.value.length > 0);
 			if (arr.length > 0) {
 				this.entries = arr;
 			}
@@ -110,9 +110,9 @@ const challengeHeadings = headings.reduce<Heading[]>(
 </script>
 
 <style>
-	.nav-transform {
-		transform-style: preserve-3d;
+	:where(.nav-transform) {
 		display: contents;
+		transform-style: preserve-3d;
 		perspective: 2000px;
 
 		nav {
@@ -128,17 +128,17 @@ const challengeHeadings = headings.reduce<Heading[]>(
 
 			position: sticky;
 			inset-block-start: 20%;
-			rotate: var(--axis) var(--rotation);
+			grid-row: span 9999;
 
 			grid-column: nav;
-			grid-row: span 9999;
 			align-self: start;
 			justify-self: center;
 
+			background-color: var(--background-color);
+
 			border: var(--border-width) solid var(--border-color);
 			border-inline-start-width: 8px;
-
-			background-color: var(--background-color);
+			rotate: var(--axis) var(--rotation);
 
 			transition: rotate 150ms ease-in-out;
 
@@ -146,11 +146,11 @@ const challengeHeadings = headings.reduce<Heading[]>(
 				--border: var(--bevel-size) solid var(--border-color);
 				--transparent: var(--bevel-size) solid transparent;
 
-				content: '';
-
 				position: absolute;
 				inset-block-end: 0;
 				inset-inline-end: 0;
+
+				content: "";
 
 				border-block-start: var(--transparent);
 				border-block-end: var(--border);
@@ -162,11 +162,11 @@ const challengeHeadings = headings.reduce<Heading[]>(
 				--border: calc(var(--bevel-size) + 1px) solid var(--cl-background);
 				--transparent: calc(var(--bevel-size) + 1px) solid transparent;
 
-				content: '';
-
 				position: absolute;
 				inset-block-end: calc(var(--border-width) * -1 - 1px);
 				inset-inline-end: calc(var(--border-width) * -1 - 1px);
+
+				content: "";
 
 				border-block-start: var(--transparent);
 				border-block-end: var(--border);
@@ -185,8 +185,8 @@ const challengeHeadings = headings.reduce<Heading[]>(
 			}
 
 			h2 {
-				margin: 0;
 				padding-inline-start: 0.75em;
+				margin: 0;
 				color: var(--cl-accent);
 				background: var(--background-color);
 			}

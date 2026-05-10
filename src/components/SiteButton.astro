@@ -26,6 +26,7 @@ const fn = `() => {
 	<code>{code}</code>
 
 	<button
+		type="button"
 		style="display: none;"
 		x-show="true"
 		x-data={data}
@@ -39,8 +40,8 @@ const fn = `() => {
 <style>
 	.container {
 		display: grid;
-		grid-template-columns: minmax(auto, 12rem);
 		grid-template-rows: auto 4rem auto;
+		grid-template-columns: minmax(auto, 12rem);
 		gap: 1rem;
 		place-items: center;
 		justify-content: center;
@@ -49,16 +50,15 @@ const fn = `() => {
 	}
 
 	code {
-		overflow-y: auto;
-
 		width: min(20rem, 80%);
 		max-height: 100%;
-		border: 4px inset var(--cl-outline);
+		overflow-y: auto;
 
 		font-size: 0.75rem;
 		color: var(--cl-on-accent);
 
 		background: var(--cl-accent);
+		border: 4px inset var(--cl-outline);
 	}
 
 	button {

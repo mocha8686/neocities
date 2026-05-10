@@ -1,6 +1,5 @@
 ---
-import { Font } from 'astro:assets';
-import { getImage } from 'astro:assets';
+import { Font, getImage } from 'astro:assets';
 
 import alleyway from '$src/assets/alleyway/alleyway.png';
 import ena from '$src/assets/alleyway/ena.png';
@@ -27,6 +26,7 @@ const bgs = await Promise.all(
 	</Fragment>
 
 	<button
+		type="button"
 		class="text"
 		x-data
 		x-show="$store.text.show"
@@ -34,23 +34,33 @@ const bgs = await Promise.all(
 		x-on:click="$store.text.advance(true)"
 		style="display: none;"
 	>
-		<h1 x-bind:data-text="$store.text.speaker" x-text="$store.text.speaker">
-		</h1>
+		<h1
+			x-bind:data-text="$store.text.speaker"
+			x-text="$store.text.speaker"
+		></h1>
 		<div class="body">
 			<template x-for="line in $store.text.lines">
 				<p x-bind:data-text="line" x-text="line"></p>
 			</template>
 		</div>
-		<svg>
+		<svg aria-hidden="true">
 			<filter id="shadow">
 				<feMorphology
 					in="SourceGraphic"
 					operator="dilate"
 					radius="2.5"
-					result="shape"></feMorphology>
-				<feFlood flood-color="#444566" flood-opacity="0.75" result="color"
+					result="shape"
+				></feMorphology>
+				<feFlood
+					flood-color="#444566"
+					flood-opacity="0.75"
+					result="color"
 				></feFlood>
-				<feComposite in="color" in2="shape" operator="in" result="outline"
+				<feComposite
+					in="color"
+					in2="shape"
+					operator="in"
+					result="outline"
 				></feComposite>
 
 				<feMerge>
@@ -94,6 +104,7 @@ const bgs = await Promise.all(
 			lines: string[];
 		}
 
+		// biome-ignore lint/style/noNonNullAssertion: data-bgs is set in this file
 		const bgs = JSON.parse(document.body.dataset.bgs!);
 		const text: Text = {
 			show: false,
@@ -144,7 +155,7 @@ const bgs = await Promise.all(
 					if (node.bg) {
 						this.show = false;
 
-						let bg;
+						let bg: string;
 						if (node.bg === 'white' || node.bg === 'black') {
 							bg = `linear-gradient(${node.bg})`;
 						} else {
@@ -227,15 +238,15 @@ const bgs = await Promise.all(
 
 	body {
 		--bg: linear-gradient(black);
-		--bg-crossfade: '';
+		--bg-crossfade: "";
 		--bg-crossfade-delay: 1s;
 		--bg-crossfade-duration: 2s;
 		--bg-crossfade-opacity: 0;
 
 		display: grid;
 		grid-template:
-			'clear' 1fr
-			'text' calc(6em + 4rem) / auto;
+			"clear" 1fr
+			"text" calc(6em + 4rem) / auto;
 
 		height: 100vh;
 
@@ -245,18 +256,17 @@ const bgs = await Promise.all(
 
 		accent-color: var(--cl-accent);
 		background:
-			center/cover var(--bg) no-repeat,
+			center / cover var(--bg) no-repeat,
 			var(--cl-dark);
 
 		&::before {
-			content: '';
-
 			position: fixed;
-			z-index: var(--z-bg-crossfade);
 			inset: 0;
+			z-index: var(--z-bg-crossfade);
+			content: "";
+			background: center / cover var(--bg-crossfade) no-repeat;
 
 			opacity: var(--bg-crossfade-opacity);
-			background: center/cover var(--bg-crossfade) no-repeat;
 
 			transition: opacity var(--bg-crossfade-duration) linear
 				var(--bg-crossfade-delay);
@@ -272,14 +282,13 @@ const bgs = await Promise.all(
 
 		display: grid;
 		grid-area: text;
+		grid-template-rows: auto 1fr;
 		grid-template-columns:
 			var(--text-margin)
 			[content-start] var(--text-area-size) [content-end] var(--text-margin);
-		grid-template-rows: auto 1fr;
 		row-gap: 0.25rem;
 
 		padding-block-start: 1.5rem;
-		border: none;
 
 		font: inherit;
 		color: inherit;
@@ -290,6 +299,7 @@ const bgs = await Promise.all(
 			rgb(0 0 0 / var(--alpha)) var(--stop),
 			transparent
 		);
+		border: none;
 
 		> * {
 			grid-column: content;
@@ -308,22 +318,22 @@ const bgs = await Promise.all(
 				--alpha: 0.5;
 				--stop: 60%;
 
-				content: '';
-
 				position: absolute;
-				z-index: var(--z-speaker-line);
 				inset-block-end: 0.25ex;
 				inset-inline: -0.5em 0;
+				z-index: var(--z-speaker-line);
 
 				height: 0.65ex;
-				border-radius: 1rem;
 
-				opacity: var(--alpha);
+				content: "";
 				background: linear-gradient(
 					to right,
 					var(--cl-light),
 					transparent var(--stop)
 				);
+				border-radius: 1rem;
+
+				opacity: var(--alpha);
 			}
 		}
 
@@ -341,16 +351,16 @@ const bgs = await Promise.all(
 		h1,
 		p {
 			&::before {
-				content: attr(data-text);
 				position: absolute;
 				z-index: var(--z-text-outline);
+				content: attr(data-text);
 				filter: url(#shadow);
 			}
 		}
 	}
 
 	svg {
-		pointer-events: none;
 		position: fixed;
+		pointer-events: none;
 	}
 </style>

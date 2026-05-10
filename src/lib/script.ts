@@ -105,7 +105,7 @@ export function displayEntry(Alpine: Alpine, entry: Entry, i = 0) {
 
 function formatLast(last: string, choices: Choices) {
 	const choicesText = Object.keys(choices)
-		.map(choice => `${BULLET} ${choice}()`)
+		.map((choice) => `${BULLET} ${choice}()`)
 		.join('\n');
 	return `${last}\n\n${choicesText}`;
 }
@@ -139,7 +139,7 @@ function mountChoices(Alpine: Alpine, choices: Choices) {
 
 function appendStoredChoices(choice: string) {
 	const choices = window.localStorage.getItem(CHOICES_KEY);
-	let newChoices;
+	let newChoices: string;
 	if (choices) {
 		newChoices = `${choices},${choice}`;
 	} else {
@@ -161,7 +161,7 @@ export function getStoredChoices(): string[] {
 export function getStoredIndex(): number {
 	const index = window.localStorage.getItem(INDEX_KEY);
 	if (!index) return 0;
-	return parseInt(index);
+	return parseInt(index, 10);
 }
 
 export function clearStore() {

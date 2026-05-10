@@ -37,8 +37,7 @@ const sets = (await getCollection('cryptopals')).toSorted(
 	<hr />
 
 	<section class="sets">
-		{
-			sets.map(({ id, data: { title, number, description } }) => (
+		{sets.map(({ id, data: { title, number, description } }) => (
 				<div class="set">
 					<h2>
 						{number}. {title}
@@ -46,8 +45,7 @@ const sets = (await getCollection('cryptopals')).toSorted(
 					<p>{description}</p>
 					<a href={`${id}/`}>Go</a>
 				</div>
-			))
-		}
+			))}
 	</section>
 </CryptopalsLayout>
 
@@ -62,11 +60,11 @@ const sets = (await getCollection('cryptopals')).toSorted(
 		--min-card-size: 16rem;
 
 		display: grid;
-		grid-auto-rows: auto 1fr auto;
 		grid-template-columns: repeat(
-			auto-fill,
-			minmax(min(var(--min-card-size), 100%), 1fr)
-		);
+				auto-fill,
+				minmax(min(var(--min-card-size), 100%), 1fr)
+			);
+		grid-auto-rows: auto 1fr auto;
 		gap: 1rem;
 	}
 
@@ -80,7 +78,7 @@ const sets = (await getCollection('cryptopals')).toSorted(
 		position: relative;
 
 		display: grid;
-		grid-row: span 3;
+		grid-template-rows: subgrid;
 		grid-template-columns:
 			[full-width-start]
 			var(--margin)
@@ -89,25 +87,25 @@ const sets = (await getCollection('cryptopals')).toSorted(
 			[content-end]
 			var(--margin)
 			[full-width-end];
-		grid-template-rows: subgrid;
+		grid-row: span 3;
 		gap: 1rem;
 
 		padding-block-end: 0.75rem;
-		border: 1px solid var(--border-color);
-		border-inline-start-width: 6px;
 
 		background: var(--cl-container);
+		border: 1px solid var(--border-color);
+		border-inline-start-width: 6px;
 		box-shadow: 0 2px 6px -2px black;
 
 		&::before {
 			--border: var(--bevel-size) solid var(--border-color);
 			--transparent: var(--bevel-size) solid transparent;
 
-			content: '';
-
 			position: absolute;
 			inset-block-end: 0;
 			inset-inline-end: 0;
+
+			content: "";
 
 			border-block-start: var(--transparent);
 			border-block-end: var(--border);
@@ -119,11 +117,11 @@ const sets = (await getCollection('cryptopals')).toSorted(
 			--border: calc(var(--bevel-size) + 1px) solid var(--cl-background);
 			--transparent: calc(var(--bevel-size) + 1px) solid transparent;
 
-			content: '';
-
 			position: absolute;
 			inset-block-end: calc(var(--border-width) * -1 - 1px);
 			inset-inline-end: calc(var(--border-width) * -1 - 1px);
+
+			content: "";
 
 			border-block-start: var(--transparent);
 			border-block-end: var(--border);
@@ -133,9 +131,9 @@ const sets = (await getCollection('cryptopals')).toSorted(
 
 		h2 {
 			grid-column: full-width;
+			padding-inline: 0.5em;
 
 			margin: 0;
-			padding-inline: 0.5em;
 
 			color: var(--cl-accent);
 
@@ -153,7 +151,7 @@ const sets = (await getCollection('cryptopals')).toSorted(
 			text-align: end;
 
 			&::after {
-				content: ' »';
+				content: " »";
 			}
 		}
 	}

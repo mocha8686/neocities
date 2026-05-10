@@ -35,9 +35,11 @@ const entry = parseNode(data);
 			return;
 		}
 
+		// biome-ignore lint/style/noNonNullAssertion: element is defined in this file
 		const el = document.getElementById('console-script')!;
+		// biome-ignore lint/style/noNonNullAssertion: data-entry is set in this file
 		let entry: Entry = JSON.parse(el.dataset.entry!);
-		let i: number | undefined = undefined;
+		let i: number | undefined;
 
 		const choices = getStoredChoices();
 		if (choices.length > 0) {

@@ -11,7 +11,8 @@ const units = (await getPublishedUnits()).toSorted(
 	<h1>Group Theory</h1>
 
 	<p>
-		These pages are all about the field of mathematics known as <a
+		These pages are all about the field of mathematics known as
+		<a
 			href="https://en.wikipedia.org/wiki/Group_theory/"
 			target="_blank"
 			rel="noreferrer"
@@ -47,25 +48,24 @@ const units = (await getPublishedUnits()).toSorted(
 	<p>
 		Note: These pages are still a work in progress, so I'm still actively adding
 		pages. Make sure to check back for the next one! You can also use
-		<a href="/rss.xml" target="_blank">my site's RSS feed</a> for updates.
+		<a href="/rss.xml" target="_blank">my site's RSS feed</a>
+		for updates.
 	</p>
 
 	<hr />
 
 	<ol>
-		{
-			units.map(unit => (
+		{units.map(unit => (
 				<li>
 					<a href={`${unit.id}/`}>{unit.data.title}</a>
 				</li>
-			))
-		}
+			))}
 	</ol>
 </MathLayout>
 
 <style>
 	@counter-style units {
-		prefix: 'Unit ';
+		prefix: "Unit ";
 		system: extends decimal;
 	}
 

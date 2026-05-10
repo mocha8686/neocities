@@ -1,8 +1,7 @@
 ---
-import type { GetStaticPaths, ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
-import { render } from 'astro:content';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths, ImageMetadata } from 'astro';
 
 import Window from '$src/components/Window.astro';
 import MainLayout from '$src/layouts/MainLayout.astro';
@@ -10,7 +9,7 @@ import { formatDate } from '$src/lib/blog';
 
 export const getStaticPaths = (async () => {
 	const posts = await getCollection('blog');
-	return posts.map(post => ({
+	return posts.map((post) => ({
 		params: { id: post.id },
 		props: { post },
 	}));
@@ -46,13 +45,13 @@ const optimized = await getImage({
 		position: relative;
 
 		display: grid;
-		grid-column: breakout;
 		grid-template-columns: subgrid;
+		grid-column: breakout;
 		align-content: start;
 
 		min-height: 12rem;
 
-		background: center/cover var(--image) no-repeat;
+		background: center / cover var(--image) no-repeat;
 
 		h1 {
 			grid-column: content;
@@ -94,8 +93,8 @@ const optimized = await getImage({
 
 			max-width: min(20rem, 100%);
 			height: auto;
-			margin-block: var(--margin);
 			padding-inline: clamp(0rem, 10cqi - 2rem, 2rem);
+			margin-block: var(--margin);
 
 			object-fit: contain;
 			&:has(+ em) {
@@ -112,13 +111,13 @@ const optimized = await getImage({
 
 	ol,
 	ul {
-		&:has(input[type='checkbox']) {
+		&:has(input[type="checkbox"]) {
 			list-style: none;
 		}
 	}
 
 	:disabled {
-		cursor: auto;
 		accent-color: var(--cl-accent);
+		cursor: auto;
 	}
 </style>

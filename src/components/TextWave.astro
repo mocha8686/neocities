@@ -12,13 +12,11 @@ function delay(i: number): string {
 ---
 
 <div>
-	{
-		body.split('').map((c, i) => (
+	{body.split('').map((c, i) => (
 			<span style={`--d: ${delay(i)}`} class:list={{ space: c === ' ' }}>
 				{c}
 			</span>
-		))
-	}
+		))}
 </div>
 
 <style>
@@ -35,7 +33,7 @@ function delay(i: number): string {
 		display: inline-block;
 		animation:
 			calc(var(--wave-period) / 2) ease-in-out var(--d) infinite alternate
-				text-wave,
+			text-wave,
 			var(--rainbow-period) linear var(--d) infinite forwards rainbow;
 	}
 

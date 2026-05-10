@@ -49,35 +49,31 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 		<h2 x-text="current">{defaultTab}</h2>
 
 		<nav>
-			{
-				tabs.map(tab => (
+			{tabs.map(tab => (
 					<button
+						type="button"
 						class="tab"
 						x-bind:class={`${ifTab(tab)} && 'active'`}
 						x-show={ifNotTab(tab)}
-						@click={changeTab(tab)}
+						x-on:click={changeTab(tab)}
 					>
 						{tab.name}
 					</button>
-				))
-			}
+				))}
 		</nav>
 
-		{
-			tabs.map(async tab => {
+		{tabs.map(async tab => {
 				const { content: Content } = tab;
 				return (
 					<div class="content-container" x-show={ifTab(tab)}>
 						<Content />
 					</div>
 				);
-			})
-		}
+			})}
 	</Window>
 
 	<noscript>
-		{
-			tabs.map(async tab => {
+		{tabs.map(async tab => {
 				const { content: Content } = tab;
 				return (
 					<Window class="about-window">
@@ -87,16 +83,15 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 						</div>
 					</Window>
 				);
-			})
-		}
+			})}
 	</noscript>
 </MainLayout>
 
 <style>
 	nav {
 		display: flex;
-		grid-column: full-width;
 		flex-wrap: wrap;
+		grid-column: full-width;
 		border: 4px inset var(--cl-outline);
 
 		button {
@@ -111,10 +106,10 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 	}
 
 	.content-container {
-		overflow-y: auto;
 		grid-column: full-width;
 		height: 28rem;
 		padding-inline: 1rem;
+		overflow-y: auto;
 
 		> * {
 			grid-column: content;
@@ -129,8 +124,8 @@ const changeTab = (tab: Tab) => `current = '${tab.name}'`;
 
 			max-width: 100%;
 			height: auto;
-			margin-block: var(--margin);
 			padding-inline: clamp(0rem, 10cqi - 2rem, 2rem);
+			margin-block: var(--margin);
 
 			object-fit: contain;
 

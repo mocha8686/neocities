@@ -64,13 +64,11 @@ const keys = JSON.stringify(Object.keys(keyed));
 <nav>
 	<Album {...defaultAlbum} x-show={`!${keys}.includes($store.state.value)`} />
 
-	{
-		Object.entries(keyed).map(([key, album]) => (
+	{Object.entries(keyed).map(([key, album]) => (
 			<template x-if={`$store.state.value === '${key}'`}>
 				<Album {...album} />
 			</template>
-		))
-	}
+		))}
 
 	{albums.map(info => <Album {...info} />)}
 </nav>
@@ -78,8 +76,8 @@ const keys = JSON.stringify(Object.keys(keyed));
 <style>
 	nav {
 		display: grid;
-		grid-auto-rows: 1fr max-content max-content;
 		grid-template-columns: repeat(auto-fill, minmax(min(100%, 6rem), auto));
+		grid-auto-rows: 1fr max-content max-content;
 		column-gap: 1em;
 		justify-content: end;
 	}

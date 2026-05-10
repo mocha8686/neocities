@@ -1,6 +1,6 @@
 ---
-import type { ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
 import { formatDate } from '$src/lib/blog';
 
@@ -25,8 +25,10 @@ const optimized = await getImage({
 
 <Window class="post">
 	<h2>{title}</h2>
-	<div class="image-container" style={{ '--image': `url("${optimized.src}")` }}>
-	</div>
+	<div
+		class="image-container"
+		style={{ '--image': `url("${optimized.src}")` }}
+	/>
 	<time datetime={date.toISOString()}>{formatDate(date)}</time>
 	<p>{description}</p>
 	<a href={`/blog/${id}/`}>Read more</a>
@@ -34,19 +36,19 @@ const optimized = await getImage({
 
 <style>
 	.post {
-		grid-row: span 5;
 		grid-template-rows: subgrid;
+		grid-row: span 5;
 		gap: 0;
 		padding-block-end: 1rem;
 
 		.image-container {
-			overflow: clip;
 			grid-column: full-width;
 
 			margin-block-end: 1rem;
-			border-block-end: 8px outset var(--cl-outline);
+			overflow: clip;
 
-			background: center/cover var(--image) no-repeat;
+			background: center / cover var(--image) no-repeat;
+			border-block-end: 8px outset var(--cl-outline);
 		}
 
 		time {
@@ -64,7 +66,7 @@ const optimized = await getImage({
 			display: block;
 
 			&::after {
-				content: '…';
+				content: "…";
 			}
 		}
 	}

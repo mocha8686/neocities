@@ -1,6 +1,5 @@
 ---
-import { Font, Image } from 'astro:assets';
-import { getImage } from 'astro:assets';
+import { Font, getImage, Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 
 import background from '$src/assets/background.jpg';
@@ -23,9 +22,9 @@ interface Props {
 
 const { back } = Astro.props;
 
-const quotes = (await getCollection('quotes')).map(entry => entry.data.quote);
+const quotes = (await getCollection('quotes')).map((entry) => entry.data.quote);
 const completedQuotes = (await getCollection('completedQuotes')).map(
-	entry => entry.data.quote,
+	(entry) => entry.data.quote,
 );
 const secondsPerCharacter = 0.12875536480687;
 
@@ -44,7 +43,7 @@ const bullet = await getImage({ src: seal });
 			<Marquee
 				class="header"
 				gap="8em"
-				duration=`${secondsPerCharacter * quotes.join('').length}s`
+				duration={`${secondsPerCharacter * quotes.join('').length}s`}
 				as="header"
 				x-show="$store.state.value !== 'with our wounded hands'"
 			>
@@ -54,7 +53,7 @@ const bullet = await getImage({ src: seal });
 				<Marquee
 					class="header"
 					gap="8em"
-					duration=`${secondsPerCharacter * completedQuotes.join('').length}s`
+					duration={`${secondsPerCharacter * completedQuotes.join('').length}s`}
 					as="header"
 				>
 					{completedQuotes.map(quote => <li>{quote}</li>)}
@@ -101,12 +100,11 @@ const bullet = await getImage({ src: seal });
 	}
 
 	body::before {
-		pointer-events: none;
-		content: '';
-
 		position: fixed;
-		z-index: var(--z-bg);
 		inset: 0;
+		z-index: var(--z-bg);
+		pointer-events: none;
+		content: "";
 
 		background: center / cover no-repeat var(--background-image);
 	}
@@ -122,15 +120,15 @@ const bullet = await getImage({ src: seal });
 	button {
 		--delta-brightness: 5%;
 
-		cursor: pointer;
-
-		border: none;
-
 		font-family: var(--ff-accent);
 		font-size: 1rem;
 		color: var(--cl-on-accent);
 
+		cursor: pointer;
+
 		background: var(--cl-accent);
+
+		border: none;
 
 		&:hover,
 		&:focus-visible {
@@ -153,19 +151,19 @@ const bullet = await getImage({ src: seal });
 	q,
 	blockquote {
 		&::before {
-			content: '“';
+			content: "“";
 		}
 
 		&::after {
-			content: '”';
+			content: "”";
 		}
 
 		&:lang(ja)::before {
-			content: '「';
+			content: "「";
 		}
 
 		&:lang(ja)::after {
-			content: '」';
+			content: "」";
 		}
 	}
 
@@ -178,16 +176,16 @@ const bullet = await getImage({ src: seal });
 			&::before {
 				--gap: 0.25rem;
 
-				content: '';
-
 				position: absolute;
 				inset-block-start: 0.4em;
 				inset-inline-start: calc(-1rem - var(--gap));
-
-				aspect-ratio: 1;
 				width: 1rem;
 
-				background: center/contain no-repeat var(--bullet);
+				aspect-ratio: 1;
+
+				content: "";
+
+				background: center / contain no-repeat var(--bullet);
 			}
 		}
 	}
@@ -201,17 +199,17 @@ const bullet = await getImage({ src: seal });
 		--breakout-margin: 1rem;
 
 		position: relative;
-
-		container-type: inline-size;
 		display: grid;
 		grid-template-columns:
 			[full-width-start] var(--full-width-margin)
 			[breakout-start] var(--breakout-margin)
 			[content-start] 1fr [content-end] var(--breakout-margin)
 			[breakout-end] var(--full-width-margin) [full-width-end];
+		padding-block: 0.5rem 3rem;
 
 		margin-block: 2rem;
-		padding-block: 0.5rem 3rem;
+
+		container-type: inline-size;
 
 		background: var(--cl-background);
 
@@ -221,8 +219,8 @@ const bullet = await getImage({ src: seal });
 	}
 
 	h1 {
-		margin-inline: -0.5rem;
 		padding-block: 0.5rem;
+		margin-inline: -0.5rem;
 
 		font-size: clamp(1rem, 0rem + 5.5cqi, 2rem);
 		font-weight: normal;
@@ -236,11 +234,11 @@ const bullet = await getImage({ src: seal });
 
 <style>
 	.layout {
-		overflow-x: clip;
 		display: grid;
 		grid-template-columns:
 			1fr [content-start] minmax(auto, 40rem)
 			[content-end] 1fr;
+		overflow-x: clip;
 
 		& > :global(*) {
 			grid-column: content;
@@ -283,17 +281,17 @@ const bullet = await getImage({ src: seal });
 				--size: 2rem;
 				--gap: 0.25rem;
 
-				content: '';
-
 				position: absolute;
 				inset-block: 0;
 				inset-inline-start: calc(var(--size) * -1 - var(--gap));
-				translate: 0 -25%;
 
 				width: var(--size);
 				height: var(--size);
+
+				content: "";
 				border: 2px solid red;
 				border-radius: 100%;
+				translate: 0 -25%;
 			}
 		}
 
@@ -310,8 +308,8 @@ const bullet = await getImage({ src: seal });
 		font-weight: bold;
 		line-height: 1.1;
 		color: var(--cl-accent);
-		text-shadow: var(--cl-background) -4px 1px;
 		text-transform: uppercase;
+		text-shadow: var(--cl-background) -4px 1px;
 
 		@media screen and (width <= 50rem) {
 			display: none;

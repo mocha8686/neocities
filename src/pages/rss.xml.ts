@@ -29,12 +29,13 @@ async function getRSSItems() {
 	};
 
 	const cmpNewestFirst = (a: RSSFeedItem, b: RSSFeedItem) =>
+		// biome-ignore lint/style/noNonNullAssertion: enforced by zod
 		b.pubDate!.getTime() - a.pubDate!.getTime();
 
 	const settledFeeds = await resolveObject(feeds);
 	const labeledFeeds = Object.entries(settledFeeds).flatMap(
 		([feedTitle, items]) =>
-			items.map(item => {
+			items.map((item) => {
 				item.title = `${feedTitle} – ${item.title}`;
 				return item;
 			}),

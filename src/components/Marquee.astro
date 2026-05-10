@@ -28,9 +28,9 @@ const html = await Astro.slots.render('default');
 
 <style define:vars={{ duration, gap }}>
 	.marquee {
-		overflow: clip;
 		display: flex;
 		gap: var(--gap);
+		overflow: clip;
 	}
 
 	.marquee-content {
@@ -40,8 +40,8 @@ const html = await Astro.slots.render('default');
 		justify-content: space-around;
 
 		min-width: 100%;
-		margin: 0;
 		padding: 0;
+		margin: 0;
 
 		list-style: none;
 

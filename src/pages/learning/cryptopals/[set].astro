@@ -1,14 +1,13 @@
 ---
+import { getCollection, render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
-import { render } from 'astro:content';
-import { getCollection } from 'astro:content';
 
 import HeadingNav from '$src/components/cryptopals/HeadingNav.astro';
 import CryptopalsLayout from '$src/layouts/CryptopalsLayout.astro';
 
 export const getStaticPaths = (async () => {
 	const sets = await getCollection('cryptopals');
-	return sets.map(set => ({
+	return sets.map((set) => ({
 		params: { set: set.id },
 		props: { set },
 	}));
@@ -50,8 +49,6 @@ const { Content, headings } = await render(set);
 		--gap: 4rem;
 
 		position: relative;
-
-		container-type: inline-size;
 		display: grid;
 		grid-template-columns:
 			[full-width-start] var(--margin) [content-start] minmax(
@@ -63,6 +60,8 @@ const { Content, headings } = await render(set);
 				1fr
 			)
 			[nav-end] var(--margin);
+
+		container-type: inline-size;
 
 		line-height: 1.8;
 	}
@@ -82,7 +81,7 @@ const { Content, headings } = await render(set);
 		}
 
 		.nav-transform {
-			display: none !important;
+			display: none;
 		}
 	}
 
@@ -102,24 +101,23 @@ const { Content, headings } = await render(set);
 			grid-column: full-width;
 
 			margin-block-start: 2.5em;
-			border-block-end: 2px solid var(--cl-accent);
 
 			color: var(--cl-foreground);
+			border-block-end: 2px solid var(--cl-accent);
 
 			&::before {
-				content: counter(challenge);
-				counter-increment: challenge;
-
 				display: block;
 				flex: 0 3.4ex;
 				align-self: end;
 
 				aspect-ratio: 1;
-				margin-inline-end: 0.5em;
 				padding: 0 1ch;
+				margin-inline-end: 0.5em;
 
 				color: var(--cl-on-accent);
 				text-align: center;
+				content: counter(challenge);
+				counter-increment: challenge;
 
 				background: var(--cl-accent);
 			}
@@ -136,22 +134,22 @@ const { Content, headings } = await render(set);
 				position: relative;
 
 				margin-inline: clamp(0rem, -0.8rem + 4.5cqi, 2rem);
-				border: 1px solid var(--border-color);
-				border-inline-start-width: 6px;
 
 				font-style: italic;
 
 				background: var(--cl-container);
+				border: 1px solid var(--border-color);
+				border-inline-start-width: 6px;
 
 				&::before {
 					--border: var(--bevel-size) solid var(--border-color);
 					--transparent: var(--bevel-size) solid transparent;
 
-					content: '';
-
 					position: absolute;
 					inset-block-end: 0;
 					inset-inline-end: 0;
+
+					content: "";
 
 					border-block-start: var(--transparent);
 					border-block-end: var(--border);
@@ -163,11 +161,11 @@ const { Content, headings } = await render(set);
 					--border: calc(var(--bevel-size) + 1px) solid var(--cl-background);
 					--transparent: calc(var(--bevel-size) + 1px) solid transparent;
 
-					content: '';
-
 					position: absolute;
 					inset-block-end: calc(var(--border-width) * -1 - 1px);
 					inset-inline-end: calc(var(--border-width) * -1 - 1px);
+
+					content: "";
 
 					border-block-start: var(--transparent);
 					border-block-end: var(--border);
@@ -190,8 +188,8 @@ const { Content, headings } = await render(set);
 
 		> details {
 			padding-inline-start: 1em;
-			border-inline-start: 0.4em solid var(--cl-accent);
 			background: var(--cl-container);
+			border-inline-start: 0.4em solid var(--cl-accent);
 
 			&::details-content {
 				margin-inline-end: 2em;
@@ -203,19 +201,18 @@ const { Content, headings } = await render(set);
 				font-weight: bold;
 
 				&::after {
-					content: '';
-
 					display: inline-block;
+					width: 1.25em;
 
 					aspect-ratio: 1;
-					width: 1.25em;
 					margin-inline-start: 0.25em;
 
 					vertical-align: text-bottom;
+					content: "";
 
 					background-color: var(--cl-accent);
 
-					mask-image: url('/src/assets/icons/info.svg');
+					mask-image: url("/src/assets/icons/info.svg");
 					mask-repeat: no-repeat;
 					mask-size: 100% 100%;
 				}
