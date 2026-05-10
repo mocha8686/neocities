@@ -1,0 +1,57 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.4.15/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"includes": [
+			"**",
+			"!!**/dist"
+		]
+	},
+	"formatter": {
+		"enabled": true,
+		"includes": [
+			"**",
+			"!**/old/",
+			"!**/package.json",
+			"!**/pnpm-lock.yaml",
+			"!src/assets/",
+			"!src/data/",
+			"!**/*.md",
+			"!**/dist/",
+			"!**/.astro/",
+			"!**/node_modules/",
+			"!**/npm-debug.log*",
+			"!**/yarn-debug.log*",
+			"!**/yarn-error.log*",
+			"!**/pnpm-debug.log*",
+			"!**/.env",
+			"!**/.env.production",
+			"!**/.DS_Store",
+			"!**/.idea/"
+		]
+	},
+	"html": {
+		"formatter": {
+			"enabled": true,
+			"indentScriptAndStyle": true
+		},
+		"experimentalFullSupportEnabled": true
+	},
+	"linter": {
+		"enabled": true
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on",
+				"noDuplicateClasses": "on",
+				"useSortedProperties": "on"
+			}
+		}
+	}
+}
